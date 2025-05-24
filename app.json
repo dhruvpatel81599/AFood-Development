@@ -1,0 +1,26 @@
+{
+  "id": "c8f27335-dce7-4564-b9b9-a88be483d91a",
+  "name": "AFood Development",
+  "publisher": "Default publisher",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "14.0.0.0",
+  "application": "14.0.0.0",
+  "idRanges": [
+    {
+      "from": 50100,
+      "to": 50149
+    }
+  ],
+  "contextSensitiveHelpUrl": "https://AFoodDevelopment.com/help/",
+  "showMyCode": true,
+  "runtime": "3.0"
+}
