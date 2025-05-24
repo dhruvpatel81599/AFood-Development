@@ -1,0 +1,7 @@
+.vscode/rad.json
+.al*/
+.vscode/*
+!.vscode/launch.json
+!.vscode/settings.json
+*.app.dep
+*.app
