@@ -366,7 +366,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TempSalesLineNo.Value</Value>
+                                  <Value>=Fields!ItemNo_Line.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>6pt</FontSize>
@@ -401,7 +401,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TempSalesLineDescription.Value</Value>
+                                  <Value>=Fields!Description_Line.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>6pt</FontSize>
@@ -425,18 +425,19 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DPAFIUnits">
+                        <Textbox Name="AFIUnits">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(Fields!DPAFIUnits.Value = 0, "", Format(Fields!DPAFIUnits.Value, "#,##0.00"))</Value>
+                                  <Value>=IIf(Fields!AFIUnits.Value = 0, "", Format(Fields!AFIUnits.Value, "#,##0.00"))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>6pt</FontSize>
@@ -450,7 +451,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DPAFIUnits</rd:DefaultName>
+                          <rd:DefaultName>AFIUnits</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -467,14 +468,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DPAFINetWeight">
+                        <Textbox Name="AFINetWeight">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(Fields!DPAFINetWeight.Value = 0, "", Format(Fields!DPAFINetWeight.Value, "#,##0.00"))</Value>
+                                  <Value>=IIf(Fields!AFINetWeight.Value = 0, "", Format(Fields!AFINetWeight.Value, "#,##0.00"))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>6pt</FontSize>
@@ -489,7 +490,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DPAFINetWeight</rd:DefaultName>
+                          <rd:DefaultName>AFINetWeight</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -506,14 +507,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="TempSalesLineInvDiscAmt">
+                        <Textbox Name="AFIPricePer">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DPAFIPricePer.Value</Value>
+                                  <Value>=Fields!AFIPricePer.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>6pt</FontSize>
@@ -527,7 +528,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>TempSalesLineInvDiscAmt</rd:DefaultName>
+                          <rd:DefaultName>AFIPricePer</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -544,53 +545,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DPAFIUnitPrice">
+                        <Textbox Name="AFIUnitPrice">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(Fields!DPAFIUnitPrice.Value = 0, "", Format(Fields!DPAFIUnitPrice.Value, "#,##0.00"))</Value>
-                                  <Style>
-                                    <FontFamily>Segoe UI</FontFamily>
-                                    <FontSize>6pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <Format>#,##0.00</Format>
-                                    <Color>#333333</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>DPAFIUnitPrice</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="DPAFITotalPrice">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=IIf(Fields!DPAFITotalPrice.Value = 0, "", Format(Fields!DPAFITotalPrice.Value, "#,##0.00"))</Value>
+                                  <Value>=IIf(Fields!AFIUnitPrice.Value = 0, "", Format(Fields!AFIUnitPrice.Value, "#,##0.00"))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>6pt</FontSize>
@@ -605,7 +567,46 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DPAFITotalPrice</rd:DefaultName>
+                          <rd:DefaultName>AFIUnitPrice</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <BackgroundColor>White</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="AFITotalPrice">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIf(Fields!AFITotalPrice.Value = 0, "", Format(Fields!AFITotalPrice.Value, "#,##0.00"))</Value>
+                                  <Style>
+                                    <FontFamily>Segoe UI</FontFamily>
+                                    <FontSize>6pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <Format>#,##0.00</Format>
+                                    <Color>#333333</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>AFITotalPrice</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -670,7 +671,9 @@
                             <Style>None</Style>
                           </Border>
                           <BottomBorder>
+                            <Color>Black</Color>
                             <Style>Solid</Style>
+                            <Width>1pt</Width>
                           </BottomBorder>
                           <BackgroundColor>White</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
@@ -687,22 +690,22 @@
                   <KeepWithGroup>After</KeepWithGroup>
                 </TablixMember>
                 <TablixMember>
-                  <Group Name="No_SalesHeader1">
+                  <Group Name="DocumentNo1">
                     <GroupExpressions>
-                      <GroupExpression>=Fields!No_SalesHeader.Value</GroupExpression>
+                      <GroupExpression>=Fields!DocumentNo.Value</GroupExpression>
                     </GroupExpressions>
                   </Group>
                   <TablixHeader>
                     <Size>0.03125in</Size>
                     <CellContents>
-                      <Textbox Name="No_SalesHeader1">
+                      <Textbox Name="DocumentNo1">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>=Fields!No_SalesHeader.Value</Value>
+                                <Value>=Fields!DocumentNo.Value</Value>
                                 <Style>
                                   <FontWeight>Normal</FontWeight>
                                   <Color>#333333</Color>
@@ -712,7 +715,7 @@
                             <Style />
                           </Paragraph>
                         </Paragraphs>
-                        <rd:DefaultName>No_SalesHeader1</rd:DefaultName>
+                        <rd:DefaultName>DocumentNo1</rd:DefaultName>
                         <Style>
                           <Border>
                             <Style>None</Style>
@@ -758,7 +761,7 @@
       <Width>7.19447in</Width>
       <Page>
         <PageHeader>
-          <Height>2.54381in</Height>
+          <Height>2.53773in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -792,7 +795,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIDocumentTitle.Value</Value>
+                      <Value>=Fields!AFIDocumentTitle.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -824,7 +827,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIDocumentTitle.Value</Value>
+                      <Value>=Fields!AFIDocumentTitle.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -856,7 +859,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIDocumentTitle.Value</Value>
+                      <Value>=Fields!AFIDocumentTitle.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -1024,7 +1027,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIDocNo.Value</Value>
+                      <Value>=Fields!AFIDocNo.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1049,7 +1052,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFISalesPerson.Value</Value>
+                      <Value>=Fields!AFISalesPerson.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1074,7 +1077,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFICustomer.Value</Value>
+                      <Value>=Fields!AFICustomer.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1099,7 +1102,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIShipTo5.Value</Value>
+                      <Value>=Fields!AFIShipTo5.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1124,7 +1127,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIShipTo4.Value</Value>
+                      <Value>=Fields!AFIShipTo4.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1149,7 +1152,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIShipTo3.Value</Value>
+                      <Value>=Fields!AFIShipTo3.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1174,7 +1177,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIShipTo2.Value</Value>
+                      <Value>=Fields!AFIShipTo2.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1199,7 +1202,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIShipTo1.Value</Value>
+                      <Value>=Fields!AFIShipTo1.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1224,7 +1227,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFITerms.Value</Value>
+                      <Value>=Fields!AFITerms.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1249,7 +1252,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIShipVia.Value</Value>
+                      <Value>=Fields!AFIShipVia.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1274,7 +1277,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFISellTo4.Value</Value>
+                      <Value>=Fields!AFISellTo4.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1299,7 +1302,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFISellTo3.Value</Value>
+                      <Value>=Fields!AFISellTo3.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1324,7 +1327,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFISellTo2.Value</Value>
+                      <Value>=Fields!AFISellTo2.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1349,7 +1352,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFISellTo1.Value</Value>
+                      <Value>=Fields!AFISellTo1.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1374,7 +1377,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFICompanyInfo4.Value</Value>
+                      <Value>=Fields!AFICompanyInfo4.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1406,7 +1409,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFICompanyInfo3.Value</Value>
+                      <Value>=Fields!AFICompanyInfo3.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1431,7 +1434,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFICompanyInfo2.Value</Value>
+                      <Value>=Fields!AFICompanyInfo2.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1458,7 +1461,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFICompanyInfo1.Value</Value>
+                      <Value>=Fields!AFICompanyInfo1.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1482,7 +1485,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIDocumentDate.Value</Value>
+                      <Value>=Fields!AFIDocumentDate.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1560,7 +1563,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIDeliveryDate.Value</Value>
+                      <Value>=Fields!AFIDeliveryDate.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1586,7 +1589,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIPurchOrder.Value</Value>
+                      <Value>=Fields!AFIPurchOrder.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1612,7 +1615,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIIncoterm.Value</Value>
+                      <Value>=Fields!AFIIncoterm.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1725,7 +1728,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox3</rd:DefaultName>
-              <Top>2.36933in</Top>
+              <Top>2.36325in</Top>
               <Left>0.05369in</Left>
               <Height>0.17448in</Height>
               <Width>0.99697in</Width>
@@ -1763,7 +1766,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>2.36933in</Top>
+              <Top>2.36325in</Top>
               <Left>1.05066in</Left>
               <Height>0.17448in</Height>
               <Width>3.2205in</Width>
@@ -1801,7 +1804,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox6</rd:DefaultName>
-              <Top>2.36933in</Top>
+              <Top>2.36325in</Top>
               <Left>4.27116in</Left>
               <Height>0.17448in</Height>
               <Width>0.5657in</Width>
@@ -1839,8 +1842,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox10</rd:DefaultName>
-              <Top>2.36933in</Top>
-              <Left>4.83686in</Left>
+              <Top>2.36325in</Top>
+              <Left>4.82228in</Left>
               <Height>0.17448in</Height>
               <Width>0.50159in</Width>
               <ZIndex>40</ZIndex>
@@ -1877,7 +1880,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox12</rd:DefaultName>
-              <Top>2.36933in</Top>
+              <Top>2.36325in</Top>
               <Left>5.33845in</Left>
               <Height>0.17448in</Height>
               <Width>0.57435in</Width>
@@ -1915,7 +1918,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox21</rd:DefaultName>
-              <Top>2.36933in</Top>
+              <Top>2.36325in</Top>
               <Left>5.9128in</Left>
               <Height>0.17448in</Height>
               <Width>0.61863in</Width>
@@ -1953,7 +1956,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox23</rd:DefaultName>
-              <Top>2.36933in</Top>
+              <Top>2.36325in</Top>
               <Left>6.53143in</Left>
               <Height>0.17448in</Height>
               <Width>0.63179in</Width>
@@ -1976,7 +1979,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFICountryOfOrigin.Value</Value>
+                      <Value>=Fields!AFICountryOfOrigin.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1989,8 +1992,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>1.56248in</Top>
-              <Left>6.21943in</Left>
+              <Top>1.5601in</Top>
+              <Left>6.21944in</Left>
               <Height>11pt</Height>
               <Width>0.94379in</Width>
               <ZIndex>44</ZIndex>
@@ -2002,7 +2005,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFICountryOfOriginLbl.Value</Value>
+                      <Value>=Fields!AFICountryOfOriginLbl.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -2014,7 +2017,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>1.56248in</Top>
+              <Top>1.5601in</Top>
               <Left>5.15393in</Left>
               <Height>11pt</Height>
               <Width>1.06551in</Width>
@@ -2039,7 +2042,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIDiscount.Value</Value>
+                      <Value>=Fields!AFIDiscount.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -2068,7 +2071,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFITotal.Value</Value>
+                      <Value>=Fields!AFITotal.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -2099,7 +2102,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFITax.Value</Value>
+                      <Value>=Fields!AFITax.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -2129,7 +2132,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFISubtotal.Value</Value>
+                      <Value>=Fields!AFISubtotal.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -2278,7 +2281,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFIExemptTotal.Value</Value>
+                      <Value>=Fields!AFIExemptTotal.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -2308,7 +2311,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFISubjectTotal.Value</Value>
+                      <Value>=Fields!AFISubjectTotal.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -2461,7 +2464,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFITotalCases.Value</Value>
+                      <Value>=Fields!AFITotalCases.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -2476,7 +2479,7 @@
                 </Paragraph>
               </Paragraphs>
               <Top>0.93in</Top>
-              <Left>4.15778in</Left>
+              <Left>4.14389in</Left>
               <Height>11pt</Height>
               <Width>0.9913in</Width>
               <ZIndex>14</ZIndex>
@@ -2506,7 +2509,7 @@
                 </Paragraph>
               </Paragraphs>
               <Top>0.93in</Top>
-              <Left>3.13495in</Left>
+              <Left>3.12106in</Left>
               <Height>11pt</Height>
               <Width>0.99644in</Width>
               <ZIndex>15</ZIndex>
@@ -2678,138 +2681,6 @@ z0M5E2E8EOnn8EmMPpt1Sy1bqeIJlDcM8i0MFAX+jPBl6uuelQtXD4kX75WKS3J3OBwOh+MkU/NITWj6
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="DocType_SalesHeader">
-          <DataField>DocType_SalesHeader</DataField>
-        </Field>
-        <Field Name="No_SalesHeader">
-          <DataField>No_SalesHeader</DataField>
-        </Field>
-        <Field Name="DPAFIDocumentTitle">
-          <DataField>DPAFIDocumentTitle</DataField>
-        </Field>
-        <Field Name="DPAFICompanyInfo1">
-          <DataField>DPAFICompanyInfo1</DataField>
-        </Field>
-        <Field Name="DPAFICompanyInfo2">
-          <DataField>DPAFICompanyInfo2</DataField>
-        </Field>
-        <Field Name="DPAFICompanyInfo3">
-          <DataField>DPAFICompanyInfo3</DataField>
-        </Field>
-        <Field Name="DPAFICompanyInfo4">
-          <DataField>DPAFICompanyInfo4</DataField>
-        </Field>
-        <Field Name="DPAFISellTo1">
-          <DataField>DPAFISellTo1</DataField>
-        </Field>
-        <Field Name="DPAFISellTo2">
-          <DataField>DPAFISellTo2</DataField>
-        </Field>
-        <Field Name="DPAFISellTo3">
-          <DataField>DPAFISellTo3</DataField>
-        </Field>
-        <Field Name="DPAFISellTo4">
-          <DataField>DPAFISellTo4</DataField>
-        </Field>
-        <Field Name="DPAFIShipTo1">
-          <DataField>DPAFIShipTo1</DataField>
-        </Field>
-        <Field Name="DPAFIShipTo2">
-          <DataField>DPAFIShipTo2</DataField>
-        </Field>
-        <Field Name="DPAFIShipTo3">
-          <DataField>DPAFIShipTo3</DataField>
-        </Field>
-        <Field Name="DPAFIShipTo4">
-          <DataField>DPAFIShipTo4</DataField>
-        </Field>
-        <Field Name="DPAFIShipTo5">
-          <DataField>DPAFIShipTo5</DataField>
-        </Field>
-        <Field Name="DPAFIDocNo">
-          <DataField>DPAFIDocNo</DataField>
-        </Field>
-        <Field Name="DPAFIDocumentDate">
-          <DataField>DPAFIDocumentDate</DataField>
-        </Field>
-        <Field Name="DPAFIDeliveryDate">
-          <DataField>DPAFIDeliveryDate</DataField>
-        </Field>
-        <Field Name="DPAFIPurchOrder">
-          <DataField>DPAFIPurchOrder</DataField>
-        </Field>
-        <Field Name="DPAFIIncoterm">
-          <DataField>DPAFIIncoterm</DataField>
-        </Field>
-        <Field Name="DPAFICountryOfOriginLbl">
-          <DataField>DPAFICountryOfOriginLbl</DataField>
-        </Field>
-        <Field Name="DPAFICountryOfOrigin">
-          <DataField>DPAFICountryOfOrigin</DataField>
-        </Field>
-        <Field Name="DPAFIShipVia">
-          <DataField>DPAFIShipVia</DataField>
-        </Field>
-        <Field Name="DPAFITerms">
-          <DataField>DPAFITerms</DataField>
-        </Field>
-        <Field Name="DPAFICustomer">
-          <DataField>DPAFICustomer</DataField>
-        </Field>
-        <Field Name="DPAFISalesPerson">
-          <DataField>DPAFISalesPerson</DataField>
-        </Field>
-        <Field Name="DPAFISubtotal">
-          <DataField>DPAFISubtotal</DataField>
-        </Field>
-        <Field Name="DPAFISubtotalFormat">
-          <DataField>DPAFISubtotalFormat</DataField>
-        </Field>
-        <Field Name="DPAFIDiscount">
-          <DataField>DPAFIDiscount</DataField>
-        </Field>
-        <Field Name="DPAFIDiscountFormat">
-          <DataField>DPAFIDiscountFormat</DataField>
-        </Field>
-        <Field Name="DPAFITax">
-          <DataField>DPAFITax</DataField>
-        </Field>
-        <Field Name="DPAFITaxFormat">
-          <DataField>DPAFITaxFormat</DataField>
-        </Field>
-        <Field Name="DPAFITotal">
-          <DataField>DPAFITotal</DataField>
-        </Field>
-        <Field Name="DPAFITotalFormat">
-          <DataField>DPAFITotalFormat</DataField>
-        </Field>
-        <Field Name="DPAFISubjectTotal">
-          <DataField>DPAFISubjectTotal</DataField>
-        </Field>
-        <Field Name="DPAFISubjectTotalFormat">
-          <DataField>DPAFISubjectTotalFormat</DataField>
-        </Field>
-        <Field Name="DPAFIExemptTotal">
-          <DataField>DPAFIExemptTotal</DataField>
-        </Field>
-        <Field Name="DPAFIExemptTotalFormat">
-          <DataField>DPAFIExemptTotalFormat</DataField>
-        </Field>
-        <Field Name="DPAFITotalCases">
-          <DataField>DPAFITotalCases</DataField>
-        </Field>
-        <Field Name="DPAFITotalCasesFormat">
-          <DataField>DPAFITotalCasesFormat</DataField>
-        </Field>
-        <Field Name="CompanyInfo2Picture">
-          <DataField>CompanyInfo2Picture</DataField>
-        </Field>
-        <Field Name="CompanyInfo1Picture">
-          <DataField>CompanyInfo1Picture</DataField>
-        </Field>
-        <Field Name="CompanyInfoPicture">
-          <DataField>CompanyInfoPicture</DataField>
-        </Field>
         <Field Name="CompanyAddress1">
           <DataField>CompanyAddress1</DataField>
         </Field>
@@ -2828,29 +2699,155 @@ z0M5E2E8EOnn8EmMPpt1Sy1bqeIJlDcM8i0MFAX+jPBl6uuelQtXD4kX75WKS3J3OBwOh+MkU/NITWj6
         <Field Name="CompanyAddress6">
           <DataField>CompanyAddress6</DataField>
         </Field>
-        <Field Name="CopyTxt">
-          <DataField>CopyTxt</DataField>
+        <Field Name="CompanyAddress7">
+          <DataField>CompanyAddress7</DataField>
         </Field>
-        <Field Name="BillToAddress1">
-          <DataField>BillToAddress1</DataField>
+        <Field Name="CompanyAddress8">
+          <DataField>CompanyAddress8</DataField>
         </Field>
-        <Field Name="BillToAddress2">
-          <DataField>BillToAddress2</DataField>
+        <Field Name="CompanyHomePage">
+          <DataField>CompanyHomePage</DataField>
         </Field>
-        <Field Name="BillToAddress3">
-          <DataField>BillToAddress3</DataField>
+        <Field Name="CompanyEMail">
+          <DataField>CompanyEMail</DataField>
         </Field>
-        <Field Name="BillToAddress4">
-          <DataField>BillToAddress4</DataField>
+        <Field Name="CompanyPicture">
+          <DataField>CompanyPicture</DataField>
         </Field>
-        <Field Name="BillToAddress5">
-          <DataField>BillToAddress5</DataField>
+        <Field Name="CompanyPhoneNo">
+          <DataField>CompanyPhoneNo</DataField>
         </Field>
-        <Field Name="BillToAddress6">
-          <DataField>BillToAddress6</DataField>
+        <Field Name="CompanyPhoneNo_Lbl">
+          <DataField>CompanyPhoneNo_Lbl</DataField>
         </Field>
-        <Field Name="BillToAddress7">
-          <DataField>BillToAddress7</DataField>
+        <Field Name="CompanyGiroNo">
+          <DataField>CompanyGiroNo</DataField>
+        </Field>
+        <Field Name="CompanyGiroNo_Lbl">
+          <DataField>CompanyGiroNo_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyBankName">
+          <DataField>CompanyBankName</DataField>
+        </Field>
+        <Field Name="CompanyBankName_Lbl">
+          <DataField>CompanyBankName_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyBankBranchNo">
+          <DataField>CompanyBankBranchNo</DataField>
+        </Field>
+        <Field Name="CompanyBankBranchNo_Lbl">
+          <DataField>CompanyBankBranchNo_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyBankAccountNo">
+          <DataField>CompanyBankAccountNo</DataField>
+        </Field>
+        <Field Name="CompanyBankAccountNo_Lbl">
+          <DataField>CompanyBankAccountNo_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyIBAN">
+          <DataField>CompanyIBAN</DataField>
+        </Field>
+        <Field Name="CompanyIBAN_Lbl">
+          <DataField>CompanyIBAN_Lbl</DataField>
+        </Field>
+        <Field Name="CompanySWIFT">
+          <DataField>CompanySWIFT</DataField>
+        </Field>
+        <Field Name="CompanySWIFT_Lbl">
+          <DataField>CompanySWIFT_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyLogoPosition">
+          <DataField>CompanyLogoPosition</DataField>
+        </Field>
+        <Field Name="CompanyRegistrationNumber">
+          <DataField>CompanyRegistrationNumber</DataField>
+        </Field>
+        <Field Name="CompanyRegistrationNumber_Lbl">
+          <DataField>CompanyRegistrationNumber_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyVATRegNo">
+          <DataField>CompanyVATRegNo</DataField>
+        </Field>
+        <Field Name="CompanyVATRegNo_Lbl">
+          <DataField>CompanyVATRegNo_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyVATRegistrationNo">
+          <DataField>CompanyVATRegistrationNo</DataField>
+        </Field>
+        <Field Name="CompanyVATRegistrationNo_Lbl">
+          <DataField>CompanyVATRegistrationNo_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyLegalOffice">
+          <DataField>CompanyLegalOffice</DataField>
+        </Field>
+        <Field Name="CompanyLegalOffice_Lbl">
+          <DataField>CompanyLegalOffice_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyCustomGiro">
+          <DataField>CompanyCustomGiro</DataField>
+        </Field>
+        <Field Name="CompanyCustomGiro_Lbl">
+          <DataField>CompanyCustomGiro_Lbl</DataField>
+        </Field>
+        <Field Name="CompanyLegalStatement">
+          <DataField>CompanyLegalStatement</DataField>
+        </Field>
+        <Field Name="DisplayAdditionalFeeNote">
+          <DataField>DisplayAdditionalFeeNote</DataField>
+        </Field>
+        <Field Name="CustomerAddress1">
+          <DataField>CustomerAddress1</DataField>
+        </Field>
+        <Field Name="CustomerAddress2">
+          <DataField>CustomerAddress2</DataField>
+        </Field>
+        <Field Name="CustomerAddress3">
+          <DataField>CustomerAddress3</DataField>
+        </Field>
+        <Field Name="CustomerAddress4">
+          <DataField>CustomerAddress4</DataField>
+        </Field>
+        <Field Name="CustomerAddress5">
+          <DataField>CustomerAddress5</DataField>
+        </Field>
+        <Field Name="CustomerAddress6">
+          <DataField>CustomerAddress6</DataField>
+        </Field>
+        <Field Name="CustomerAddress7">
+          <DataField>CustomerAddress7</DataField>
+        </Field>
+        <Field Name="CustomerAddress8">
+          <DataField>CustomerAddress8</DataField>
+        </Field>
+        <Field Name="CustomerPostalBarCode">
+          <DataField>CustomerPostalBarCode</DataField>
+        </Field>
+        <Field Name="YourReference_Header">
+          <DataField>YourReference_Header</DataField>
+        </Field>
+        <Field Name="YourReference_Header_Lbl">
+          <DataField>YourReference_Header_Lbl</DataField>
+        </Field>
+        <Field Name="ShipmentMethodDescription">
+          <DataField>ShipmentMethodDescription</DataField>
+        </Field>
+        <Field Name="ShipmentMethodDescription_Lbl">
+          <DataField>ShipmentMethodDescription_Lbl</DataField>
+        </Field>
+        <Field Name="ShipmentDate">
+          <DataField>ShipmentDate</DataField>
+        </Field>
+        <Field Name="ShipmentDate_Lbl">
+          <DataField>ShipmentDate_Lbl</DataField>
+        </Field>
+        <Field Name="Shipment_Lbl">
+          <DataField>Shipment_Lbl</DataField>
+        </Field>
+        <Field Name="ShowShippingAddress">
+          <DataField>ShowShippingAddress</DataField>
+        </Field>
+        <Field Name="ShipToAddress_Lbl">
+          <DataField>ShipToAddress_Lbl</DataField>
         </Field>
         <Field Name="ShipToAddress1">
           <DataField>ShipToAddress1</DataField>
@@ -2873,251 +2870,863 @@ z0M5E2E8EOnn8EmMPpt1Sy1bqeIJlDcM8i0MFAX+jPBl6uuelQtXD4kX75WKS3J3OBwOh+MkU/NITWj6
         <Field Name="ShipToAddress7">
           <DataField>ShipToAddress7</DataField>
         </Field>
-        <Field Name="BilltoCustNo_SalesHeader">
-          <DataField>BilltoCustNo_SalesHeader</DataField>
-        </Field>
-        <Field Name="SalesPurchPersonName">
-          <DataField>SalesPurchPersonName</DataField>
-        </Field>
-        <Field Name="OrderDate_SalesHeader">
-          <DataField>OrderDate_SalesHeader</DataField>
-        </Field>
-        <Field Name="CompanyAddress7">
-          <DataField>CompanyAddress7</DataField>
-        </Field>
-        <Field Name="CompanyAddress8">
-          <DataField>CompanyAddress8</DataField>
-        </Field>
-        <Field Name="BillToAddress8">
-          <DataField>BillToAddress8</DataField>
-        </Field>
         <Field Name="ShipToAddress8">
           <DataField>ShipToAddress8</DataField>
         </Field>
-        <Field Name="ShipmentMethodDesc">
-          <DataField>ShipmentMethodDesc</DataField>
+        <Field Name="ShipToPhoneNo">
+          <DataField>ShipToPhoneNo</DataField>
         </Field>
-        <Field Name="PaymentTermsDesc">
-          <DataField>PaymentTermsDesc</DataField>
+        <Field Name="SellToContactPhoneNoLbl">
+          <DataField>SellToContactPhoneNoLbl</DataField>
         </Field>
-        <Field Name="TaxRegLabel">
-          <DataField>TaxRegLabel</DataField>
+        <Field Name="SellToContactMobilePhoneNoLbl">
+          <DataField>SellToContactMobilePhoneNoLbl</DataField>
         </Field>
-        <Field Name="TaxRegNo">
-          <DataField>TaxRegNo</DataField>
+        <Field Name="SellToContactEmailLbl">
+          <DataField>SellToContactEmailLbl</DataField>
         </Field>
-        <Field Name="PrintFooter">
-          <DataField>PrintFooter</DataField>
+        <Field Name="BillToContactPhoneNoLbl">
+          <DataField>BillToContactPhoneNoLbl</DataField>
         </Field>
-        <Field Name="CopyNo">
-          <DataField>CopyNo</DataField>
+        <Field Name="BillToContactMobilePhoneNoLbl">
+          <DataField>BillToContactMobilePhoneNoLbl</DataField>
         </Field>
-        <Field Name="CustTaxIdentificationType">
-          <DataField>CustTaxIdentificationType</DataField>
+        <Field Name="BillToContactEmailLbl">
+          <DataField>BillToContactEmailLbl</DataField>
         </Field>
-        <Field Name="SellCaption">
-          <DataField>SellCaption</DataField>
+        <Field Name="SellToContactPhoneNo">
+          <DataField>SellToContactPhoneNo</DataField>
         </Field>
-        <Field Name="ToCaption">
-          <DataField>ToCaption</DataField>
+        <Field Name="SellToContactMobilePhoneNo">
+          <DataField>SellToContactMobilePhoneNo</DataField>
         </Field>
-        <Field Name="CustomerIDCaption">
-          <DataField>CustomerIDCaption</DataField>
+        <Field Name="SellToContactEmail">
+          <DataField>SellToContactEmail</DataField>
         </Field>
-        <Field Name="SalesPersonCaption">
-          <DataField>SalesPersonCaption</DataField>
+        <Field Name="BillToContactPhoneNo">
+          <DataField>BillToContactPhoneNo</DataField>
         </Field>
-        <Field Name="ShipCaption">
-          <DataField>ShipCaption</DataField>
+        <Field Name="BillToContactMobilePhoneNo">
+          <DataField>BillToContactMobilePhoneNo</DataField>
         </Field>
-        <Field Name="SalesQuoteCaption">
-          <DataField>SalesQuoteCaption</DataField>
+        <Field Name="BillToContactEmail">
+          <DataField>BillToContactEmail</DataField>
         </Field>
-        <Field Name="SalesQuoteNumberCaption">
-          <DataField>SalesQuoteNumberCaption</DataField>
+        <Field Name="PaymentTermsDescription">
+          <DataField>PaymentTermsDescription</DataField>
         </Field>
-        <Field Name="SalesQuoteDateCaption">
-          <DataField>SalesQuoteDateCaption</DataField>
+        <Field Name="PaymentTermsDescription_Lbl">
+          <DataField>PaymentTermsDescription_Lbl</DataField>
         </Field>
-        <Field Name="PageCaption">
-          <DataField>PageCaption</DataField>
+        <Field Name="PaymentMethodDescription">
+          <DataField>PaymentMethodDescription</DataField>
         </Field>
-        <Field Name="ShipViaCaption">
-          <DataField>ShipViaCaption</DataField>
+        <Field Name="PaymentMethodDescription_Lbl">
+          <DataField>PaymentMethodDescription_Lbl</DataField>
         </Field>
-        <Field Name="TermsCaption">
-          <DataField>TermsCaption</DataField>
+        <Field Name="BilltoCustumerNo">
+          <DataField>BilltoCustumerNo</DataField>
         </Field>
-        <Field Name="TaxIdentTypeCaption">
-          <DataField>TaxIdentTypeCaption</DataField>
+        <Field Name="BilltoCustomerNo_Lbl">
+          <DataField>BilltoCustomerNo_Lbl</DataField>
         </Field>
-        <Field Name="Number_IntegerLine">
-          <DataField>Number_IntegerLine</DataField>
+        <Field Name="DocumentDate">
+          <DataField>DocumentDate</DataField>
         </Field>
-        <Field Name="AmountExclInvDisc">
-          <DataField>AmountExclInvDisc</DataField>
+        <Field Name="DocumentDate_Lbl">
+          <DataField>DocumentDate_Lbl</DataField>
         </Field>
-        <Field Name="AmountExclInvDiscFormat">
-          <DataField>AmountExclInvDiscFormat</DataField>
+        <Field Name="DueDate">
+          <DataField>DueDate</DataField>
         </Field>
-        <Field Name="TempSalesLineNo">
-          <DataField>TempSalesLineNo</DataField>
+        <Field Name="DueDate_Lbl">
+          <DataField>DueDate_Lbl</DataField>
         </Field>
-        <Field Name="TempSalesLineUOM">
-          <DataField>TempSalesLineUOM</DataField>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
         </Field>
-        <Field Name="TempSalesLineQuantity">
-          <DataField>TempSalesLineQuantity</DataField>
+        <Field Name="DocumentNo_Lbl">
+          <DataField>DocumentNo_Lbl</DataField>
         </Field>
-        <Field Name="TempSalesLineQuantityFormat">
-          <DataField>TempSalesLineQuantityFormat</DataField>
+        <Field Name="OrderNo">
+          <DataField>OrderNo</DataField>
         </Field>
-        <Field Name="UnitPriceToPrint">
-          <DataField>UnitPriceToPrint</DataField>
+        <Field Name="OrderNo_Lbl">
+          <DataField>OrderNo_Lbl</DataField>
         </Field>
-        <Field Name="UnitPriceToPrintFormat">
-          <DataField>UnitPriceToPrintFormat</DataField>
+        <Field Name="OrderDate">
+          <DataField>OrderDate</DataField>
         </Field>
-        <Field Name="TempSalesLineDescription">
-          <DataField>TempSalesLineDescription</DataField>
+        <Field Name="OrderDate_Lbl">
+          <DataField>OrderDate_Lbl</DataField>
         </Field>
-        <Field Name="TaxLiable">
-          <DataField>TaxLiable</DataField>
+        <Field Name="PricesIncludingVAT">
+          <DataField>PricesIncludingVAT</DataField>
         </Field>
-        <Field Name="TaxLiableFormat">
-          <DataField>TaxLiableFormat</DataField>
+        <Field Name="PricesIncludingVAT_Lbl">
+          <DataField>PricesIncludingVAT_Lbl</DataField>
         </Field>
-        <Field Name="TempSalesLineLineAmtTaxLiable">
-          <DataField>TempSalesLineLineAmtTaxLiable</DataField>
+        <Field Name="PricesIncludingVATYesNo">
+          <DataField>PricesIncludingVATYesNo</DataField>
         </Field>
-        <Field Name="TempSalesLineLineAmtTaxLiableFormat">
-          <DataField>TempSalesLineLineAmtTaxLiableFormat</DataField>
+        <Field Name="SalesPerson_Lbl">
+          <DataField>SalesPerson_Lbl</DataField>
         </Field>
-        <Field Name="TempSalesLineInvDiscAmt">
-          <DataField>TempSalesLineInvDiscAmt</DataField>
+        <Field Name="SalesPersonBlank_Lbl">
+          <DataField>SalesPersonBlank_Lbl</DataField>
         </Field>
-        <Field Name="TempSalesLineInvDiscAmtFormat">
-          <DataField>TempSalesLineInvDiscAmtFormat</DataField>
+        <Field Name="SalesPersonName">
+          <DataField>SalesPersonName</DataField>
         </Field>
-        <Field Name="TaxAmount">
-          <DataField>TaxAmount</DataField>
+        <Field Name="SelltoCustomerNo">
+          <DataField>SelltoCustomerNo</DataField>
         </Field>
-        <Field Name="TaxAmountFormat">
-          <DataField>TaxAmountFormat</DataField>
+        <Field Name="SelltoCustomerNo_Lbl">
+          <DataField>SelltoCustomerNo_Lbl</DataField>
         </Field>
-        <Field Name="TempSalesLineLineAmtTaxAmtInvDiscAmt">
-          <DataField>TempSalesLineLineAmtTaxAmtInvDiscAmt</DataField>
+        <Field Name="VATRegistrationNo">
+          <DataField>VATRegistrationNo</DataField>
         </Field>
-        <Field Name="TempSalesLineLineAmtTaxAmtInvDiscAmtFormat">
-          <DataField>TempSalesLineLineAmtTaxAmtInvDiscAmtFormat</DataField>
+        <Field Name="VATRegistrationNo_Lbl">
+          <DataField>VATRegistrationNo_Lbl</DataField>
         </Field>
-        <Field Name="BreakdownTitle">
-          <DataField>BreakdownTitle</DataField>
+        <Field Name="GlobalLocationNumber">
+          <DataField>GlobalLocationNumber</DataField>
         </Field>
-        <Field Name="BreakdownLabel1">
-          <DataField>BreakdownLabel1</DataField>
+        <Field Name="GlobalLocationNumber_Lbl">
+          <DataField>GlobalLocationNumber_Lbl</DataField>
         </Field>
-        <Field Name="BreakdownLabel2">
-          <DataField>BreakdownLabel2</DataField>
+        <Field Name="SellToFaxNo">
+          <DataField>SellToFaxNo</DataField>
         </Field>
-        <Field Name="BreakdownAmt1">
-          <DataField>BreakdownAmt1</DataField>
+        <Field Name="SellToPhoneNo">
+          <DataField>SellToPhoneNo</DataField>
         </Field>
-        <Field Name="BreakdownAmt1Format">
-          <DataField>BreakdownAmt1Format</DataField>
+        <Field Name="PaymentReference">
+          <DataField>PaymentReference</DataField>
         </Field>
-        <Field Name="BreakdownAmt2">
-          <DataField>BreakdownAmt2</DataField>
+        <Field Name="From_Lbl">
+          <DataField>From_Lbl</DataField>
         </Field>
-        <Field Name="BreakdownAmt2Format">
-          <DataField>BreakdownAmt2Format</DataField>
+        <Field Name="BilledTo_Lbl">
+          <DataField>BilledTo_Lbl</DataField>
         </Field>
-        <Field Name="BreakdownLabel3">
-          <DataField>BreakdownLabel3</DataField>
+        <Field Name="ChecksPayable_Lbl">
+          <DataField>ChecksPayable_Lbl</DataField>
         </Field>
-        <Field Name="BreakdownAmt3">
-          <DataField>BreakdownAmt3</DataField>
+        <Field Name="PaymentReference_Lbl">
+          <DataField>PaymentReference_Lbl</DataField>
         </Field>
-        <Field Name="BreakdownAmt3Format">
-          <DataField>BreakdownAmt3Format</DataField>
+        <Field Name="LegalEntityType">
+          <DataField>LegalEntityType</DataField>
         </Field>
-        <Field Name="BreakdownAmt4">
-          <DataField>BreakdownAmt4</DataField>
+        <Field Name="LegalEntityType_Lbl">
+          <DataField>LegalEntityType_Lbl</DataField>
         </Field>
-        <Field Name="BreakdownAmt4Format">
-          <DataField>BreakdownAmt4Format</DataField>
+        <Field Name="Copy_Lbl">
+          <DataField>Copy_Lbl</DataField>
         </Field>
-        <Field Name="BreakdownLabel4">
-          <DataField>BreakdownLabel4</DataField>
+        <Field Name="EMail_Header_Lbl">
+          <DataField>EMail_Header_Lbl</DataField>
         </Field>
-        <Field Name="TotalTaxLabel">
-          <DataField>TotalTaxLabel</DataField>
+        <Field Name="HomePage_Lbl">
+          <DataField>HomePage_Lbl</DataField>
         </Field>
-        <Field Name="ItemNoCaption">
-          <DataField>ItemNoCaption</DataField>
+        <Field Name="InvoiceDiscountBaseAmount_Lbl">
+          <DataField>InvoiceDiscountBaseAmount_Lbl</DataField>
         </Field>
-        <Field Name="UnitCaption">
-          <DataField>UnitCaption</DataField>
+        <Field Name="InvoiceDiscountAmount_Lbl">
+          <DataField>InvoiceDiscountAmount_Lbl</DataField>
         </Field>
-        <Field Name="DescriptionCaption">
-          <DataField>DescriptionCaption</DataField>
+        <Field Name="LineAmountAfterInvoiceDiscount_Lbl">
+          <DataField>LineAmountAfterInvoiceDiscount_Lbl</DataField>
         </Field>
-        <Field Name="QuantityCaption">
-          <DataField>QuantityCaption</DataField>
+        <Field Name="LocalCurrency_Lbl">
+          <DataField>LocalCurrency_Lbl</DataField>
         </Field>
-        <Field Name="UnitPriceCaption">
-          <DataField>UnitPriceCaption</DataField>
+        <Field Name="ExchangeRateAsText">
+          <DataField>ExchangeRateAsText</DataField>
         </Field>
-        <Field Name="TotalPriceCaption">
-          <DataField>TotalPriceCaption</DataField>
+        <Field Name="Page_Lbl">
+          <DataField>Page_Lbl</DataField>
         </Field>
-        <Field Name="SubtotalCaption">
-          <DataField>SubtotalCaption</DataField>
+        <Field Name="SalesInvoiceLineDiscount_Lbl">
+          <DataField>SalesInvoiceLineDiscount_Lbl</DataField>
         </Field>
-        <Field Name="InvoiceDiscountCaption">
-          <DataField>InvoiceDiscountCaption</DataField>
+        <Field Name="Questions_Lbl">
+          <DataField>Questions_Lbl</DataField>
         </Field>
-        <Field Name="TotalCaption">
-          <DataField>TotalCaption</DataField>
+        <Field Name="Contact_Lbl">
+          <DataField>Contact_Lbl</DataField>
         </Field>
-        <Field Name="AmtSubjecttoSalesTaxCptn">
-          <DataField>AmtSubjecttoSalesTaxCptn</DataField>
+        <Field Name="DocumentTitle_Lbl">
+          <DataField>DocumentTitle_Lbl</DataField>
         </Field>
-        <Field Name="AmtExemptfromSalesTaxCptn">
-          <DataField>AmtExemptfromSalesTaxCptn</DataField>
+        <Field Name="YourDocumentTitle_Lbl">
+          <DataField>YourDocumentTitle_Lbl</DataField>
         </Field>
-        <Field Name="DPAFIItemNo">
-          <DataField>DPAFIItemNo</DataField>
+        <Field Name="Thanks_Lbl">
+          <DataField>Thanks_Lbl</DataField>
         </Field>
-        <Field Name="DPAFIDescription">
-          <DataField>DPAFIDescription</DataField>
+        <Field Name="ShowWorkDescription">
+          <DataField>ShowWorkDescription</DataField>
         </Field>
-        <Field Name="DPAFINetWeight">
-          <DataField>DPAFINetWeight</DataField>
+        <Field Name="RemainingAmount">
+          <DataField>RemainingAmount</DataField>
         </Field>
-        <Field Name="DPAFINetWeightFormat">
-          <DataField>DPAFINetWeightFormat</DataField>
+        <Field Name="RemainingAmountFormat">
+          <DataField>RemainingAmountFormat</DataField>
         </Field>
-        <Field Name="DPAFIPricePer">
-          <DataField>DPAFIPricePer</DataField>
+        <Field Name="RemainingAmountText">
+          <DataField>RemainingAmountText</DataField>
         </Field>
-        <Field Name="DPAFIUnitPrice">
-          <DataField>DPAFIUnitPrice</DataField>
+        <Field Name="Subtotal_Lbl">
+          <DataField>Subtotal_Lbl</DataField>
         </Field>
-        <Field Name="DPAFIUnitPriceFormat">
-          <DataField>DPAFIUnitPriceFormat</DataField>
+        <Field Name="Total_Lbl">
+          <DataField>Total_Lbl</DataField>
         </Field>
-        <Field Name="DPAFITotalPrice">
-          <DataField>DPAFITotalPrice</DataField>
+        <Field Name="VATAmount_Lbl">
+          <DataField>VATAmount_Lbl</DataField>
         </Field>
-        <Field Name="DPAFITotalPriceFormat">
-          <DataField>DPAFITotalPriceFormat</DataField>
+        <Field Name="VATBase_Lbl">
+          <DataField>VATBase_Lbl</DataField>
         </Field>
-        <Field Name="DPAFIUnits">
-          <DataField>DPAFIUnits</DataField>
+        <Field Name="VATAmountSpecification_Lbl">
+          <DataField>VATAmountSpecification_Lbl</DataField>
         </Field>
-        <Field Name="DPAFIUnitsFormat">
-          <DataField>DPAFIUnitsFormat</DataField>
+        <Field Name="VATClauses_Lbl">
+          <DataField>VATClauses_Lbl</DataField>
+        </Field>
+        <Field Name="VATIdentifier_Lbl">
+          <DataField>VATIdentifier_Lbl</DataField>
+        </Field>
+        <Field Name="VATPercentage_Lbl">
+          <DataField>VATPercentage_Lbl</DataField>
+        </Field>
+        <Field Name="VATClause_Lbl">
+          <DataField>VATClause_Lbl</DataField>
+        </Field>
+        <Field Name="PackageTrackingNo">
+          <DataField>PackageTrackingNo</DataField>
+        </Field>
+        <Field Name="PackageTrackingNo_Lbl">
+          <DataField>PackageTrackingNo_Lbl</DataField>
+        </Field>
+        <Field Name="ShippingAgentCode">
+          <DataField>ShippingAgentCode</DataField>
+        </Field>
+        <Field Name="ShippingAgentCode_Lbl">
+          <DataField>ShippingAgentCode_Lbl</DataField>
+        </Field>
+        <Field Name="PaymentInstructions_Txt">
+          <DataField>PaymentInstructions_Txt</DataField>
+        </Field>
+        <Field Name="CustomerPONumber_Lbl">
+          <DataField>CustomerPONumber_Lbl</DataField>
+        </Field>
+        <Field Name="CustomerPONumber">
+          <DataField>CustomerPONumber</DataField>
+        </Field>
+        <Field Name="ExternalDocumentNo">
+          <DataField>ExternalDocumentNo</DataField>
+        </Field>
+        <Field Name="ExternalDocumentNo_Lbl">
+          <DataField>ExternalDocumentNo_Lbl</DataField>
+        </Field>
+        <Field Name="DisplayAssemblyLines">
+          <DataField>DisplayAssemblyLines</DataField>
+        </Field>
+        <Field Name="AFIDocumentTitle">
+          <DataField>AFIDocumentTitle</DataField>
+        </Field>
+        <Field Name="AFICompanyInfo1">
+          <DataField>AFICompanyInfo1</DataField>
+        </Field>
+        <Field Name="AFICompanyInfo2">
+          <DataField>AFICompanyInfo2</DataField>
+        </Field>
+        <Field Name="AFICompanyInfo3">
+          <DataField>AFICompanyInfo3</DataField>
+        </Field>
+        <Field Name="AFICompanyInfo4">
+          <DataField>AFICompanyInfo4</DataField>
+        </Field>
+        <Field Name="AFISellTo1">
+          <DataField>AFISellTo1</DataField>
+        </Field>
+        <Field Name="AFISellTo2">
+          <DataField>AFISellTo2</DataField>
+        </Field>
+        <Field Name="AFISellTo3">
+          <DataField>AFISellTo3</DataField>
+        </Field>
+        <Field Name="AFISellTo4">
+          <DataField>AFISellTo4</DataField>
+        </Field>
+        <Field Name="AFIShipTo1">
+          <DataField>AFIShipTo1</DataField>
+        </Field>
+        <Field Name="AFIShipTo2">
+          <DataField>AFIShipTo2</DataField>
+        </Field>
+        <Field Name="AFIShipTo3">
+          <DataField>AFIShipTo3</DataField>
+        </Field>
+        <Field Name="AFIShipTo4">
+          <DataField>AFIShipTo4</DataField>
+        </Field>
+        <Field Name="AFIShipTo5">
+          <DataField>AFIShipTo5</DataField>
+        </Field>
+        <Field Name="AFIDocNo">
+          <DataField>AFIDocNo</DataField>
+        </Field>
+        <Field Name="AFIDocumentDate">
+          <DataField>AFIDocumentDate</DataField>
+        </Field>
+        <Field Name="AFIDeliveryDate">
+          <DataField>AFIDeliveryDate</DataField>
+        </Field>
+        <Field Name="AFIPurchOrder">
+          <DataField>AFIPurchOrder</DataField>
+        </Field>
+        <Field Name="AFIIncoterm">
+          <DataField>AFIIncoterm</DataField>
+        </Field>
+        <Field Name="AFICountryOfOriginLbl">
+          <DataField>AFICountryOfOriginLbl</DataField>
+        </Field>
+        <Field Name="AFICountryOfOrigin">
+          <DataField>AFICountryOfOrigin</DataField>
+        </Field>
+        <Field Name="AFIShipVia">
+          <DataField>AFIShipVia</DataField>
+        </Field>
+        <Field Name="AFITerms">
+          <DataField>AFITerms</DataField>
+        </Field>
+        <Field Name="AFICustomer">
+          <DataField>AFICustomer</DataField>
+        </Field>
+        <Field Name="AFISalesPerson">
+          <DataField>AFISalesPerson</DataField>
+        </Field>
+        <Field Name="AFISubtotal">
+          <DataField>AFISubtotal</DataField>
+        </Field>
+        <Field Name="AFISubtotalFormat">
+          <DataField>AFISubtotalFormat</DataField>
+        </Field>
+        <Field Name="AFIDiscount">
+          <DataField>AFIDiscount</DataField>
+        </Field>
+        <Field Name="AFIDiscountFormat">
+          <DataField>AFIDiscountFormat</DataField>
+        </Field>
+        <Field Name="AFITax">
+          <DataField>AFITax</DataField>
+        </Field>
+        <Field Name="AFITaxFormat">
+          <DataField>AFITaxFormat</DataField>
+        </Field>
+        <Field Name="AFITotal">
+          <DataField>AFITotal</DataField>
+        </Field>
+        <Field Name="AFITotalFormat">
+          <DataField>AFITotalFormat</DataField>
+        </Field>
+        <Field Name="AFISubjectTotal">
+          <DataField>AFISubjectTotal</DataField>
+        </Field>
+        <Field Name="AFISubjectTotalFormat">
+          <DataField>AFISubjectTotalFormat</DataField>
+        </Field>
+        <Field Name="AFIExemptTotal">
+          <DataField>AFIExemptTotal</DataField>
+        </Field>
+        <Field Name="AFIExemptTotalFormat">
+          <DataField>AFIExemptTotalFormat</DataField>
+        </Field>
+        <Field Name="AFITotalCases">
+          <DataField>AFITotalCases</DataField>
+        </Field>
+        <Field Name="AFITotalCasesFormat">
+          <DataField>AFITotalCasesFormat</DataField>
+        </Field>
+        <Field Name="LineNo_Line">
+          <DataField>LineNo_Line</DataField>
+        </Field>
+        <Field Name="AmountExcludingVAT_Line">
+          <DataField>AmountExcludingVAT_Line</DataField>
+        </Field>
+        <Field Name="AmountExcludingVAT_LineFormat">
+          <DataField>AmountExcludingVAT_LineFormat</DataField>
+        </Field>
+        <Field Name="AmountExcludingVAT_Line_Lbl">
+          <DataField>AmountExcludingVAT_Line_Lbl</DataField>
+        </Field>
+        <Field Name="AmountIncludingVAT_Line">
+          <DataField>AmountIncludingVAT_Line</DataField>
+        </Field>
+        <Field Name="AmountIncludingVAT_LineFormat">
+          <DataField>AmountIncludingVAT_LineFormat</DataField>
+        </Field>
+        <Field Name="AmountIncludingVAT_Line_Lbl">
+          <DataField>AmountIncludingVAT_Line_Lbl</DataField>
+        </Field>
+        <Field Name="Description_Line">
+          <DataField>Description_Line</DataField>
+        </Field>
+        <Field Name="Description_Line_Lbl">
+          <DataField>Description_Line_Lbl</DataField>
+        </Field>
+        <Field Name="LineDiscountPercent_Line">
+          <DataField>LineDiscountPercent_Line</DataField>
+        </Field>
+        <Field Name="LineDiscountPercent_LineFormat">
+          <DataField>LineDiscountPercent_LineFormat</DataField>
+        </Field>
+        <Field Name="LineDiscountPercentText_Line">
+          <DataField>LineDiscountPercentText_Line</DataField>
+        </Field>
+        <Field Name="LineAmount_Line">
+          <DataField>LineAmount_Line</DataField>
+        </Field>
+        <Field Name="LineAmount_Line_Lbl">
+          <DataField>LineAmount_Line_Lbl</DataField>
+        </Field>
+        <Field Name="ItemNo_Line">
+          <DataField>ItemNo_Line</DataField>
+        </Field>
+        <Field Name="ItemNo_Line_Lbl">
+          <DataField>ItemNo_Line_Lbl</DataField>
+        </Field>
+        <Field Name="ItemReferenceNo_Line">
+          <DataField>ItemReferenceNo_Line</DataField>
+        </Field>
+        <Field Name="ItemReferenceNo_Line_Lbl">
+          <DataField>ItemReferenceNo_Line_Lbl</DataField>
+        </Field>
+        <Field Name="ShipmentDate_Line">
+          <DataField>ShipmentDate_Line</DataField>
+        </Field>
+        <Field Name="ShipmentDate_Line_Lbl">
+          <DataField>ShipmentDate_Line_Lbl</DataField>
+        </Field>
+        <Field Name="Quantity_Line">
+          <DataField>Quantity_Line</DataField>
+        </Field>
+        <Field Name="Quantity_Line_Lbl">
+          <DataField>Quantity_Line_Lbl</DataField>
+        </Field>
+        <Field Name="Quantity_Line_Lbl2">
+          <DataField>Quantity_Line_Lbl2</DataField>
+        </Field>
+        <Field Name="Type_Line">
+          <DataField>Type_Line</DataField>
+        </Field>
+        <Field Name="UnitPrice">
+          <DataField>UnitPrice</DataField>
+        </Field>
+        <Field Name="UnitPrice_Lbl">
+          <DataField>UnitPrice_Lbl</DataField>
+        </Field>
+        <Field Name="UnitOfMeasure">
+          <DataField>UnitOfMeasure</DataField>
+        </Field>
+        <Field Name="UnitOfMeasure_Lbl">
+          <DataField>UnitOfMeasure_Lbl</DataField>
+        </Field>
+        <Field Name="VATIdentifier_Line">
+          <DataField>VATIdentifier_Line</DataField>
+        </Field>
+        <Field Name="VATIdentifier_Line_Lbl">
+          <DataField>VATIdentifier_Line_Lbl</DataField>
+        </Field>
+        <Field Name="VATPct_Line">
+          <DataField>VATPct_Line</DataField>
+        </Field>
+        <Field Name="VATPct_Line_Lbl">
+          <DataField>VATPct_Line_Lbl</DataField>
+        </Field>
+        <Field Name="TransHeaderAmount">
+          <DataField>TransHeaderAmount</DataField>
+        </Field>
+        <Field Name="TransHeaderAmountFormat">
+          <DataField>TransHeaderAmountFormat</DataField>
+        </Field>
+        <Field Name="JobTaskNo_Lbl">
+          <DataField>JobTaskNo_Lbl</DataField>
+        </Field>
+        <Field Name="JobTaskNo">
+          <DataField>JobTaskNo</DataField>
+        </Field>
+        <Field Name="JobTaskDescription">
+          <DataField>JobTaskDescription</DataField>
+        </Field>
+        <Field Name="JobTaskDesc_Lbl">
+          <DataField>JobTaskDesc_Lbl</DataField>
+        </Field>
+        <Field Name="Unit_Lbl">
+          <DataField>Unit_Lbl</DataField>
+        </Field>
+        <Field Name="UnitPrice_Lbl2">
+          <DataField>UnitPrice_Lbl2</DataField>
+        </Field>
+        <Field Name="LineAmount_Lbl">
+          <DataField>LineAmount_Lbl</DataField>
+        </Field>
+        <Field Name="JobNo_Lbl">
+          <DataField>JobNo_Lbl</DataField>
+        </Field>
+        <Field Name="JobNo">
+          <DataField>JobNo</DataField>
+        </Field>
+        <Field Name="Qty_Lbl">
+          <DataField>Qty_Lbl</DataField>
+        </Field>
+        <Field Name="Price_Lbl">
+          <DataField>Price_Lbl</DataField>
+        </Field>
+        <Field Name="PricePer_Lbl">
+          <DataField>PricePer_Lbl</DataField>
+        </Field>
+        <Field Name="AFIItemNo">
+          <DataField>AFIItemNo</DataField>
+        </Field>
+        <Field Name="AFIDescription">
+          <DataField>AFIDescription</DataField>
+        </Field>
+        <Field Name="AFINetWeight">
+          <DataField>AFINetWeight</DataField>
+        </Field>
+        <Field Name="AFINetWeightFormat">
+          <DataField>AFINetWeightFormat</DataField>
+        </Field>
+        <Field Name="AFIPricePer">
+          <DataField>AFIPricePer</DataField>
+        </Field>
+        <Field Name="AFIUnitPrice">
+          <DataField>AFIUnitPrice</DataField>
+        </Field>
+        <Field Name="AFIUnitPriceFormat">
+          <DataField>AFIUnitPriceFormat</DataField>
+        </Field>
+        <Field Name="AFITotalPrice">
+          <DataField>AFITotalPrice</DataField>
+        </Field>
+        <Field Name="AFITotalPriceFormat">
+          <DataField>AFITotalPriceFormat</DataField>
+        </Field>
+        <Field Name="AFIUnits">
+          <DataField>AFIUnits</DataField>
+        </Field>
+        <Field Name="AFIUnitsFormat">
+          <DataField>AFIUnitsFormat</DataField>
+        </Field>
+        <Field Name="DocumentNo_ShipmentLine">
+          <DataField>DocumentNo_ShipmentLine</DataField>
+        </Field>
+        <Field Name="PostingDate_ShipmentLine">
+          <DataField>PostingDate_ShipmentLine</DataField>
+        </Field>
+        <Field Name="PostingDate_ShipmentLine_Lbl">
+          <DataField>PostingDate_ShipmentLine_Lbl</DataField>
+        </Field>
+        <Field Name="Quantity_ShipmentLine">
+          <DataField>Quantity_ShipmentLine</DataField>
+        </Field>
+        <Field Name="Quantity_ShipmentLineFormat">
+          <DataField>Quantity_ShipmentLineFormat</DataField>
+        </Field>
+        <Field Name="Quantity_ShipmentLine_Lbl">
+          <DataField>Quantity_ShipmentLine_Lbl</DataField>
+        </Field>
+        <Field Name="LineNo_AssemblyLine">
+          <DataField>LineNo_AssemblyLine</DataField>
+        </Field>
+        <Field Name="Description_AssemblyLine">
+          <DataField>Description_AssemblyLine</DataField>
+        </Field>
+        <Field Name="Quantity_AssemblyLine">
+          <DataField>Quantity_AssemblyLine</DataField>
+        </Field>
+        <Field Name="Quantity_AssemblyLineFormat">
+          <DataField>Quantity_AssemblyLineFormat</DataField>
+        </Field>
+        <Field Name="UnitOfMeasure_AssemblyLine">
+          <DataField>UnitOfMeasure_AssemblyLine</DataField>
+        </Field>
+        <Field Name="VariantCode_AssemblyLine">
+          <DataField>VariantCode_AssemblyLine</DataField>
+        </Field>
+        <Field Name="WorkDescriptionLineNumber">
+          <DataField>WorkDescriptionLineNumber</DataField>
+        </Field>
+        <Field Name="WorkDescriptionLine">
+          <DataField>WorkDescriptionLine</DataField>
+        </Field>
+        <Field Name="InvoiceDiscountAmount_VATAmountLine">
+          <DataField>InvoiceDiscountAmount_VATAmountLine</DataField>
+        </Field>
+        <Field Name="InvoiceDiscountAmount_VATAmountLineFormat">
+          <DataField>InvoiceDiscountAmount_VATAmountLineFormat</DataField>
+        </Field>
+        <Field Name="InvoiceDiscountAmount_VATAmountLine_Lbl">
+          <DataField>InvoiceDiscountAmount_VATAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="InvoiceDiscountBaseAmount_VATAmountLine">
+          <DataField>InvoiceDiscountBaseAmount_VATAmountLine</DataField>
+        </Field>
+        <Field Name="InvoiceDiscountBaseAmount_VATAmountLineFormat">
+          <DataField>InvoiceDiscountBaseAmount_VATAmountLineFormat</DataField>
+        </Field>
+        <Field Name="InvoiceDiscountBaseAmount_VATAmountLine_Lbl">
+          <DataField>InvoiceDiscountBaseAmount_VATAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="LineAmount_VatAmountLine">
+          <DataField>LineAmount_VatAmountLine</DataField>
+        </Field>
+        <Field Name="LineAmount_VatAmountLineFormat">
+          <DataField>LineAmount_VatAmountLineFormat</DataField>
+        </Field>
+        <Field Name="LineAmount_VatAmountLine_Lbl">
+          <DataField>LineAmount_VatAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="VATAmount_VatAmountLine">
+          <DataField>VATAmount_VatAmountLine</DataField>
+        </Field>
+        <Field Name="VATAmount_VatAmountLineFormat">
+          <DataField>VATAmount_VatAmountLineFormat</DataField>
+        </Field>
+        <Field Name="VATAmount_VatAmountLine_Lbl">
+          <DataField>VATAmount_VatAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="VATAmountLCY_VATAmountLine">
+          <DataField>VATAmountLCY_VATAmountLine</DataField>
+        </Field>
+        <Field Name="VATAmountLCY_VATAmountLineFormat">
+          <DataField>VATAmountLCY_VATAmountLineFormat</DataField>
+        </Field>
+        <Field Name="VATAmountLCY_VATAmountLine_Lbl">
+          <DataField>VATAmountLCY_VATAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="VATBase_VatAmountLine">
+          <DataField>VATBase_VatAmountLine</DataField>
+        </Field>
+        <Field Name="VATBase_VatAmountLineFormat">
+          <DataField>VATBase_VatAmountLineFormat</DataField>
+        </Field>
+        <Field Name="VATBase_VatAmountLine_Lbl">
+          <DataField>VATBase_VatAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="VATBaseLCY_VATAmountLine">
+          <DataField>VATBaseLCY_VATAmountLine</DataField>
+        </Field>
+        <Field Name="VATBaseLCY_VATAmountLineFormat">
+          <DataField>VATBaseLCY_VATAmountLineFormat</DataField>
+        </Field>
+        <Field Name="VATBaseLCY_VATAmountLine_Lbl">
+          <DataField>VATBaseLCY_VATAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="VATIdentifier_VatAmountLine">
+          <DataField>VATIdentifier_VatAmountLine</DataField>
+        </Field>
+        <Field Name="VATIdentifier_VatAmountLine_Lbl">
+          <DataField>VATIdentifier_VatAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="VATPct_VatAmountLine">
+          <DataField>VATPct_VatAmountLine</DataField>
+        </Field>
+        <Field Name="VATPct_VatAmountLineFormat">
+          <DataField>VATPct_VatAmountLineFormat</DataField>
+        </Field>
+        <Field Name="VATPct_VatAmountLine_Lbl">
+          <DataField>VATPct_VatAmountLine_Lbl</DataField>
+        </Field>
+        <Field Name="NoOfVATIdentifiers">
+          <DataField>NoOfVATIdentifiers</DataField>
+        </Field>
+        <Field Name="VATIdentifier_VATClauseLine">
+          <DataField>VATIdentifier_VATClauseLine</DataField>
+        </Field>
+        <Field Name="Code_VATClauseLine">
+          <DataField>Code_VATClauseLine</DataField>
+        </Field>
+        <Field Name="Code_VATClauseLine_Lbl">
+          <DataField>Code_VATClauseLine_Lbl</DataField>
+        </Field>
+        <Field Name="Description_VATClauseLine">
+          <DataField>Description_VATClauseLine</DataField>
+        </Field>
+        <Field Name="Description2_VATClauseLine">
+          <DataField>Description2_VATClauseLine</DataField>
+        </Field>
+        <Field Name="VATAmount_VATClauseLine">
+          <DataField>VATAmount_VATClauseLine</DataField>
+        </Field>
+        <Field Name="VATAmount_VATClauseLineFormat">
+          <DataField>VATAmount_VATClauseLineFormat</DataField>
+        </Field>
+        <Field Name="NoOfVATClauses">
+          <DataField>NoOfVATClauses</DataField>
+        </Field>
+        <Field Name="Description_ReportTotalsLine">
+          <DataField>Description_ReportTotalsLine</DataField>
+        </Field>
+        <Field Name="Amount_ReportTotalsLine">
+          <DataField>Amount_ReportTotalsLine</DataField>
+        </Field>
+        <Field Name="Amount_ReportTotalsLineFormat">
+          <DataField>Amount_ReportTotalsLineFormat</DataField>
+        </Field>
+        <Field Name="AmountFormatted_ReportTotalsLine">
+          <DataField>AmountFormatted_ReportTotalsLine</DataField>
+        </Field>
+        <Field Name="FontBold_ReportTotalsLine">
+          <DataField>FontBold_ReportTotalsLine</DataField>
+        </Field>
+        <Field Name="FontUnderline_ReportTotalsLine">
+          <DataField>FontUnderline_ReportTotalsLine</DataField>
+        </Field>
+        <Field Name="Description_USReportTotalsLine">
+          <DataField>Description_USReportTotalsLine</DataField>
+        </Field>
+        <Field Name="Amount_USReportTotalsLine">
+          <DataField>Amount_USReportTotalsLine</DataField>
+        </Field>
+        <Field Name="Amount_USReportTotalsLineFormat">
+          <DataField>Amount_USReportTotalsLineFormat</DataField>
+        </Field>
+        <Field Name="AmountFormatted_USReportTotalsLine">
+          <DataField>AmountFormatted_USReportTotalsLine</DataField>
+        </Field>
+        <Field Name="FontBold_USReportTotalsLine">
+          <DataField>FontBold_USReportTotalsLine</DataField>
+        </Field>
+        <Field Name="FontUnderline_USReportTotalsLine">
+          <DataField>FontUnderline_USReportTotalsLine</DataField>
+        </Field>
+        <Field Name="LineFeeCaptionText">
+          <DataField>LineFeeCaptionText</DataField>
+        </Field>
+        <Field Name="PaymentServiceLogo">
+          <DataField>PaymentServiceLogo</DataField>
+        </Field>
+        <Field Name="PaymentServiceLogo_UrlText">
+          <DataField>PaymentServiceLogo_UrlText</DataField>
+        </Field>
+        <Field Name="PaymentServiceLogo_Url">
+          <DataField>PaymentServiceLogo_Url</DataField>
+        </Field>
+        <Field Name="PaymentServiceText_UrlText">
+          <DataField>PaymentServiceText_UrlText</DataField>
+        </Field>
+        <Field Name="PaymentServiceText_Url">
+          <DataField>PaymentServiceText_Url</DataField>
+        </Field>
+        <Field Name="LeftHeaderName">
+          <DataField>LeftHeaderName</DataField>
+        </Field>
+        <Field Name="LeftHeaderValue">
+          <DataField>LeftHeaderValue</DataField>
+        </Field>
+        <Field Name="RightHeaderName">
+          <DataField>RightHeaderName</DataField>
+        </Field>
+        <Field Name="RightHeaderValue">
+          <DataField>RightHeaderValue</DataField>
+        </Field>
+        <Field Name="GreetingText">
+          <DataField>GreetingText</DataField>
+        </Field>
+        <Field Name="BodyText">
+          <DataField>BodyText</DataField>
+        </Field>
+        <Field Name="ClosingText">
+          <DataField>ClosingText</DataField>
+        </Field>
+        <Field Name="PmtDiscText">
+          <DataField>PmtDiscText</DataField>
+        </Field>
+        <Field Name="TotalNetAmount">
+          <DataField>TotalNetAmount</DataField>
+        </Field>
+        <Field Name="TotalVATBaseLCY">
+          <DataField>TotalVATBaseLCY</DataField>
+        </Field>
+        <Field Name="TotalVATBaseLCYFormat">
+          <DataField>TotalVATBaseLCYFormat</DataField>
+        </Field>
+        <Field Name="TotalAmountIncludingVAT">
+          <DataField>TotalAmountIncludingVAT</DataField>
+        </Field>
+        <Field Name="TotalVATAmount">
+          <DataField>TotalVATAmount</DataField>
+        </Field>
+        <Field Name="TotalVATAmountLCY">
+          <DataField>TotalVATAmountLCY</DataField>
+        </Field>
+        <Field Name="TotalVATAmountLCYFormat">
+          <DataField>TotalVATAmountLCYFormat</DataField>
+        </Field>
+        <Field Name="TotalInvoiceDiscountAmount">
+          <DataField>TotalInvoiceDiscountAmount</DataField>
+        </Field>
+        <Field Name="TotalPaymentDiscountOnVAT">
+          <DataField>TotalPaymentDiscountOnVAT</DataField>
+        </Field>
+        <Field Name="TotalPaymentDiscountOnVATFormat">
+          <DataField>TotalPaymentDiscountOnVATFormat</DataField>
+        </Field>
+        <Field Name="TotalVATAmountText">
+          <DataField>TotalVATAmountText</DataField>
+        </Field>
+        <Field Name="TotalExcludingVATText">
+          <DataField>TotalExcludingVATText</DataField>
+        </Field>
+        <Field Name="TotalIncludingVATText">
+          <DataField>TotalIncludingVATText</DataField>
+        </Field>
+        <Field Name="TotalSubTotal">
+          <DataField>TotalSubTotal</DataField>
+        </Field>
+        <Field Name="TotalSubTotalMinusInvoiceDiscount">
+          <DataField>TotalSubTotalMinusInvoiceDiscount</DataField>
+        </Field>
+        <Field Name="TotalText">
+          <DataField>TotalText</DataField>
+        </Field>
+        <Field Name="TotalAmountExclInclVAT">
+          <DataField>TotalAmountExclInclVAT</DataField>
+        </Field>
+        <Field Name="TotalAmountExclInclVATText">
+          <DataField>TotalAmountExclInclVATText</DataField>
+        </Field>
+        <Field Name="AmountSubjectToSalesTax">
+          <DataField>AmountSubjectToSalesTax</DataField>
+        </Field>
+        <Field Name="AmountSubjectToSalesTaxFormat">
+          <DataField>AmountSubjectToSalesTaxFormat</DataField>
+        </Field>
+        <Field Name="AmountSubjectToSalesTaxLbl">
+          <DataField>AmountSubjectToSalesTaxLbl</DataField>
+        </Field>
+        <Field Name="AmountExemptFromSalesTax">
+          <DataField>AmountExemptFromSalesTax</DataField>
+        </Field>
+        <Field Name="AmountExemptFromSalesTaxFormat">
+          <DataField>AmountExemptFromSalesTaxFormat</DataField>
+        </Field>
+        <Field Name="AmountExemptFromSalesTaxLbl">
+          <DataField>AmountExemptFromSalesTaxLbl</DataField>
+        </Field>
+        <Field Name="CurrencyCode">
+          <DataField>CurrencyCode</DataField>
+        </Field>
+        <Field Name="CurrencySymbol">
+          <DataField>CurrencySymbol</DataField>
         </Field>
       </Fields>
       <Query>
