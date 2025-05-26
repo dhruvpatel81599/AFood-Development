@@ -306,7 +306,10 @@ report 50301 "AFDP Standard Sales Invoice"
             column(DocumentDate_Lbl; FieldCaption("Document Date"))
             {
             }
-            column(DueDate; Format("Due Date", 0, 4))
+            // column(DueDate; Format("Due Date", 0, 4))
+            // {
+            // }
+            column(DueDate; "Due Date")
             {
             }
             column(DueDate_Lbl; FieldCaption("Due Date"))
@@ -527,7 +530,8 @@ report 50301 "AFDP Standard Sales Invoice"
             column(AFICountryOfOriginLbl; CountryOfOriginLbl) { }
             column(AFICountryOfOrigin; CountryOfOrigin) { }
             column(AFIShipVia; DPReportHelperFunctionsAFI.GetShippingAgentName(Header."Shipping Agent Code")) { }
-            column(AFITerms; DPReportHelperFunctionsAFI.GetPaymentTermstName(Header."Payment Terms Code")) { }
+            // column(AFITerms; DPReportHelperFunctionsAFI.GetPaymentTermstName(Header."Payment Terms Code")) { }
+            column(AFITerms; GetPaymentTermstName(Header."Payment Terms Code")) { }
             column(AFICustomer; "Bill-to Customer No.") { }
             column(AFISalesPerson; "Salesperson Code") { }
             column(AFISubtotal; DocSubtotal) { }
@@ -1953,6 +1957,17 @@ report 50301 "AFDP Standard Sales Invoice"
         TempVATClauseLine.SetRange("VAT Amount", VATAmountLine."VAT Amount");
 
         exit(TempVATClauseLine.IsEmpty());
+    end;
+
+    local procedure GetPaymentTermstName(PaymentTermsCode: Code[20]) PaymentTermsName: Text
+    var
+        PaymentTermst: Record "Payment Terms";
+    begin
+        if PaymentTermst.Get(PaymentTermsCode) then
+            PaymentTermsName := PaymentTermst.Description
+        else
+            PaymentTermsName := PaymentTermsName;
+        exit(PaymentTermsName);
     end;
 
     [IntegrationEvent(false, false)]

@@ -425,7 +425,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -761,7 +760,7 @@
       <Width>7.19447in</Width>
       <Page>
         <PageHeader>
-          <Height>2.53773in</Height>
+          <Height>2.70023in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -920,7 +919,7 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>2.06464in</Top>
+              <Top>2.22714in</Top>
               <Left>4.89587in</Left>
               <Height>11pt</Height>
               <Width>1.21585in</Width>
@@ -943,7 +942,7 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>1.89824in</Top>
+              <Top>2.06074in</Top>
               <Left>4.89587in</Left>
               <Height>11pt</Height>
               <Width>1.21585in</Width>
@@ -968,7 +967,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.06438in</Top>
+              <Top>2.22688in</Top>
               <Height>11pt</Height>
               <Width>1.63469in</Width>
               <ZIndex>7</ZIndex>
@@ -992,7 +991,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>1.89784in</Top>
+              <Top>2.06034in</Top>
               <Height>11pt</Height>
               <Width>1.63469in</Width>
               <ZIndex>8</ZIndex>
@@ -1064,7 +1063,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.06464in</Top>
+              <Top>2.22714in</Top>
               <Left>6.12079in</Left>
               <Height>11pt</Height>
               <Width>1.03521in</Width>
@@ -1089,7 +1088,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>1.89824in</Top>
+              <Top>2.06074in</Top>
               <Left>6.12079in</Left>
               <Height>11pt</Height>
               <Width>1.03521in</Width>
@@ -1239,7 +1238,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.06464in</Top>
+              <Top>2.22714in</Top>
               <Left>1.63468in</Left>
               <Height>11pt</Height>
               <Width>3.23341in</Width>
@@ -1264,7 +1263,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>1.89798in</Top>
+              <Top>2.06048in</Top>
               <Left>1.63469in</Left>
               <Height>11pt</Height>
               <Width>3.2346in</Width>
@@ -1728,7 +1727,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox3</rd:DefaultName>
-              <Top>2.36325in</Top>
+              <Top>2.52575in</Top>
               <Left>0.05369in</Left>
               <Height>0.17448in</Height>
               <Width>0.99697in</Width>
@@ -1766,7 +1765,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>2.36325in</Top>
+              <Top>2.52575in</Top>
               <Left>1.05066in</Left>
               <Height>0.17448in</Height>
               <Width>3.2205in</Width>
@@ -1804,7 +1803,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox6</rd:DefaultName>
-              <Top>2.36325in</Top>
+              <Top>2.52575in</Top>
               <Left>4.27116in</Left>
               <Height>0.17448in</Height>
               <Width>0.5657in</Width>
@@ -1842,7 +1841,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox10</rd:DefaultName>
-              <Top>2.36325in</Top>
+              <Top>2.52575in</Top>
               <Left>4.82228in</Left>
               <Height>0.17448in</Height>
               <Width>0.50159in</Width>
@@ -1880,7 +1879,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox12</rd:DefaultName>
-              <Top>2.36325in</Top>
+              <Top>2.52575in</Top>
               <Left>5.33845in</Left>
               <Height>0.17448in</Height>
               <Width>0.57435in</Width>
@@ -1918,7 +1917,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox21</rd:DefaultName>
-              <Top>2.36325in</Top>
+              <Top>2.52575in</Top>
               <Left>5.9128in</Left>
               <Height>0.17448in</Height>
               <Width>0.61863in</Width>
@@ -1956,7 +1955,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox23</rd:DefaultName>
-              <Top>2.36325in</Top>
+              <Top>2.52575in</Top>
               <Left>6.53143in</Left>
               <Height>0.17448in</Height>
               <Width>0.63179in</Width>
@@ -1992,7 +1991,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>1.5601in</Top>
+              <Top>1.7476in</Top>
               <Left>6.21944in</Left>
               <Height>11pt</Height>
               <Width>0.94379in</Width>
@@ -2017,11 +2016,70 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>1.5601in</Top>
+              <Top>1.7476in</Top>
               <Left>5.15393in</Left>
               <Height>11pt</Height>
               <Width>1.06551in</Width>
               <ZIndex>45</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="DueDateValue">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Fields!DueDate.Value</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <Format>d</Format>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>1.57399in</Top>
+              <Left>6.21459in</Left>
+              <Height>11pt</Height>
+              <Width>0.94379in</Width>
+              <ZIndex>46</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="DueDateLabel">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Fields!DueDate_Lbl.Value</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>1.57399in</Top>
+              <Left>5.14908in</Left>
+              <Height>11pt</Height>
+              <Width>1.06551in</Width>
+              <ZIndex>47</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
