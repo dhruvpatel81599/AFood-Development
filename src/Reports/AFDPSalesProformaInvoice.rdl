@@ -359,13 +359,13 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="AFI_SellTo5">
+                        <Textbox Name="AFDPItemNo">
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!AFISellTo4.Value</Value>
+                                  <Value>=Fields!SalesLineNo.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -378,7 +378,12 @@
                             </Paragraph>
                           </Paragraphs>
                           <ZIndex>20</ZIndex>
-                          <Style />
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <VerticalAlign>Top</VerticalAlign>
+                          </Style>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
@@ -396,7 +401,6 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -408,7 +412,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -431,7 +435,6 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -446,7 +449,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -470,7 +473,6 @@
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,##0.00</Format>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -485,7 +487,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -508,7 +510,6 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -523,7 +524,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -547,7 +548,6 @@
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,##0.00</Format>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -562,7 +562,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -586,7 +586,6 @@
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,##0.00</Format>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -601,7 +600,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
