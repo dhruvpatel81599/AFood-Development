@@ -3,6 +3,7 @@ using Microsoft.CRM.Contact;
 using Microsoft.CRM.Team;
 using Microsoft.Finance.Currency;
 using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.Foundation.PaymentTerms;
 using KCP.AFI.AFICustom;
 using Microsoft.Sales.Document;
 using Microsoft.Finance.VAT.Calculation;
@@ -269,7 +270,8 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
             column(AFICountryOfOriginLbl; CountryOfOriginLbl) { }
             column(AFICountryOfOrigin; CountryOfOrigin) { }
             column(AFIShipVia; ReportHelperFunctionsAFI.GetShippingAgentName(Header."Shipping Agent Code")) { }
-            column(AFITerms; ReportHelperFunctionsAFI.GetPaymentTermstName(Header."Payment Terms Code")) { }
+            // column(AFITerms; ReportHelperFunctionsAFI.GetPaymentTermstName(Header."Payment Terms Code")) { }
+            column(AFITerms; GetPaymentTermstName(Header."Payment Terms Code")) { }
             column(AFICustomer; "Bill-to Customer No.") { }
             column(AFISalesPerson; "Salesperson Code") { }
             column(AFISubtotal; DocSubtotal) { }
@@ -336,7 +338,7 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
                     AutoFormatType: Enum "Auto Format";
                 begin
                     GetItemForRec("No.");
-                    ItemNo := Line."No.";  //AFDP 05/28/2025 'Item Code Type'
+                    ItemNo := Line."No.";  //AFDP 05/28/2025 'Item Code Type'                    
                     OnBeforeLineOnAfterGetRecord(Header, Line);
 
                     if IsShipment() then
@@ -668,6 +670,17 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
             exit;
 
         Item.Get(ItemNo);
+    end;
+
+    local procedure GetPaymentTermstName(PaymentTermsCode: Code[20]) PaymentTermsName: Text
+    var
+        PaymentTermst: Record "Payment Terms";
+    begin
+        if PaymentTermst.Get(PaymentTermsCode) then
+            PaymentTermsName := PaymentTermst.Description
+        else
+            PaymentTermsName := PaymentTermsName;
+        exit(PaymentTermsName);
     end;
 
     [IntegrationEvent(false, false)]
