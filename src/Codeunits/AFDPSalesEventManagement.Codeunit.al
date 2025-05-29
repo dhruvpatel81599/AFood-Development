@@ -61,6 +61,28 @@ codeunit 50300 "AFDP Sales Event Management"
             SalesInvoiceLine."Description 2" := ItemDescription2
         end;
     end;
+
+    [EventSubscriber(ObjectType::Report, Report::"AFDP Sales-Pro Forma Invoice", 'OnBeforeLineOnAfterGetRecord', '', false, false)]
+    local procedure AFDPSalesProFormaInvoice_OnBeforeLineOnAfterGetRecord(SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line")
+    var
+        Customer: Record Customer;
+    begin
+        Clear(ItemCode);
+        Clear(ItemDescription1);
+        Clear(ItemDescription2);
+        if Customer.get(SalesHeader."Bill-to Customer No.") then
+            if Customer."AFDP ItemCodeType" = Customer."AFDP ItemCodeType"::"Item Reference" then
+                GetItemReferenceCodeForCustomer(SalesLine."No.", SalesLine."Variant Code", SalesLine."Unit of Measure Code", SalesLine."Bill-to Customer No.")
+            else
+                if Customer."AFDP ItemCodeType" = Customer."AFDP ItemCodeType"::GTIN then
+                    GetGTINCodeForItem(SalesLine."No.");
+
+        if ItemCode <> '' then begin
+            SalesLine."No." := Format(ItemCode);
+            SalesLine.Description := ItemDescription1;
+            SalesLine."Description 2" := ItemDescription2
+        end;
+    end;
     //<<AFDP 05/24/2025 'Item Code Type'
     //>>AFDP 05/26/2025 'Sales Contract'    
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Price Calculation - V16", 'OnBeforeCalcBestAmount', '', false, false)]
