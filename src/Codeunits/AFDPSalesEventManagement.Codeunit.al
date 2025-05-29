@@ -1,3 +1,11 @@
+namespace AFood.DP.AFoodDevelopment;
+using Microsoft.Sales.Document;
+using Microsoft.Sales.Customer;
+using Microsoft.Sales.History;
+using Microsoft.Pricing.Calculation;
+using Microsoft.Pricing.PriceList;
+using Microsoft.Inventory.Item.Catalog;
+using Microsoft.Inventory.Item;
 codeunit 50300 "AFDP Sales Event Management"
 {
 
@@ -76,6 +84,15 @@ codeunit 50300 "AFDP Sales Event Management"
         end;
     end;
     //<<AFDP 05/24/2025 'Item Code Type'
+    //>>AFDP 05/26/2025 'Sales Contract'    
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Price Calculation - V16", 'OnBeforeCalcBestAmount', '', false, false)]
+    local procedure PriceCalculationV16_OnBeforeCalcBestAmount(AmountType: Enum "Price Amount Type"; var PriceCalculationBufferMgt: Codeunit "Price Calculation Buffer Mgt."; var PriceListLine: Record "Price List Line")
+    begin
+        PriceListLine.SetRange("AFDP Sales Contract", true);
+        if not PriceListLine.FindSet() then
+            PriceListLine.SetRange("AFDP Sales Contract", false);
+    end;
+    //<<AFDP 05/26/2025 'Sales Contract'
     #endregion EventSubscribers
 
     #region Functions
