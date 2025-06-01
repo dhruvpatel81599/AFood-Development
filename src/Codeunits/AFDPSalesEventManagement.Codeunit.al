@@ -92,7 +92,14 @@ codeunit 50300 "AFDP Sales Event Management"
         if not PriceListLine.FindSet() then
             PriceListLine.SetRange("AFDP Sales Contract", false);
     end;
-    //<<AFDP 05/26/2025 'Sales Contract'
+    //<<AFDP 05/26/2025 'Sales Contract'    
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", 'OnAfterReleaseSalesDoc', '', false, false)]
+    local procedure ReleaseSalesDocument_OnAfterReleaseSalesDoc(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean; var LinesWereModified: Boolean; SkipWhseRequestOperations: Boolean)
+    begin
+        //>>AFDP 05/30/2025 'Short Orders'
+        UpdateOriginalQuantityOnSalesLine(SalesHeader);
+        //<<AFDP 05/30/2025 'Short Orders'
+    end;
     #endregion EventSubscribers
 
     #region Functions
@@ -133,6 +140,23 @@ codeunit 50300 "AFDP Sales Event Management"
             end;
     end;
     //<<AFDP 05/24/2025 'Item Code Type'
+    //>>AFDP 05/30/2025 'Short Orders'
+    local procedure UpdateOriginalQuantityOnSalesLine(var SalesHeader: Record "Sales Header")
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        SalesLine.Reset();
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        if SalesLine.FindSet() then
+            repeat
+                if SalesLine."Quantity Shipped" = 0 then begin
+                    SalesLine."Original Quantity" := SalesLine.Quantity;
+                    SalesLine.Modify(true);
+                end;
+            until SalesLine.Next() = 0;
+    end;
+    //<<AFDP 05/30/2025 'Short Orders'
     #endregion Functions
 }
 
