@@ -11,7 +11,7 @@ pageextension 50306 "AFDP Posted S.Shipment Subform" extends "Posted Sales Shpt.
             {
                 ApplicationArea = all;
                 Caption = 'Original Quantity';
-                ToolTip = 'The original quantity of the sales line before any modifications.';
+                ToolTip = 'The original quantity of the sales shipment line before any modifications.';
             }
         }
         //<<AFDP 06/02/2025 'Short Orders'
