@@ -5,12 +5,12 @@ tableextension 50305 "AFDP Inventory Setup" extends "Inventory Setup"
     fields
     {
         //>>AFDP 05/30/2025 'Short Orders'
-        field(50300; "Disable Sales Backorders"; Boolean)
+        field(50300; "AFDP Disable Sales Backorders"; Boolean)
         {
             Caption = 'Disable Sales Backorders';
             DataClassification = CustomerContent;
         }
-        field(50301; "Disable Purchase Backorders"; Boolean)
+        field(50301; "AFDPDisablePurchaseBackorders"; Boolean)
         {
             Caption = 'Disable Purchase Backorders';
             DataClassification = CustomerContent;

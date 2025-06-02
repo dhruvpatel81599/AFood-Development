@@ -29,8 +29,8 @@ codeunit 50303 "AFDP Purchase Event Management"
         PurchaseLine.SetRange("Document No.", PurchaseHeader."No.");
         if PurchaseLine.FindSet() then
             repeat
-                if PurchaseLine."Quantity Received" = 0 then begin
-                    PurchaseLine."Original Quantity" := PurchaseLine.Quantity;
+                if (PurchaseLine."Quantity Received" = 0) and (PurchaseLine."AFDP Original Unit Price" = 0) then begin
+                    PurchaseLine."AFDP Original Quantity" := PurchaseLine.Quantity;
                     PurchaseLine.Modify(true);
                 end;
             until PurchaseLine.Next() = 0;

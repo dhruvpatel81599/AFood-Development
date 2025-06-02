@@ -7,7 +7,7 @@ pageextension 50308 "AFDP Posted P.Receipt Subform" extends "Posted Purchase Rcp
         //>>AFDP 06/02/2025 'Short Orders'
         addafter(Quantity)
         {
-            field("Original Quantity"; Rec."Original Quantity")
+            field("Original Quantity"; Rec."AFDP Original Quantity")
             {
                 ApplicationArea = all;
                 Caption = 'Original Quantity';
