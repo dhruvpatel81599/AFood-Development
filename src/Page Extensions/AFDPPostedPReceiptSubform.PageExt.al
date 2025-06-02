@@ -1,6 +1,6 @@
 namespace AFood.DP.AFoodDevelopment;
-using Microsoft.Sales.History;
-pageextension 50307 "AFDP Posted S.Invoice Subform" extends "Posted Sales Invoice Subform"
+using Microsoft.Purchases.History;
+pageextension 50308 "AFDP Posted P.Receipt Subform" extends "Posted Purchase Rcpt. Subform"
 {
     layout
     {
@@ -11,12 +11,11 @@ pageextension 50307 "AFDP Posted S.Invoice Subform" extends "Posted Sales Invoic
             {
                 ApplicationArea = all;
                 Caption = 'Original Quantity';
-                ToolTip = 'The original quantity of the sales invoice line before any modifications.';
+                ToolTip = 'The original quantity of the purchase receipt line before any modifications.';
             }
         }
         //<<AFDP 06/02/2025 'Short Orders'
     }
-
 }
 
 //AFDP 06/02/2025 'Short Orders'
