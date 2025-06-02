@@ -42,14 +42,13 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         InventorySetup.Get();
         if not InventorySetup."Disable Sales Backorders" then
             exit;
-        if INVCSingleInstance.GetIsWarehousePostShipment() then
-            if TempSalesLine."Qty. to Ship" > 0 then begin
-                TempSalesLine."Quantity Shipped" += TempSalesLine."Qty. to Ship";
-                TempSalesLine."Qty. Shipped (Base)" += TempSalesLine."Qty. to Ship (Base)";
-                TempSalesLine.Quantity := TempSalesLine."Quantity Shipped";
-                TempSalesLine."Quantity (Base)" := TempSalesLine."Qty. Shipped (Base)";
-                IsHandled := true;
-            end;
+        if INVCSingleInstance.GetIsWarehousePostShipment() then begin
+            TempSalesLine."Quantity Shipped" += TempSalesLine."Qty. to Ship";
+            TempSalesLine."Qty. Shipped (Base)" += TempSalesLine."Qty. to Ship (Base)";
+            TempSalesLine.Quantity := TempSalesLine."Quantity Shipped";
+            TempSalesLine."Quantity (Base)" := TempSalesLine."Qty. Shipped (Base)";
+            IsHandled := true;
+        end;
         //<<AFDP 05/31/2025 'Short Orders'
     end;
 
@@ -87,6 +86,25 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         //<<AFDP 06/01/2025 'Short Orders'
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Shipment", 'OnPostUpdateWhseDocumentsOnBeforeUpdateWhseShptHeader', '', false, false)]
+    local procedure WhsePostShipment_OnPostUpdateWhseDocumentsOnBeforeUpdateWhseShptHeader(var WhseShptHeaderParam: Record "Warehouse Shipment Header")
+    var
+        InventorySetup: Record "Inventory Setup";
+        WhseShptLine: Record "Warehouse Shipment Line";
+        INVCSingleInstance: Codeunit "INVC Single Instance";
+    begin
+        //>>AFDP 06/01/2025 'Short Orders'
+        InventorySetup.Get();
+        if not InventorySetup."Disable Sales Backorders" then
+            exit;
+        if INVCSingleInstance.GetIsWarehousePostShipment() then begin
+            WhseShptLine.SetRange("No.", WhseShptHeaderParam."No.");
+            WhseShptLine.SetRange("Qty. Shipped", 0);
+            WhseShptLine.DeleteAll();
+        end;
+        //<<AFDP 06/01/2025 'Short Orders'
+    end;
+
     // [EventSubscriber(ObjectType::Table, Database::"Warehouse Shipment Header", 'OnBeforeDeleteEvent', '', false, false)]
     // local procedure WarehouseShipmentHeader_OnBeforeDeleteEvent(var Rec: Record "Warehouse Shipment Header")
     // begin
@@ -103,11 +121,10 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         InventorySetup.Get();
         if not InventorySetup."Disable Purchase Backorders" then
             exit;
-        if INVCSingleInstance.GetIsWarehousePostReceipt() then
-            if TempPurchLine."Qty. to Receive" > 0 then begin
-                TempPurchLine.Quantity := TempPurchLine."Quantity Received";
-                TempPurchLine."Quantity (Base)" := TempPurchLine."Qty. Received (Base)";
-            end;
+        if INVCSingleInstance.GetIsWarehousePostReceipt() then begin
+            TempPurchLine.Quantity := TempPurchLine."Quantity Received";
+            TempPurchLine."Quantity (Base)" := TempPurchLine."Qty. Received (Base)";
+        end;
         //<<AFDP 06/01/2025 'Short Orders'
     end;
 
@@ -142,6 +159,25 @@ codeunit 50301 "AFDP Warehouse EventManagement"
                 WarehouseReceiptLineBuf."Qty. Outstanding" := WarehouseReceiptLineBuf."Qty. to Receive";
                 DeleteWhseRcptLine := true;
             end;
+        //<<AFDP 06/01/2025 'Short Orders'
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Receipt", 'OnPostUpdateWhseDocumentsOnBeforeDeleteAll', '', false, false)]
+    local procedure WhsePostReceipt_OnPostUpdateWhseDocumentsOnBeforeDeleteAll(var WhseReceiptHeader: Record "Warehouse Receipt Header"; var WhseReceiptLine: Record "Warehouse Receipt Line")
+    var
+        InventorySetup: Record "Inventory Setup";
+        WarehouseReceiptLine: Record "Warehouse Receipt Line";
+        INVCSingleInstance: Codeunit "INVC Single Instance";
+    begin
+        //>>AFDP 06/01/2025 'Short Orders'
+        InventorySetup.Get();
+        if not InventorySetup."Disable Purchase Backorders" then
+            exit;
+        if INVCSingleInstance.GetIsWarehousePostReceipt() then begin
+            WarehouseReceiptLine.SetRange("No.", WhseReceiptHeader."No.");
+            WarehouseReceiptLine.SetRange("Qty. Received", 0);
+            WarehouseReceiptLine.DeleteAll();
+        end;
         //<<AFDP 06/01/2025 'Short Orders'
     end;
     #endregion EventSubscribers
