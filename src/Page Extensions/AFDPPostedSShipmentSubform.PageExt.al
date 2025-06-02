@@ -7,7 +7,7 @@ pageextension 50306 "AFDP Posted S.Shipment Subform" extends "Posted Sales Shpt.
         //>>AFDP 06/02/2025 'Short Orders'
         addafter(Quantity)
         {
-            field("Original Quantity"; Rec."Original Quantity")
+            field("Original Quantity"; Rec."AFDP Original Quantity")
             {
                 ApplicationArea = all;
                 Caption = 'Original Quantity';
