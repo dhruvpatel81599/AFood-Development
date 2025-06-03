@@ -18,6 +18,12 @@ tableextension 50309 "AFDP Purch.Invoice Line" extends "Purch. Inv. Line"
             Caption = 'Original Unit Price';
             Editable = false;
         }
+        field(50302; "AFDP Original Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            Caption = 'Original Amount';
+            Editable = false;
+        }
         //<<AFDP 06/02/2025 'Short Orders'
     }
 }

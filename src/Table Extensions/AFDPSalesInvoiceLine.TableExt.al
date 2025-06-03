@@ -19,6 +19,13 @@ tableextension 50307 "AFDP Sales Invoice Line" extends "Sales Invoice Line"
             Caption = 'Original Unit Price';
             Editable = false;
         }
+        field(50302; "AFDP Original Amount"; Decimal)
+        {
+            AutoFormatExpression = GetCurrencyCode();
+            AutoFormatType = 1;
+            Caption = 'Original Amount';
+            Editable = false;
+        }
         //<<AFDP 06/02/2025 'Short Orders'
     }
 }
