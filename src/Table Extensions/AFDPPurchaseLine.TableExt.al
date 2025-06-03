@@ -19,6 +19,13 @@ tableextension 50304 "AFDP Purchase Line" extends "Purchase Line"
             Caption = 'Original Unit Price';
             Editable = false;
         }
+        field(50302; "AFDP Original Amount"; Decimal)
+        {
+            AutoFormatExpression = Rec."Currency Code";
+            AutoFormatType = 1;
+            Caption = 'Original Amount';
+            Editable = false;
+        }
         //<<AFDP 05/30/2025 'Short Orders'
     }
 }

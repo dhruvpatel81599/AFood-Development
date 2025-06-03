@@ -49,7 +49,9 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             TempSalesLine."Quantity (Base)" := TempSalesLine."Qty. Shipped (Base)";
             if TempSalesLine.Quantity = 0 then begin
                 TempSalesLine."AFDP Original Unit Price" := TempSalesLine."Unit Price";
+                TempSalesLine."AFDP Original Amount" := TempSalesLine.Amount;
                 TempSalesLine."Unit Price" := 0;
+                TempSalesLine.Amount := 0;
             end;
             IsHandled := true;
         end;
@@ -130,7 +132,9 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             TempPurchLine."Quantity (Base)" := TempPurchLine."Qty. Received (Base)";
             if TempPurchLine.Quantity = 0 then begin
                 TempPurchLine."AFDP Original Unit Price" := TempPurchLine."Unit Cost (LCY)";
+                TempPurchLine."AFDP Original Amount" := TempPurchLine.Amount;
                 TempPurchLine."Unit Cost (LCY)" := 0;
+                TempPurchLine.Amount := 0;
             end;
         end;
         //<<AFDP 06/01/2025 'Short Orders'
