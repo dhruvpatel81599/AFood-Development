@@ -18,12 +18,14 @@ pageextension 50307 "AFDP Posted S.Invoice Subform" extends "Posted Sales Invoic
                 ApplicationArea = all;
                 Caption = 'Original Unit Price';
                 ToolTip = 'The original unit price of the sales invoice line before any modifications.';
+                Visible = false; // Hide this field by default
             }
             field("AFDP Original Amount"; Rec."AFDP Original Amount")
             {
                 ApplicationArea = all;
                 Caption = 'Original Amount';
                 ToolTip = 'The original amount of the sales invoice line before any modifications.';
+                Visible = false; // Hide this field by default
             }
         }
         //<<AFDP 06/02/2025 'Short Orders'
