@@ -439,6 +439,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0;(#,0)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -460,6 +461,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -781,70 +783,6 @@
               <Width>2.03707in</Width>
               <Style />
             </Textbox>
-            <Textbox Name="AFI_DocDateLabel">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Fields!AFIDocumentTitle.Value</Value>
-                      <Style>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value> Date:</Value>
-                      <Style>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>0.94573in</Top>
-              <Left>5.15392in</Left>
-              <Height>11pt</Height>
-              <Width>1.06551in</Width>
-              <ZIndex>1</ZIndex>
-              <Style />
-            </Textbox>
-            <Textbox Name="AFI_DocNoLabel">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Fields!AFIDocumentTitle.Value</Value>
-                      <Style>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value> Number:</Value>
-                      <Style>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>0.79039in</Top>
-              <Left>5.14907in</Left>
-              <Height>11pt</Height>
-              <Width>1.07036in</Width>
-              <ZIndex>2</ZIndex>
-              <Style />
-            </Textbox>
             <Textbox Name="AFI_DocTitle">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -868,7 +806,7 @@
               <Left>4.82228in</Left>
               <Height>20.10571pt</Height>
               <Width>2.30717in</Width>
-              <ZIndex>3</ZIndex>
+              <ZIndex>1</ZIndex>
               <Style>
                 <Border />
               </Style>
@@ -893,7 +831,7 @@
               <Left>2.57644in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>4</ZIndex>
+              <ZIndex>2</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_SalesPersonLabel">
@@ -916,7 +854,7 @@
               <Left>4.89587in</Left>
               <Height>11pt</Height>
               <Width>1.21585in</Width>
-              <ZIndex>5</ZIndex>
+              <ZIndex>3</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_CustomerIdLabel">
@@ -939,7 +877,7 @@
               <Left>4.89587in</Left>
               <Height>11pt</Height>
               <Width>1.21585in</Width>
-              <ZIndex>6</ZIndex>
+              <ZIndex>4</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_TermsLabel">
@@ -963,7 +901,7 @@
               <Top>2.06438in</Top>
               <Height>11pt</Height>
               <Width>1.63469in</Width>
-              <ZIndex>7</ZIndex>
+              <ZIndex>5</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_ShipViaLabel">
@@ -987,7 +925,7 @@
               <Top>1.89784in</Top>
               <Height>11pt</Height>
               <Width>1.63469in</Width>
-              <ZIndex>8</ZIndex>
+              <ZIndex>6</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_SellToLabel">
@@ -1010,7 +948,7 @@
               <Left>0.02228in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>9</ZIndex>
+              <ZIndex>7</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_DocNo">
@@ -1035,7 +973,7 @@
               <Left>6.21943in</Left>
               <Height>11pt</Height>
               <Width>0.94379in</Width>
-              <ZIndex>10</ZIndex>
+              <ZIndex>8</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_SalesPerson">
@@ -1060,7 +998,7 @@
               <Left>6.12079in</Left>
               <Height>11pt</Height>
               <Width>1.03521in</Width>
-              <ZIndex>11</ZIndex>
+              <ZIndex>9</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_CustomerId">
@@ -1085,7 +1023,7 @@
               <Left>6.12079in</Left>
               <Height>11pt</Height>
               <Width>1.03521in</Width>
-              <ZIndex>12</ZIndex>
+              <ZIndex>10</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_Shipto5">
@@ -1110,7 +1048,7 @@
               <Left>2.57644in</Left>
               <Height>11pt</Height>
               <Width>2.40718in</Width>
-              <ZIndex>13</ZIndex>
+              <ZIndex>11</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_Shipto4">
@@ -1135,7 +1073,7 @@
               <Left>2.57644in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>14</ZIndex>
+              <ZIndex>12</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_Shipto3">
@@ -1160,7 +1098,7 @@
               <Left>2.57644in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>15</ZIndex>
+              <ZIndex>13</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_Shipto2">
@@ -1185,7 +1123,7 @@
               <Left>2.57644in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>16</ZIndex>
+              <ZIndex>14</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_Shipto1">
@@ -1210,7 +1148,7 @@
               <Left>2.57644in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>17</ZIndex>
+              <ZIndex>15</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_Terms">
@@ -1235,7 +1173,7 @@
               <Left>1.63468in</Left>
               <Height>11pt</Height>
               <Width>3.23341in</Width>
-              <ZIndex>18</ZIndex>
+              <ZIndex>16</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_ShipVia">
@@ -1260,7 +1198,7 @@
               <Left>1.63469in</Left>
               <Height>11pt</Height>
               <Width>3.2346in</Width>
-              <ZIndex>19</ZIndex>
+              <ZIndex>17</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_SellTo4">
@@ -1285,7 +1223,7 @@
               <Left>0.01865in</Left>
               <Height>11pt</Height>
               <Width>2.40363in</Width>
-              <ZIndex>20</ZIndex>
+              <ZIndex>18</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_SellTo3">
@@ -1310,7 +1248,7 @@
               <Left>0.01865in</Left>
               <Height>11pt</Height>
               <Width>2.40363in</Width>
-              <ZIndex>21</ZIndex>
+              <ZIndex>19</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_SellTo2">
@@ -1335,7 +1273,7 @@
               <Left>0.01865in</Left>
               <Height>11pt</Height>
               <Width>2.40363in</Width>
-              <ZIndex>22</ZIndex>
+              <ZIndex>20</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_SellTo1">
@@ -1360,7 +1298,7 @@
               <Left>0.01865in</Left>
               <Height>11pt</Height>
               <Width>2.40363in</Width>
-              <ZIndex>23</ZIndex>
+              <ZIndex>21</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_CompanyInfo4">
@@ -1385,7 +1323,7 @@
               <Left>2.42228in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>24</ZIndex>
+              <ZIndex>22</ZIndex>
               <Visibility>
                 <Hidden>true</Hidden>
               </Visibility>
@@ -1417,7 +1355,7 @@
               <Left>2.42228in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>25</ZIndex>
+              <ZIndex>23</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_CompanyInfo2">
@@ -1442,7 +1380,7 @@
               <Left>2.42228in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>26</ZIndex>
+              <ZIndex>24</ZIndex>
               <Style>
                 <Border />
               </Style>
@@ -1468,7 +1406,7 @@
               <Left>2.42228in</Left>
               <Height>11pt</Height>
               <Width>2.4in</Width>
-              <ZIndex>27</ZIndex>
+              <ZIndex>25</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_DocLabel">
@@ -1492,7 +1430,7 @@
               <Left>6.21942in</Left>
               <Height>11pt</Height>
               <Width>0.94379in</Width>
-              <ZIndex>28</ZIndex>
+              <ZIndex>26</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_PageNumber">
@@ -1517,7 +1455,7 @@
               <Left>6.88713in</Left>
               <Height>11pt</Height>
               <Width>0.21455in</Width>
-              <ZIndex>29</ZIndex>
+              <ZIndex>27</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_DeliveryDateLabel">
@@ -1542,7 +1480,7 @@
               <Left>5.15393in</Left>
               <Height>11pt</Height>
               <Width>1.06551in</Width>
-              <ZIndex>30</ZIndex>
+              <ZIndex>28</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1572,7 +1510,7 @@
               <Left>6.21943in</Left>
               <Height>11pt</Height>
               <Width>0.94379in</Width>
-              <ZIndex>31</ZIndex>
+              <ZIndex>29</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_PONumber">
@@ -1598,7 +1536,7 @@
               <Left>6.21942in</Left>
               <Height>11pt</Height>
               <Width>0.94379in</Width>
-              <ZIndex>32</ZIndex>
+              <ZIndex>30</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_Incoterm">
@@ -1624,7 +1562,7 @@
               <Left>6.21943in</Left>
               <Height>11pt</Height>
               <Width>0.94379in</Width>
-              <ZIndex>33</ZIndex>
+              <ZIndex>31</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_PONumberLabel">
@@ -1649,7 +1587,7 @@
               <Left>5.15392in</Left>
               <Height>11pt</Height>
               <Width>1.06551in</Width>
-              <ZIndex>34</ZIndex>
+              <ZIndex>32</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1678,7 +1616,7 @@
               <Left>5.15393in</Left>
               <Height>11pt</Height>
               <Width>1.06551in</Width>
-              <ZIndex>35</ZIndex>
+              <ZIndex>33</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1692,7 +1630,7 @@
               <Left>0.02228in</Left>
               <Height>0.65225in</Height>
               <Width>2.4in</Width>
-              <ZIndex>36</ZIndex>
+              <ZIndex>34</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1724,7 +1662,7 @@
               <Left>0.05369in</Left>
               <Height>0.17448in</Height>
               <Width>0.99697in</Width>
-              <ZIndex>37</ZIndex>
+              <ZIndex>35</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1762,7 +1700,7 @@
               <Left>1.05066in</Left>
               <Height>0.17448in</Height>
               <Width>3.06684in</Width>
-              <ZIndex>38</ZIndex>
+              <ZIndex>36</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1800,7 +1738,7 @@
               <Left>4.10866in</Left>
               <Height>0.17448in</Height>
               <Width>0.62886in</Width>
-              <ZIndex>39</ZIndex>
+              <ZIndex>37</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1838,7 +1776,7 @@
               <Left>4.75141in</Left>
               <Height>0.17448in</Height>
               <Width>0.56065in</Width>
-              <ZIndex>40</ZIndex>
+              <ZIndex>38</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1876,7 +1814,7 @@
               <Left>5.32595in</Left>
               <Height>0.17448in</Height>
               <Width>0.57435in</Width>
-              <ZIndex>41</ZIndex>
+              <ZIndex>39</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1914,7 +1852,7 @@
               <Left>5.9003in</Left>
               <Height>0.17448in</Height>
               <Width>0.61863in</Width>
-              <ZIndex>42</ZIndex>
+              <ZIndex>40</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1952,7 +1890,7 @@
               <Left>6.51893in</Left>
               <Height>0.17448in</Height>
               <Width>0.63179in</Width>
-              <ZIndex>43</ZIndex>
+              <ZIndex>41</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1988,7 +1926,7 @@
               <Left>6.21944in</Left>
               <Height>11pt</Height>
               <Width>0.94379in</Width>
-              <ZIndex>44</ZIndex>
+              <ZIndex>42</ZIndex>
               <Style />
             </Textbox>
             <Textbox Name="AFI_IncotermLabel2">
@@ -2010,6 +1948,64 @@
                 </Paragraph>
               </Paragraphs>
               <Top>1.5601in</Top>
+              <Left>5.15393in</Left>
+              <Height>11pt</Height>
+              <Width>1.06551in</Width>
+              <ZIndex>43</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="InvoiceNumberCaption">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Invoice Number</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>0.79156in</Top>
+              <Left>5.15393in</Left>
+              <Height>11pt</Height>
+              <Width>1.06551in</Width>
+              <ZIndex>44</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="InvoiceDateCaption">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Invoice Date</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>0.94609in</Top>
               <Left>5.15393in</Left>
               <Height>11pt</Height>
               <Width>1.06551in</Width>
@@ -2068,7 +2064,7 @@
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
-                        <Format>#,##0.00</Format>
+                        <Format>'$'#,0.00;('$'#,0.00)</Format>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -2086,7 +2082,12 @@
                 <Hidden>=IIF(Globals!PageNumber = Globals!TotalPages, False, True)</Hidden>
               </Visibility>
               <DataElementOutput>NoOutput</DataElementOutput>
-              <Style />
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+              </Style>
             </Textbox>
             <Textbox Name="AFI_Tax">
               <KeepTogether>true</KeepTogether>
