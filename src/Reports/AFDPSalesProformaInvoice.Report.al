@@ -574,7 +574,8 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
         LineQuantity: Decimal;
         LineUnitPrice: Decimal;
         TotLineAmount: Decimal;
-        DocumentTitle: Option "Pro Forma Invoice";
+        // DocumentTitle: Option "Pro Forma Invoice";
+        DocumentTitle: Option "Invoice";
         ItemCodeType: Option GTIN,SKU,Reference;
         ShowCountryOfOrigin: Boolean;
         CountryOfOriginLbl: Text;
