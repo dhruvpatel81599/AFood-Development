@@ -652,6 +652,7 @@ report 50300 "AFDP Sales Quote NA"
                 DPAFISellTo := DPReportHelperFunctionsAFI.BuilldSellToInfo("Sales Header");
                 DPAFIShipTo := DPReportHelperFunctionsAFI.BuilldShipToInfo("Sales Header");
                 DPReportHelperFunctionsAFI.GetSalesDocAmounts("Sales Header", DPDocSubtotal, DPDocDiscount, DPDocTax, DPDocExemptTotal, DPDocSubjectTotal, DPDocTotal, DPDocTotalCases);
+                Gettotalcase("Sales Header", DPDocTotalCases);  //AFDP 06/04/2025 'Item Code Type'
                 if DPShowCountryOfOrigin then begin
                     DPCountryOfOriginLbl := 'Country of Origin';
                     DPCountryOfOrigin := 'USA'
@@ -903,6 +904,20 @@ report 50300 "AFDP Sales Quote NA"
         FormatDocument.SetPaymentTerms(PaymentTerms, SalesHeader."Payment Terms Code", SalesHeader."Language Code");
         FormatDocument.SetShipmentMethod(ShipmentMethod, SalesHeader."Shipment Method Code", SalesHeader."Language Code");
     end;
+    //>>AFDP 06/04/2025 'Item Code Type'
+    procedure GetTotalCase(SalesHeader: Record "Sales Header"; var DocTotalCases1: Decimal)
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        DocTotalCases1 := 0;
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        if SalesLine.FindSet() then
+            repeat
+                DocTotalCases1 += SalesLine.Units_DU_TSL;
+            until SalesLine.Next() = 0;
+    end;
+    //<<AFDP 06/04/2025 'Item Code Type'
 
     [IntegrationEvent(false, false)]
     local procedure OnAfterCalculateSalesTax(var SalesHeaderParm: Record "Sales Header"; var SalesLineParm: Record "Sales Line"; var TaxAmount: Decimal; var TaxLiable: Decimal)

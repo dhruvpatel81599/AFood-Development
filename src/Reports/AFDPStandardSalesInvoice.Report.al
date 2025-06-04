@@ -1317,6 +1317,7 @@ report 50301 "AFDP Standard Sales Invoice"
                 AFISellTo := DPReportHelperFunctionsAFI.BuilldSellToInfo(Header);
                 AFIShipTo := DPReportHelperFunctionsAFI.BuilldShipToInfo(Header);
                 DPReportHelperFunctionsAFI.GetSalesDocAmounts(Header, DocSubtotal, DocDiscount, DocTax, DocExemptTotal, DocSubjectTotal, DocTotal, DocTotalCases);
+                Gettotalcase(Header, DocTotalCases);  //AFDP 06/04/2025 'Item Code Type'
                 if ShowCountryOfOrigin1 then begin
                     CountryOfOriginLbl := 'Country of Origin';
                     CountryOfOrigin := 'USA'
@@ -1871,6 +1872,19 @@ report 50301 "AFDP Standard Sales Invoice"
         SalesTaxCalculate.GetSalesTaxAmountLineTable(TempSalesTaxAmountLine);
         SalesTaxCalculate.GetSummarizedSalesTaxTable(TempSalesTaxAmountLine);
     end;
+    //>>AFDP 06/04/2025 'Item Code Type'
+    procedure GetTotalCase(SalesInvoiceHeader: Record "Sales Invoice Header"; var DocTotalCases1: Decimal)
+    var
+        SalesInvoiceLine: Record "Sales Invoice Line";
+    begin
+        DocTotalCases1 := 0;
+        SalesInvoiceLine.SetRange("Document No.", SalesInvoiceHeader."No.");
+        if SalesInvoiceLine.FindSet() then
+            repeat
+                DocTotalCases1 += SalesInvoiceLine.Units_DU_TSL;
+            until SalesInvoiceLine.Next() = 0;
+    end;
+    //<<AFDP 06/04/2025 'Item Code Type'
 
     [IntegrationEvent(false, false)]
     local procedure OnAfterLineOnPreDataItem(var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesInvoiceLine: Record "Sales Invoice Line")

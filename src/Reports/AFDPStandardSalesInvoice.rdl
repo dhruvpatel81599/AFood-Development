@@ -28,10 +28,10 @@
                   <Width>0.5657in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.50159in</Width>
+                  <Width>0.55707in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.57435in</Width>
+                  <Width>0.51165in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.61863in</Width>
@@ -434,11 +434,12 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(Fields!AFIUnits.Value = 0, "", Format(Fields!AFIUnits.Value, "#,##0.00"))</Value>
+                                  <Value>=IIf(Fields!AFIUnits.Value = 0, "", Format(Fields!AFIUnits.Value, "#,##0"))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0;(#,0)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -739,7 +740,7 @@
             <Top>0.02778in</Top>
             <Left>0.02244in</Left>
             <Height>0.2276in</Height>
-            <Width>7.14078in</Width>
+            <Width>7.13356in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -753,7 +754,7 @@
       <Width>7.19447in</Width>
       <Page>
         <PageHeader>
-          <Height>2.70856in</Height>
+          <Height>2.70023in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1720,7 +1721,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox3</rd:DefaultName>
-              <Top>2.53408in</Top>
+              <Top>2.52575in</Top>
               <Left>0.05369in</Left>
               <Height>0.17448in</Height>
               <Width>0.99697in</Width>
@@ -1758,7 +1759,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>2.53408in</Top>
+              <Top>2.52575in</Top>
               <Left>1.05066in</Left>
               <Height>0.17448in</Height>
               <Width>3.2205in</Width>
@@ -1796,7 +1797,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox6</rd:DefaultName>
-              <Top>2.53408in</Top>
+              <Top>2.52575in</Top>
               <Left>4.27116in</Left>
               <Height>0.17448in</Height>
               <Width>0.5657in</Width>
@@ -1834,10 +1835,10 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox10</rd:DefaultName>
-              <Top>2.53408in</Top>
+              <Top>2.52575in</Top>
               <Left>4.82228in</Left>
               <Height>0.17448in</Height>
-              <Width>0.50159in</Width>
+              <Width>0.56776in</Width>
               <ZIndex>40</ZIndex>
               <Style>
                 <Border>
@@ -1872,10 +1873,10 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox12</rd:DefaultName>
-              <Top>2.53408in</Top>
-              <Left>5.33845in</Left>
+              <Top>2.52575in</Top>
+              <Left>5.40393in</Left>
               <Height>0.17448in</Height>
-              <Width>0.57435in</Width>
+              <Width>0.50887in</Width>
               <ZIndex>41</ZIndex>
               <Style>
                 <Border>
@@ -2127,7 +2128,7 @@
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
-                        <Format>#,##0.00</Format>
+                        <Format>'$'#,0.00;('$'#,0.00)</Format>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -2145,7 +2146,12 @@
                 <Hidden>=IIF(Globals!PageNumber = Globals!TotalPages, False, True)</Hidden>
               </Visibility>
               <DataElementOutput>NoOutput</DataElementOutput>
-              <Style />
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+              </Style>
             </Textbox>
             <Textbox Name="AFI_Tax">
               <KeepTogether>true</KeepTogether>
