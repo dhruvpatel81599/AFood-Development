@@ -3583,7 +3583,7 @@
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
-                        <Format>#,##0.00</Format>
+                        <Format>#,0;(#,0)</Format>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -3601,7 +3601,11 @@
                 <Hidden>=IIF(Globals!PageNumber = Globals!TotalPages, False, True)</Hidden>
               </Visibility>
               <DataElementOutput>NoOutput</DataElementOutput>
-              <Style />
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
             </Textbox>
             <Textbox Name="AFI_TotalLabel2">
               <KeepTogether>true</KeepTogether>
