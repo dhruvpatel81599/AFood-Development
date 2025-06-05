@@ -912,9 +912,13 @@ report 50300 "AFDP Sales Quote NA"
         DocTotalCases1 := 0;
         SalesLine.SetRange("Document Type", SalesHeader."Document Type");
         SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetFilter("Unit of Measure Code", '<>UN');
         if SalesLine.FindSet() then
             repeat
-                DocTotalCases1 += SalesLine.Units_DU_TSL;
+                if SalesLine.Units_DU_TSL = 0 then
+                    DocTotalCases1 += SalesLine.Quantity
+                else
+                    DocTotalCases1 += SalesLine.Units_DU_TSL;
             until SalesLine.Next() = 0;
     end;
     //<<AFDP 06/04/2025 'Item Code Type'

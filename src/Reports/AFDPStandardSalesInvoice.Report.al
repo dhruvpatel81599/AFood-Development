@@ -1879,9 +1879,13 @@ report 50301 "AFDP Standard Sales Invoice"
     begin
         DocTotalCases1 := 0;
         SalesInvoiceLine.SetRange("Document No.", SalesInvoiceHeader."No.");
+        SalesInvoiceLine.SetFilter("Unit of Measure Code", '<>UN');
         if SalesInvoiceLine.FindSet() then
             repeat
-                DocTotalCases1 += SalesInvoiceLine.Units_DU_TSL;
+                if SalesInvoiceLine.Units_DU_TSL = 0 then
+                    DocTotalCases1 += SalesInvoiceLine.Quantity
+                else
+                    DocTotalCases1 += SalesInvoiceLine.Units_DU_TSL;
             until SalesInvoiceLine.Next() = 0;
     end;
     //<<AFDP 06/04/2025 'Item Code Type'
