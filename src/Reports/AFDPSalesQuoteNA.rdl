@@ -28,10 +28,10 @@
                   <Width>0.5657in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.50159in</Width>
+                  <Width>0.53536in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.57435in</Width>
+                  <Width>0.54058in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.61863in</Width>
@@ -382,7 +382,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -416,7 +416,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -434,11 +434,12 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(Fields!DPAFIUnits.Value = 0, "", Format(Fields!DPAFIUnits.Value, "#,##0.00"))</Value>
+                                  <Value>=IIf(Fields!DPAFIUnits.Value = 0, "", Format(Fields!DPAFIUnits.Value, "#,##0"))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0;(#,0)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -453,7 +454,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -491,7 +492,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -528,7 +529,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -566,7 +567,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -604,7 +605,7 @@
                               <Style>None</Style>
                             </Border>
                             <BackgroundColor>White</BackgroundColor>
-                            <VerticalAlign>Middle</VerticalAlign>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1217,7 +1218,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Fields!DPAFITerms.Value</Value>
+                      <Value>=First(Fields!PaymentTermsDesc.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1234,7 +1235,11 @@
               <Height>11pt</Height>
               <Width>3.23341in</Width>
               <ZIndex>18</ZIndex>
-              <Style />
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
             </Textbox>
             <Textbox Name="AFI_ShipVia">
               <KeepTogether>true</KeepTogether>
@@ -1835,7 +1840,7 @@
               <Top>2.36933in</Top>
               <Left>4.83686in</Left>
               <Height>0.17448in</Height>
-              <Width>0.50159in</Width>
+              <Width>0.53536in</Width>
               <ZIndex>40</ZIndex>
               <Style>
                 <Border>
@@ -1871,9 +1876,9 @@
               </Paragraphs>
               <rd:DefaultName>Textbox12</rd:DefaultName>
               <Top>2.36933in</Top>
-              <Left>5.33845in</Left>
+              <Left>5.37222in</Left>
               <Height>0.17448in</Height>
-              <Width>0.57435in</Width>
+              <Width>0.54058in</Width>
               <ZIndex>41</ZIndex>
               <Style>
                 <Border>
@@ -2066,7 +2071,7 @@
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
-                        <Format>#,##0.00</Format>
+                        <Format>'$'#,0.00;('$'#,0.00)</Format>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -2084,7 +2089,12 @@
                 <Hidden>=IIF(Globals!PageNumber = Globals!TotalPages, False, True)</Hidden>
               </Visibility>
               <DataElementOutput>NoOutput</DataElementOutput>
-              <Style />
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+              </Style>
             </Textbox>
             <Textbox Name="AFI_Tax">
               <KeepTogether>true</KeepTogether>
@@ -2459,7 +2469,7 @@
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
-                        <Format>#,##0.00</Format>
+                        <Format>#,0;(#,0)</Format>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -2477,7 +2487,11 @@
                 <Hidden>=IIF(Globals!PageNumber = Globals!TotalPages, False, True)</Hidden>
               </Visibility>
               <DataElementOutput>NoOutput</DataElementOutput>
-              <Style />
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
             </Textbox>
             <Textbox Name="AFI_TotalLabel2">
               <KeepTogether>true</KeepTogether>
