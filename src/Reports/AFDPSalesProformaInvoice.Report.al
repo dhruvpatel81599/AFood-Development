@@ -470,6 +470,7 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
                 AFISellTo := ReportHelperFunctionsAFI.BuilldSellToInfo(Header);
                 AFIShipTo := ReportHelperFunctionsAFI.BuilldShipToInfo(Header);
                 ReportHelperFunctionsAFI.GetSalesDocAmounts(Header, DocSubtotal, DocDiscount, DocTax, DocExemptTotal, DocSubjectTotal, DocTotal, DocTotalCases);
+                Gettotalcase(Header, DocTotalCases);  //AFDP 06/04/2025 'Item Code Type'
                 if ShowCountryOfOrigin then begin
                     CountryOfOriginLbl := 'Country of Origin';
                     CountryOfOrigin := 'USA'
@@ -547,7 +548,8 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
         TotalWeightLbl: Label 'Total Weight';
         SalespersonPurchaserName: Text;
         ShipmentMethodDescription: Text;
-        DocumentTitleLbl: Label 'Pro Forma Invoice';
+        // DocumentTitleLbl: Label 'Pro Forma Invoice';
+        DocumentTitleLbl: Label 'Invoice';
         PageLbl: Label 'Page';
         DeclartionLbl: Label 'For customs purposes only.';
         SignatureLbl: Label 'For and on behalf of the above named company:';
@@ -572,7 +574,8 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
         LineQuantity: Decimal;
         LineUnitPrice: Decimal;
         TotLineAmount: Decimal;
-        DocumentTitle: Option "Pro Forma Invoice";
+        // DocumentTitle: Option "Pro Forma Invoice";
+        DocumentTitle: Option "Invoice";
         ItemCodeType: Option GTIN,SKU,Reference;
         ShowCountryOfOrigin: Boolean;
         CountryOfOriginLbl: Text;
@@ -682,6 +685,24 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
             PaymentTermsName := PaymentTermsName;
         exit(PaymentTermsName);
     end;
+    //>>AFDP 06/04/2025 'Item Code Type'
+    procedure GetTotalCase(SalesHeader: Record "Sales Header"; var DocTotalCases1: Decimal)
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        DocTotalCases1 := 0;
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetFilter("Unit of Measure Code", '<>UN');
+        if SalesLine.FindSet() then
+            repeat
+                if SalesLine.Units_DU_TSL = 0 then
+                    DocTotalCases1 += SalesLine.Quantity
+                else
+                    DocTotalCases1 += SalesLine.Units_DU_TSL;
+            until SalesLine.Next() = 0;
+    end;
+    //<<AFDP 06/04/2025 'Item Code Type'
 
     [IntegrationEvent(false, false)]
     local procedure OnAfterLineOnPreDataItem(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line")
