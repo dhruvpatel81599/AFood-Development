@@ -1,6 +1,6 @@
 namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Purchases.Document;
-pageextension 50306 "AFDP Purchase Order" extends "Purchase Order"
+pageextension 50310 "AFDP Purchase Order" extends "Purchase Order"
 {
     layout
     {
