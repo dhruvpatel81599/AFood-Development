@@ -18,7 +18,6 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
                 textelement(PONumber) { }
                 textelement(PODate) { }
                 textelement(VendorItemNumber) { }
-                textelement(Description) { }
                 textelement(QuantityShipped) { }
                 textelement(LotNumber) { }
                 textelement(ExpirationDate) { }
@@ -29,7 +28,6 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
                     Clear(PONumber);
                     Clear(PODate);
                     Clear(VendorItemNumber);
-                    Clear(Description);
                     Clear(QuantityShipped);
                     Clear(LotNumber);
                     Clear(ExpirationDate);
@@ -47,7 +45,7 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
                         ItemTrackingImportEntry1."PO No." := format(PONumber);
                         ItemTrackingImportEntry1."PO Date" := ConvertIntoDate(PODate);
                         ItemTrackingImportEntry1."Vendor Item No." := format(VendorItemNumber);
-                        ItemTrackingImportEntry1.Description := format(Description);
+                        // ItemTrackingImportEntry1.Description := format(Description);
                         ItemTrackingImportEntry1."Quantity Shipped" := ConvertIntoDecimal(QuantityShipped);
                         ItemTrackingImportEntry1."Lot Number" := format(LotNumber);
                         ItemTrackingImportEntry1."Expiration Date" := ConvertIntoDate(ExpirationDate);
