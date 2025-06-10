@@ -39,23 +39,24 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
 
                 trigger OnBeforeInsertRecord()
                 begin
-                    if PONumber <> 'PO Number' then begin   //skip header row
-                        LastEntryNo := GetLastEntryNo();
-                        ProgressWindow.UPDATE(1, format(LotNumber));
-                        //---------------------\\
-                        ItemTrackingImportEntry1.Init();
-                        ItemTrackingImportEntry1."Entry No." := LastEntryNo + 1;
-                        ItemTrackingImportEntry1."PO No." := format(PONumber);
-                        ItemTrackingImportEntry1."PO Date" := ConvertIntoDate(PODate);
-                        ItemTrackingImportEntry1."Vendor Item No." := format(VendorItemNumber);
-                        // ItemTrackingImportEntry1.Description := format(Description);
-                        ItemTrackingImportEntry1."Quantity Shipped" := ConvertIntoDecimal(QuantityShipped);
-                        ItemTrackingImportEntry1."Lot Number" := format(LotNumber);
-                        ItemTrackingImportEntry1."Expiration Date" := ConvertIntoDate(ExpirationDate);
-                        ItemTrackingImportEntry1."Production Date" := ConvertIntoDate(ProductionDate);
-                        ItemTrackingImportEntry1.Insert();
-                        TotalRecordImported += 1;
-                    end;
+                    if PONumber <> 'PO Number' then   //skip header row
+                        if format(PONumber) <> '' then begin
+                            LastEntryNo := GetLastEntryNo();
+                            ProgressWindow.UPDATE(1, format(LotNumber));
+                            //---------------------\\
+                            ItemTrackingImportEntry1.Init();
+                            ItemTrackingImportEntry1."Entry No." := LastEntryNo + 1;
+                            ItemTrackingImportEntry1."PO No." := format(PONumber);
+                            ItemTrackingImportEntry1."PO Date" := ConvertIntoDate(PODate);
+                            ItemTrackingImportEntry1."Vendor Item No." := format(VendorItemNumber);
+                            // ItemTrackingImportEntry1.Description := format(Description);
+                            ItemTrackingImportEntry1."Quantity Shipped" := ConvertIntoDecimal(QuantityShipped);
+                            ItemTrackingImportEntry1."Lot Number" := format(LotNumber);
+                            ItemTrackingImportEntry1."Expiration Date" := ConvertIntoDate(ExpirationDate);
+                            ItemTrackingImportEntry1."Production Date" := ConvertIntoDate(ProductionDate);
+                            ItemTrackingImportEntry1.Insert(true);
+                            TotalRecordImported += 1;
+                        end;
                 end;
             }
         }
@@ -131,31 +132,30 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
 
     procedure InsertItemTrackingLineForImportEntry()
     var
-        ItemTrackingImportEntry: Record "AFDP Item Tracking ImportEntry";
         PurchseLine: Record "Purchase Line";
     // WarehouseReceiptLine: Record "Warehouse Receipt Line";
     begin
-        ItemTrackingImportEntry.Reset();
-        ItemTrackingImportEntry.SetCurrentKey("Entry No.");
-        ItemTrackingImportEntry.SetRange("Tracking Created", false);
-        ItemTrackingImportEntry.SetFilter("Quantity Shipped", '<>0');
-        ItemTrackingImportEntry.SetFilter("Lot Number", '<>%1', '');
-        ItemTrackingImportEntry.SetFilter("Vendor Item No.", '<>%1', '');
-        ItemTrackingImportEntry.SetRange("PO No.", '<>%1', '');
-        if ItemTrackingImportEntry.FindSet() then
+        ItemTrackingImportEntry1.Reset();
+        ItemTrackingImportEntry1.SetCurrentKey("Entry No.");
+        ItemTrackingImportEntry1.SetRange("Tracking Created", false);
+        ItemTrackingImportEntry1.SetFilter("Quantity Shipped", '<>0');
+        ItemTrackingImportEntry1.SetFilter("Lot Number", '<>%1', '');
+        ItemTrackingImportEntry1.SetFilter("Vendor Item No.", '<>%1', '');
+        ItemTrackingImportEntry1.SetFilter("PO No.", '<>%1', '');
+        if ItemTrackingImportEntry1.FindSet() then
             repeat
                 Clear(ItemNo);
-                If IsPurchaseOrderExist(ItemTrackingImportEntry, PurchseLine) then begin
+                If IsPurchaseOrderExist(ItemTrackingImportEntry1, PurchseLine) then begin
                     ItemNo := PurchseLine."No.";
-                    InsertReservationEntryForPurchaseLine(ItemTrackingImportEntry, PurchseLine);
-                    ItemTrackingImportEntry."Tracking Created" := true;
-                    ItemTrackingImportEntry.Modify();
+                    InsertReservationEntryForPurchaseLine(ItemTrackingImportEntry1, PurchseLine);
+                    ItemTrackingImportEntry1."Tracking Created" := true;
+                    ItemTrackingImportEntry1.Modify();
                     // if IsWarehouseReceiptExists(ItemTrackingImportEntry, WarehouseReceiptLine) then
                     //     InsertReservationEntryForWarehouserReceiptLine(ItemTrackingImportEntry, WarehouseReceiptLine)
                     // else
                     //     InsertReservationEntryForPurchaseLine(ItemTrackingImportEntry, PurchseLine);
                 end;
-            until ItemTrackingImportEntry.Next() = 0;
+            until ItemTrackingImportEntry1.Next() = 0;
     end;
 
     local procedure GetLastReservationEntryNo(): Integer;

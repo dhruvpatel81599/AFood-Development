@@ -50,6 +50,10 @@ page 50300 "AFDP Item Tracking ImportEntry"
                 {
                     ToolTip = 'Specifies the value of the Production Date field.', Comment = '%';
                 }
+                field("Tracking Created"; Rec."Tracking Created")
+                {
+                    ToolTip = 'Specifies the value of the Tracking Created field.', Comment = '%';
+                }
             }
         }
     }
