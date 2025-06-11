@@ -1688,9 +1688,10 @@
                 </Border>
               </Style>
             </Textbox>
-            <Image Name="AFI_Logo">
-              <Source>Embedded</Source>
-              <Value>logo</Value>
+            <Image Name="AFoodLogo">
+              <Source>Database</Source>
+              <Value>=Fields!AFoodLogo.Value</Value>
+              <MIMEType>image/bmp</MIMEType>
               <Sizing>FitProportional</Sizing>
               <Left>0.02228in</Left>
               <Height>0.65225in</Height>
@@ -2807,6 +2808,9 @@ z0M5E2E8EOnn8EmMPpt1Sy1bqeIJlDcM8i0MFAX+jPBl6uuelQtXD4kX75WKS3J3OBwOh+MkU/NITWj6
         </Field>
         <Field Name="DPAFITotalCasesFormat">
           <DataField>DPAFITotalCasesFormat</DataField>
+        </Field>
+        <Field Name="AFoodLogo">
+          <DataField>AFoodLogo</DataField>
         </Field>
         <Field Name="CompanyInfo2Picture">
           <DataField>CompanyInfo2Picture</DataField>

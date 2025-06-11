@@ -541,6 +541,7 @@ report 50301 "AFDP Standard Sales Invoice"
             column(AFISubjectTotal; DocSubjectTotal) { }
             column(AFIExemptTotal; DocExemptTotal) { }
             column(AFITotalCases; DocTotalCases) { }
+            column(AFoodLogo; CompanyInfo.Picture) { }  //AFDP 06/11/2025 'Item Code Type'
             //<<AFDP 05/25/2025 'Item Code Type'
             dataitem(Line; "Sales Invoice Line")
             {
@@ -815,7 +816,13 @@ report 50301 "AFDP Standard Sales Invoice"
                     // if (Line."Type" = Line."Type"::Item) and AFDPItem.Get(Line."No.") then begin
                     if (Line."Type" = Line."Type"::Item) and AFDPItem.Get(ItemNo) then begin
                         ItemBaseUOM := AFDPItem."Base Unit of Measure";
-                        ItemNetWeight := AFDPItem."Net Weight" * LineQuantity;
+                        //>>AFDP 06/11/2025 'Item Code Type'
+                        // ItemNetWeight := AFDPItem."Net Weight" * LineQuantity;
+                        if line.Units_DU_TSL = 0 then
+                            ItemNetWeight := AFDPItem."Net Weight" * LineQuantity
+                        else
+                            ItemNetWeight := Line.Quantity;
+                        //>>AFDP 06/11/2025 'Item Code Type'
                     end;
                     ItemNo := Line."No.";
                     LineDescription := DPReportHelperFunctionsAFI.MergeText(Line.Description, Line."Description 2");

@@ -281,6 +281,7 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
             column(AFISubjectTotal; DocSubjectTotal) { }
             column(AFIExemptTotal; DocExemptTotal) { }
             column(AFITotalCases; DocTotalCases) { }
+            column(AFoodLogo; CompanyInformation.Picture) { }  //AFDP 06/11/2025 'Item Code Type'
             //<<AFDP 05/28/2025 'Item Code Type'
             dataitem(Line; "Sales Line")
             {
@@ -375,7 +376,13 @@ report 50302 "AFDP Sales-Pro Forma Invoice"
                     // if (Line."Type" = Line."Type"::Item) and _Item.Get(Line."No.") then begin
                     if (Line."Type" = Line."Type"::Item) and _Item.Get(ItemNo) then begin
                         ItemBaseUOM := _Item."Base Unit of Measure";
-                        ItemNetWeight := _Item."Net Weight" * LineQuantity;
+                        //>>AFDP 06/11/2025 'Item Code Type'
+                        // ItemNetWeight := _Item."Net Weight" * LineQuantity;
+                        if Line.Units_DU_TSL = 0 then
+                            ItemNetWeight := _Item."Net Weight" * LineQuantity
+                        else
+                            ItemNetWeight := Line.Quantity;
+                        //>>AFDP 06/11/2025 'Item Code Type'
                     end;
                     ItemNo := ReportHelperFunctionsAFI.SelectItemCode(Line."No.", ItemCodeType, 0, Header."Bill-to Customer No.");
                     LineDescription := ReportHelperFunctionsAFI.MergeText(Line.Description, Line."Description 2");
