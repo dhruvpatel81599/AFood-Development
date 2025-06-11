@@ -17,6 +17,7 @@ page 50300 "AFDP Item Tracking ImportEntry"
                 field("Entry No."; Rec."Entry No.")
                 {
                     ToolTip = 'Specifies the value of the Entry No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("PO No."; Rec."PO No.")
                 {
