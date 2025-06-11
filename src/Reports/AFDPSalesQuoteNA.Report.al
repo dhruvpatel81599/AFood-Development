@@ -75,6 +75,7 @@ report 50300 "AFDP Sales Quote NA"
             column(DPAFISubjectTotal; DPDocSubjectTotal) { }
             column(DPAFIExemptTotal; DPDocExemptTotal) { }
             column(DPAFITotalCases; DPDocTotalCases) { }
+            column(AFoodLogo; CompanyInfo.Picture) { }  //AFDP 06/11/2025 'Item Code Type'
             //<<AFDP 05/24/2025 'Item Code Type'
             dataitem("Sales Line"; "Sales Line")
             {
@@ -527,7 +528,13 @@ report 50300 "AFDP Sales Quote NA"
                             DPLineQuantity := DPReportHelperFunctionsAFI.GetDocLineQuantity(TempAuxSalesLine1.Units_DU_TSL, TempAuxSalesLine1.Quantity);
                             if (TempAuxSalesLine1."Type" = TempAuxSalesLine1."Type"::Item) and _Item.Get(TempAuxSalesLine1."No.") then begin
                                 DPItemBaseUOM := _Item."Base Unit of Measure";
-                                DPItemNetWeight := _Item."Net Weight" * DPLineQuantity;
+                                //>>AFDP 06/11/2025 'Item Code Type'
+                                // DPItemNetWeight := _Item."Net Weight" * DPLineQuantity;
+                                if TempAuxSalesLine1.Units_DU_TSL = 0 then
+                                    DPItemNetWeight := _Item."Net Weight" * DPLineQuantity
+                                else
+                                    DPItemNetWeight := TempAuxSalesLine1.Quantity;
+                                //>>AFDP 06/11/2025 'Item Code Type'
                             end;
                             DPItemNo := DPReportHelperFunctionsAFI.SelectItemCode(TempAuxSalesLine1."No.", DPItemCodeType, 0, "Sales Header"."Bill-to Customer No.");
                             DPLineDescription := DPReportHelperFunctionsAFI.MergeText(TempAuxSalesLine1.Description, TempAuxSalesLine1."Description 2");
@@ -771,6 +778,7 @@ report 50300 "AFDP Sales Quote NA"
     trigger OnInitReport()
     begin
         CompanyInfo.Get();
+        CompanyInfo.CalcFields(Picture);  //AFDP 06/11/2025 'Item Code Type'
         SalesSetup.Get();
         FormatDocument.SetLogoPosition(SalesSetup."Logo Position on Documents", CompanyInfo1, CompanyInfo2, CompanyInfo3);
     end;
