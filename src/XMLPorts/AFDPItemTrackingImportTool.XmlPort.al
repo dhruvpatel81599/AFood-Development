@@ -177,12 +177,19 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
         PurchaseLine.SetRange("Document Type", PurchaseLine."Document Type"::Order);
         PurchaseLine.SetRange("Document No.", ItemTrackingImportEntry."PO No.");
         PurchaseLine.SetRange(Type, PurchaseLine.Type::Item);
-        PurchaseLine.SetRange("Vendor Item No.", ItemTrackingImportEntry."Vendor Item No.");
+        PurchaseLine.SetRange("No.", ItemTrackingImportEntry."Vendor Item No.");
         if not PurchaseLine.IsEmpty then begin
             PurchaseLine.FindFirst();
             exit(true);
-        end else
-            exit(false);
+        end else begin
+            PurchaseLine.SetRange("No.");
+            PurchaseLine.SetRange("Vendor Item No.", ItemTrackingImportEntry."Vendor Item No.");
+            if not PurchaseLine.IsEmpty then begin
+                PurchaseLine.FindFirst();
+                exit(true);
+            end;
+        end;
+        exit(false);
     end;
 
     // local procedure IsWarehouseReceiptExists(ItemTrackingImportEntry: Record "AFDP Item Tracking ImportEntry"; var WarehouseReceiptLine: Record "Warehouse Receipt Line"): Boolean;
