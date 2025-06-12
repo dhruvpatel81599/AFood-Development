@@ -63,13 +63,14 @@ xmlport 50301 "AFDP Item Number Rename Tool"
             RenameItem();
             ProgressWindow.CLOSE();
         end;
-        MESSAGE('Total Record Processed: %1', TotalRecordImported);
+        MESSAGE('Total Record Processed: %1, Total Record Renamed: %2:', TotalRecordImported, TotalRecordRenamed);
     end;
 
     var
         ItemRenameImportEntry1: Record "AFDP Item Rename Import Entry";
         ProgressWindow: Dialog;
         TotalRecordImported: Integer;
+        TotalRecordRenamed: Integer;
         LastEntryNo: Integer;
 
     local procedure GetLastEntryNo(): Integer;
@@ -88,7 +89,9 @@ xmlport 50301 "AFDP Item Number Rename Tool"
     procedure RenameItem()
     var
         Item: Record Item;
+        Item2: Record Item;
     begin
+        Clear(TotalRecordRenamed);
         ItemRenameImportEntry1.Reset();
         ItemRenameImportEntry1.SetCurrentKey("Entry No.");
         ItemRenameImportEntry1.SetRange("Item Found", false);
@@ -96,11 +99,14 @@ xmlport 50301 "AFDP Item Number Rename Tool"
             repeat
                 ProgressWindow.UPDATE(2, format(ItemRenameImportEntry1."Current Item No."));
                 if item.Get(ItemRenameImportEntry1."Current Item No.") then begin
-                    Item.Rename(ItemRenameImportEntry1."New Item No.");
-                    ItemRenameImportEntry1."Item Found" := true;
-                    ItemRenameImportEntry1.Modify();
-                    item."AFDP Old Item No." := ItemRenameImportEntry1."Current Item No.";
-                    item.Modify();
+                    if not Item2.get(ItemRenameImportEntry1."New Item No.") then
+                        if Item.Rename(ItemRenameImportEntry1."New Item No.") then begin
+                            TotalRecordRenamed += 1;
+                            ItemRenameImportEntry1."Item Found" := true;
+                            ItemRenameImportEntry1.Modify();
+                            item."AFDP Old Item No." := ItemRenameImportEntry1."Current Item No.";
+                            item.Modify();
+                        end;
                 end else begin
                     ItemRenameImportEntry1."Item Found" := false;
                     ItemRenameImportEntry1.Modify();
