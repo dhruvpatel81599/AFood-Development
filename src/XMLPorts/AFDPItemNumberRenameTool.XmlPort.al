@@ -63,7 +63,7 @@ xmlport 50301 "AFDP Item Number Rename Tool"
             RenameItem();
             ProgressWindow.CLOSE();
         end;
-        MESSAGE('Total Record Imported: %1', TotalRecordImported);
+        MESSAGE('Total Record Processed: %1', TotalRecordImported);
     end;
 
     var
