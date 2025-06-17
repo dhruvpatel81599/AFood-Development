@@ -39,6 +39,12 @@ page 50300 "AFDP Item Tracking ImportEntry"
                 {
                     ToolTip = 'Specifies the value of the Quantity Shipped field.', Comment = '%';
                 }
+                //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+                field("Net Weight"; Rec."Net Weight")
+                {
+                    ToolTip = 'Specifies the value of the Net Weight field.', Comment = '%';
+                }
+                //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
                 field("Lot Number"; Rec."Lot Number")
                 {
                     ToolTip = 'Specifies the value of the Lot Number field.', Comment = '%';

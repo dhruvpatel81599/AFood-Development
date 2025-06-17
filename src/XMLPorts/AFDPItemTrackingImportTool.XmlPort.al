@@ -2,6 +2,7 @@ namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Inventory.Tracking;
 using Microsoft.Purchases.Document;
 using Microsoft.Warehouse.Document;
+using Microsoft.Inventory.Item;
 xmlport 50300 "AFDP Item Tracking Import Tool"
 {
     Caption = 'Item Tracking Import Tool';
@@ -22,6 +23,7 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
                 textelement(PODate) { }
                 textelement(VendorItemNumber) { }
                 textelement(QuantityShipped) { }
+                textelement(NetWeight) { } //AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
                 textelement(LotNumber) { }
                 textelement(ExpirationDate) { }
                 textelement(ProductionDate) { }
@@ -32,6 +34,7 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
                     Clear(PODate);
                     Clear(VendorItemNumber);
                     Clear(QuantityShipped);
+                    Clear(NetWeight); //AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
                     Clear(LotNumber);
                     Clear(ExpirationDate);
                     Clear(ProductionDate);
@@ -51,6 +54,9 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
                             ItemTrackingImportEntry1."Vendor Item No." := format(VendorItemNumber);
                             // ItemTrackingImportEntry1.Description := format(Description);
                             ItemTrackingImportEntry1."Quantity Shipped" := ConvertIntoDecimal(QuantityShipped);
+                            //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+                            ItemTrackingImportEntry1."Net Weight" := ConvertIntoDecimal(NetWeight);
+                            //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'                            
                             ItemTrackingImportEntry1."Lot Number" := format(LotNumber);
                             ItemTrackingImportEntry1."Expiration Date" := ConvertIntoDate(ExpirationDate);
                             ItemTrackingImportEntry1."Production Date" := ConvertIntoDate(ProductionDate);
@@ -209,8 +215,14 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
     local procedure InsertReservationEntryForPurchaseLine(ItemTrackingImportEntry: Record "AFDP Item Tracking ImportEntry"; PurchaseLine: Record "Purchase Line")
     var
         ReservationEntry: Record "Reservation Entry";
+        Item: Record Item;
         LastReservationEntryNo: Integer;
+        QuantityToReceive: Decimal;
+        CaseToReceive: Decimal;
     begin
+        if Item.get(PurchaseLine."No.") then;
+        QuantityToReceive := PurchaseLine."Qty. to Receive (Base)";
+        CaseToReceive := PurchaseLine."Units to Receive_DU_TSL";
         LastReservationEntryNo := GetLastReservationEntryNo();
         ReservationEntry.Init();
         ReservationEntry."Entry No." := LastReservationEntryNo + 1;
@@ -222,12 +234,37 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
         ReservationEntry.Validate("Source ID", PurchaseLine."Document No.");
         ReservationEntry.Validate("Source Ref. No.", PurchaseLine."Line No.");
         ReservationEntry.Validate(Positive, true);
-        ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
-        ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
+        //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+        // ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
+        // ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
+        if (item."Base Unit of Measure" = 'LB') and (item."Unit of Measure - Units_DU_TSL" = 'CASE') then begin
+            ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Net Weight");
+            ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Net Weight");
+            ReservationEntry.Validate("Units (Base)_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
+            QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
+            CaseToReceive := CaseToReceive + ItemTrackingImportEntry."Quantity Shipped";
+        end else
+            if (item."Base Unit of Measure" = 'CASE') and (item."Unit of Measure - Units_DU_TSL" = '') then begin
+                ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
+                ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
+                QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
+            end else begin
+                ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
+                ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
+                QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
+            end;
+        //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
         ReservationEntry.Validate("Expiration Date", ItemTrackingImportEntry."Expiration Date");
         ReservationEntry.Validate("Lot No.", ItemTrackingImportEntry."Lot Number");
         ReservationEntry.Validate("Item Tracking", ReservationEntry."Item Tracking"::"Lot No.");
         ReservationEntry.Insert();
+        //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+        if (QuantityToReceive <> PurchaseLine."Qty. to Receive (Base)") then
+            PurchaseLine.Validate("Qty. to Receive (Base)", QuantityToReceive);
+        if (CaseToReceive <> PurchaseLine."Units to Receive_DU_TSL") then
+            PurchaseLine.Validate("Units to Receive_DU_TSL", CaseToReceive);
+        PurchaseLine.Modify();
+        //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
     end;
 }
 
