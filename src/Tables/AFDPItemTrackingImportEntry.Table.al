@@ -40,6 +40,15 @@ table 50300 "AFDP Item Tracking ImportEntry"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+        field(9; "Net Weight"; Decimal)
+        {
+            Caption = 'Net Weight';
+            DecimalPlaces = 0 : 5;
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
         field(10; "Lot Number"; Code[20])
         {
             Caption = 'Lot Number';
