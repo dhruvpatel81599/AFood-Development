@@ -82,8 +82,10 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
     trigger OnPostXmlPort()
     begin
         ProgressWindow.CLOSE();
-        if TotalRecordImported > 0 then
+        if TotalRecordImported > 0 then begin
+            ClearQtyToReceiveOnPurchseLineForImportEntry();
             InsertItemTrackingLineForImportEntry();
+        end;
         MESSAGE('Total Record Imported: %1', TotalRecordImported);
     end;
 
@@ -136,7 +138,7 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
             DateValue := 0D;
     end;
 
-    procedure InsertItemTrackingLineForImportEntry()
+    local procedure InsertItemTrackingLineForImportEntry()
     var
         PurchseLine: Record "Purchase Line";
     // WarehouseReceiptLine: Record "Warehouse Receipt Line";
@@ -160,6 +162,28 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
                     //     InsertReservationEntryForWarehouserReceiptLine(ItemTrackingImportEntry, WarehouseReceiptLine)
                     // else
                     //     InsertReservationEntryForPurchaseLine(ItemTrackingImportEntry, PurchseLine);
+                end;
+            until ItemTrackingImportEntry1.Next() = 0;
+    end;
+
+    local procedure ClearQtyToReceiveOnPurchseLineForImportEntry()
+    var
+        PurchseLine: Record "Purchase Line";
+    begin
+        ItemTrackingImportEntry1.Reset();
+        ItemTrackingImportEntry1.SetCurrentKey("Entry No.");
+        ItemTrackingImportEntry1.SetRange("Tracking Created", false);
+        ItemTrackingImportEntry1.SetFilter("Quantity Shipped", '<>0');
+        ItemTrackingImportEntry1.SetFilter("Lot Number", '<>%1', '');
+        ItemTrackingImportEntry1.SetFilter("Vendor Item No.", '<>%1', '');
+        ItemTrackingImportEntry1.SetFilter("PO No.", '<>%1', '');
+        if ItemTrackingImportEntry1.FindSet() then
+            repeat
+                If IsPurchaseOrderExist(ItemTrackingImportEntry1, PurchseLine) then begin
+                    PurchseLine."Qty. to Receive (Base)" := 0;
+                    PurchseLine."Units to Receive_DU_TSL" := 0;
+                    PurchseLine.Modify();
+                    ClearQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchseLine);
                 end;
             until ItemTrackingImportEntry1.Next() = 0;
     end;
@@ -211,6 +235,23 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
     //     end else
     //         exit(false);
     // end;
+    local procedure ClearQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine: Record "Purchase Line");
+    var
+        WarehouseReceiptLine: Record "Warehouse Receipt Line";
+    begin
+        WarehouseReceiptLine.Reset();
+        WarehouseReceiptLine.SetRange("Source Type", 39); // 39 = Purchase
+        WarehouseReceiptLine.SetRange("Source Subtype", WarehouseReceiptLine."Source Subtype"::"1"); // 1 = Purchase Order
+        WarehouseReceiptLine.SetRange("Source No.", PurchaseLine."Document No.");
+        WarehouseReceiptLine.SetRange("Source Line No.", PurchaseLine."Line No.");
+        WarehouseReceiptLine.SetRange("Item No.", PurchaseLine."No.");
+        if WarehouseReceiptLine.FindSet() then
+            repeat
+                WarehouseReceiptLine."Qty. to Receive (Base)" := 0;
+                WarehouseReceiptLine."Units to Receive_DU_TSL" := 0;
+                WarehouseReceiptLine.Modify();
+            until WarehouseReceiptLine.Next() = 0;
+    end;
 
     local procedure InsertReservationEntryForPurchaseLine(ItemTrackingImportEntry: Record "AFDP Item Tracking ImportEntry"; PurchaseLine: Record "Purchase Line")
     var
@@ -241,17 +282,18 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
             ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Net Weight");
             ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Net Weight");
             ReservationEntry.Validate("Units (Base)_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
+            ReservationEntry.Validate("Units to Handle_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
             QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
             CaseToReceive := CaseToReceive + ItemTrackingImportEntry."Quantity Shipped";
         end else
             if (item."Base Unit of Measure" = 'CASE') and (item."Unit of Measure - Units_DU_TSL" = '') then begin
                 ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
                 ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
-                QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
+                QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
             end else begin
                 ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
                 ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
-                QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
+                QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
             end;
         //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
         ReservationEntry.Validate("Expiration Date", ItemTrackingImportEntry."Expiration Date");
@@ -264,7 +306,27 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
         if (CaseToReceive <> PurchaseLine."Units to Receive_DU_TSL") then
             PurchaseLine.Validate("Units to Receive_DU_TSL", CaseToReceive);
         PurchaseLine.Modify();
+        //--Update Qty to Receive on Warehouse Receipt Line--\\
+        UpdateQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine);
         //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+    end;
+
+    local procedure UpdateQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine: Record "Purchase Line");
+    var
+        WarehouseReceiptLine: Record "Warehouse Receipt Line";
+    begin
+        WarehouseReceiptLine.Reset();
+        WarehouseReceiptLine.SetRange("Source Type", 39); // 39 = Purchase
+        WarehouseReceiptLine.SetRange("Source Subtype", WarehouseReceiptLine."Source Subtype"::"1"); // 1 = Purchase Order
+        WarehouseReceiptLine.SetRange("Source No.", PurchaseLine."Document No.");
+        WarehouseReceiptLine.SetRange("Source Line No.", PurchaseLine."Line No.");
+        WarehouseReceiptLine.SetRange("Item No.", PurchaseLine."No.");
+        if WarehouseReceiptLine.FindFirst() then begin
+            WarehouseReceiptLine.Validate("Qty. to Receive (Base)", PurchaseLine."Qty. to Receive (Base)");
+            if (PurchaseLine."Units to Receive_DU_TSL" <> 0) then
+                WarehouseReceiptLine.Validate("Units to Receive_DU_TSL", PurchaseLine."Units to Receive_DU_TSL");
+            WarehouseReceiptLine.Modify();
+        end;
     end;
 }
 
