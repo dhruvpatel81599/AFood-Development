@@ -264,20 +264,6 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
         if Item.get(PurchaseLine."No.") then;
         QuantityToReceive := PurchaseLine."Qty. to Receive (Base)";
         CaseToReceive := PurchaseLine."Units to Receive_DU_TSL";
-        LastReservationEntryNo := GetLastReservationEntryNo();
-        ReservationEntry.Init();
-        ReservationEntry."Entry No." := LastReservationEntryNo + 1;
-        ReservationEntry.Validate("Item No.", PurchaseLine."No.");
-        ReservationEntry.Validate("Location Code", PurchaseLine."Location Code");
-        ReservationEntry.Validate("Reservation Status", ReservationEntry."Reservation Status"::Surplus);
-        ReservationEntry.Validate("Source Type", 39);
-        ReservationEntry.validate("Source Subtype", ReservationEntry."Source Subtype"::"1"); // 1 = Purchase Order
-        ReservationEntry.Validate("Source ID", PurchaseLine."Document No.");
-        ReservationEntry.Validate("Source Ref. No.", PurchaseLine."Line No.");
-        ReservationEntry.Validate(Positive, true);
-        //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
-        // ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
-        // ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
         //--Update Quantity To Receive First Before Create Item Tracking Line--\\
         if (item."Base Unit of Measure" = 'LB') and (item."Unit of Measure - Units_DU_TSL" = 'CASE') then begin
             QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
@@ -289,46 +275,43 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
                 QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
 
         if (QuantityToReceive <> PurchaseLine."Qty. to Receive (Base)") then
-            PurchaseLine.Validate("Qty. to Receive (Base)", QuantityToReceive);
+            PurchaseLine.Validate("Qty. to Receive", QuantityToReceive);
         if (CaseToReceive <> PurchaseLine."Units to Receive_DU_TSL") then
             PurchaseLine.Validate("Units to Receive_DU_TSL", CaseToReceive);
-        PurchaseLine.Modify();
+        PurchaseLine.Modify(true);
         //--Update Qty to Receive on Warehouse Receipt Line--\\
         UpdateQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine);
-        //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
-        //-----\\
-
+        //--Create Reservation Entry---\\
+        LastReservationEntryNo := GetLastReservationEntryNo();
+        ReservationEntry.Init();
+        ReservationEntry."Entry No." := LastReservationEntryNo + 1;
+        ReservationEntry.Validate("Item No.", PurchaseLine."No.");
+        ReservationEntry.Validate("Location Code", PurchaseLine."Location Code");
+        ReservationEntry.Validate("Reservation Status", ReservationEntry."Reservation Status"::Surplus);
+        ReservationEntry.Validate("Source Type", 39);
+        ReservationEntry.validate("Source Subtype", ReservationEntry."Source Subtype"::"1"); // 1 = Purchase Order
+        ReservationEntry.Validate("Source ID", PurchaseLine."Document No.");
+        ReservationEntry.Validate("Source Ref. No.", PurchaseLine."Line No.");
+        ReservationEntry.Validate(Positive, true);
         if (item."Base Unit of Measure" = 'LB') and (item."Unit of Measure - Units_DU_TSL" = 'CASE') then begin
             ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Net Weight");
             ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Net Weight");
             ReservationEntry.Validate("Units (Base)_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
             ReservationEntry.Validate("Units to Handle_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
-            // QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
-            // CaseToReceive := CaseToReceive + ItemTrackingImportEntry."Quantity Shipped";
         end else
             if (item."Base Unit of Measure" = 'CASE') and (item."Unit of Measure - Units_DU_TSL" = '') then begin
                 ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
                 ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
-                // QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
             end else begin
                 ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
                 ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
-                // QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
             end;
         //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
         ReservationEntry.Validate("Expiration Date", ItemTrackingImportEntry."Expiration Date");
         ReservationEntry.Validate("Lot No.", ItemTrackingImportEntry."Lot Number");
         ReservationEntry.Validate("Item Tracking", ReservationEntry."Item Tracking"::"Lot No.");
         ReservationEntry.Insert();
-        // //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
-        // if (QuantityToReceive <> PurchaseLine."Qty. to Receive (Base)") then
-        //     PurchaseLine.Validate("Qty. to Receive (Base)", QuantityToReceive);
-        // if (CaseToReceive <> PurchaseLine."Units to Receive_DU_TSL") then
-        //     PurchaseLine.Validate("Units to Receive_DU_TSL", CaseToReceive);
-        // PurchaseLine.Modify();
-        // //--Update Qty to Receive on Warehouse Receipt Line--\\
-        // UpdateQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine);
-        // //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+        // //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'        
     end;
 
     local procedure UpdateQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine: Record "Purchase Line");
@@ -342,10 +325,11 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
         WarehouseReceiptLine.SetRange("Source Line No.", PurchaseLine."Line No.");
         WarehouseReceiptLine.SetRange("Item No.", PurchaseLine."No.");
         if WarehouseReceiptLine.FindFirst() then begin
-            WarehouseReceiptLine.Validate("Qty. to Receive (Base)", PurchaseLine."Qty. to Receive (Base)");
+            WarehouseReceiptLine.Validate("Qty. to Receive", PurchaseLine."Qty. to Receive (Base)");
+            // WarehouseReceiptLine.Validate("Qty. to Receive (Base)", PurchaseLine."Qty. to Receive (Base)");
             if (PurchaseLine."Units to Receive_DU_TSL" <> 0) then
                 WarehouseReceiptLine.Validate("Units to Receive_DU_TSL", PurchaseLine."Units to Receive_DU_TSL");
-            WarehouseReceiptLine.Modify();
+            WarehouseReceiptLine.Modify(true);
         end;
     end;
 }
