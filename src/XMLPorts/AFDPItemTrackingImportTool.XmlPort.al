@@ -278,29 +278,16 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
         //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
         // ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
         // ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
+        //--Update Quantity To Receive First Before Create Item Tracking Line--\\
         if (item."Base Unit of Measure" = 'LB') and (item."Unit of Measure - Units_DU_TSL" = 'CASE') then begin
-            ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Net Weight");
-            ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Net Weight");
-            ReservationEntry.Validate("Units (Base)_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
-            ReservationEntry.Validate("Units to Handle_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
             QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
             CaseToReceive := CaseToReceive + ItemTrackingImportEntry."Quantity Shipped";
         end else
-            if (item."Base Unit of Measure" = 'CASE') and (item."Unit of Measure - Units_DU_TSL" = '') then begin
-                ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
-                ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
+            if (item."Base Unit of Measure" = 'CASE') and (item."Unit of Measure - Units_DU_TSL" = '') then
+                QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped"
+            else
                 QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
-            end else begin
-                ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
-                ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
-                QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
-            end;
-        //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
-        ReservationEntry.Validate("Expiration Date", ItemTrackingImportEntry."Expiration Date");
-        ReservationEntry.Validate("Lot No.", ItemTrackingImportEntry."Lot Number");
-        ReservationEntry.Validate("Item Tracking", ReservationEntry."Item Tracking"::"Lot No.");
-        ReservationEntry.Insert();
-        //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+
         if (QuantityToReceive <> PurchaseLine."Qty. to Receive (Base)") then
             PurchaseLine.Validate("Qty. to Receive (Base)", QuantityToReceive);
         if (CaseToReceive <> PurchaseLine."Units to Receive_DU_TSL") then
@@ -309,6 +296,39 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
         //--Update Qty to Receive on Warehouse Receipt Line--\\
         UpdateQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine);
         //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+        //-----\\
+
+        if (item."Base Unit of Measure" = 'LB') and (item."Unit of Measure - Units_DU_TSL" = 'CASE') then begin
+            ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Net Weight");
+            ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Net Weight");
+            ReservationEntry.Validate("Units (Base)_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
+            ReservationEntry.Validate("Units to Handle_DU_TSL", ItemTrackingImportEntry."Quantity Shipped");
+            // QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Net Weight";
+            // CaseToReceive := CaseToReceive + ItemTrackingImportEntry."Quantity Shipped";
+        end else
+            if (item."Base Unit of Measure" = 'CASE') and (item."Unit of Measure - Units_DU_TSL" = '') then begin
+                ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
+                ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
+                // QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
+            end else begin
+                ReservationEntry.Validate("Quantity", ItemTrackingImportEntry."Quantity Shipped");
+                ReservationEntry.Validate("Quantity (Base)", ItemTrackingImportEntry."Quantity Shipped");
+                // QuantityToReceive := QuantityToReceive + ItemTrackingImportEntry."Quantity Shipped";
+            end;
+        //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+        ReservationEntry.Validate("Expiration Date", ItemTrackingImportEntry."Expiration Date");
+        ReservationEntry.Validate("Lot No.", ItemTrackingImportEntry."Lot Number");
+        ReservationEntry.Validate("Item Tracking", ReservationEntry."Item Tracking"::"Lot No.");
+        ReservationEntry.Insert();
+        // //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
+        // if (QuantityToReceive <> PurchaseLine."Qty. to Receive (Base)") then
+        //     PurchaseLine.Validate("Qty. to Receive (Base)", QuantityToReceive);
+        // if (CaseToReceive <> PurchaseLine."Units to Receive_DU_TSL") then
+        //     PurchaseLine.Validate("Units to Receive_DU_TSL", CaseToReceive);
+        // PurchaseLine.Modify();
+        // //--Update Qty to Receive on Warehouse Receipt Line--\\
+        // UpdateQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine);
+        // //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
     end;
 
     local procedure UpdateQtyToReceiveOnWarehouseReceiptLineForImportEntry(PurchaseLine: Record "Purchase Line");
