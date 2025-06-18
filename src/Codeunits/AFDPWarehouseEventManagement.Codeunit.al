@@ -180,10 +180,41 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         end;
         //<<AFDP 06/01/2025 'Short Orders'
     end;
+
+    //<<AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
+    [EventSubscriber(ObjectType::Table, database::"Warehouse Receipt Header", 'OnBeforeValidateEvent', 'Bin Code', false, false)]
+    local procedure WarehouseReceiptHeader_OnBeforeValidateEvent_BinCode(var Rec: Record "Warehouse Receipt Header"; xRec: Record "Warehouse Receipt Header"; CurrFieldNo: Integer)
+    begin
+        rec.SetHideValidationDialog(true);
+    end;
+
+    [EventSubscriber(ObjectType::Table, database::"Warehouse Receipt Header", 'OnAfterValidateEvent', 'Bin Code', false, false)]
+    local procedure WarehouseReceiptHeader_OnAfterValidateEvent_BinCode(var Rec: Record "Warehouse Receipt Header"; xRec: Record "Warehouse Receipt Header"; CurrFieldNo: Integer)
+    begin
+        if CurrFieldNo = 0 then
+            exit;
+        if (xRec."Bin Code" <> Rec."Bin Code") then
+            UpdateBinCodeOnWarehouseReceiptLine(Rec."No.", Rec."Bin Code");
+        rec.SetHideValidationDialog(false);
+    end;
+    //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
     #endregion EventSubscribers
 
     #region Functions
-
+    //<<AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
+    local procedure UpdateBinCodeOnWarehouseReceiptLine(WhseRcptHeaderNo: Code[20]; BinCode: Code[20])
+    var
+        WhseRcptLine: Record "Warehouse Receipt Line";
+    begin
+        WhseRcptLine.Reset();
+        WhseRcptLine.SetRange("No.", WhseRcptHeaderNo);
+        if WhseRcptLine.FindSet() then
+            repeat
+                WhseRcptLine.Validate("Bin Code", BinCode);
+                WhseRcptLine.Modify();
+            until WhseRcptLine.Next() = 0;
+    end;
+    //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
     #endregion Functions
 }
 
