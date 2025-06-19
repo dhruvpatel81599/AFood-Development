@@ -3450,6 +3450,9 @@ z0M5E2E8EOnn8EmMPpt1Sy1bqeIJlDcM8i0MFAX+jPBl6uuelQtXD4kX75WKS3J3OBwOh+MkU/NITWj6
         <Field Name="AFITotalCasesFormat">
           <DataField>AFITotalCasesFormat</DataField>
         </Field>
+        <Field Name="AFoodLogo">
+          <DataField>AFoodLogo</DataField>
+        </Field>
         <Field Name="SalesLineNo">
           <DataField>SalesLineNo</DataField>
         </Field>
