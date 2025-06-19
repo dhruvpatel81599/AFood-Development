@@ -7,7 +7,7 @@ pageextension 50303 "AFDP Sales Order Subform" extends "Sales Order Subform"
         //>>AFDP 05/30/2025 'Short Orders'
         addafter(Quantity)
         {
-            field("Original Quantity"; Rec."Original Quantity")
+            field("Original Quantity"; Rec."AFDP Original Quantity")
             {
                 ApplicationArea = all;
                 Caption = 'Original Quantity';
