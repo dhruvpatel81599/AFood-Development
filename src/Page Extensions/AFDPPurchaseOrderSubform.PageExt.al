@@ -7,7 +7,7 @@ pageextension 50304 "AFDP Purchase Order Subform" extends "Purchase Order Subfor
         //>>AFDP 05/30/2025 'Short Orders'
         addafter(Quantity)
         {
-            field("Original Quantity"; Rec."Original Quantity")
+            field("Original Quantity"; Rec."AFDP Original Quantity")
             {
                 ApplicationArea = all;
                 Caption = 'Original Quantity';
