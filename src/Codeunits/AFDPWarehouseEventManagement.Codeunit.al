@@ -40,7 +40,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 05/31/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."AFDP Disable Sales Backorders" then
+        if not InventorySetup."AFDP Enable Sales Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostShipment() then begin
             TempSalesLine."Quantity Shipped" += TempSalesLine."Qty. to Ship";
@@ -85,7 +85,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."AFDP Disable Sales Backorders" then
+        if not InventorySetup."AFDP Enable Sales Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostShipment() then
             if not DeleteWhseShptLine then begin
@@ -104,7 +104,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."AFDP Disable Sales Backorders" then
+        if not InventorySetup."AFDP Enable Sales Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostShipment() then begin
             WhseShptLine.SetRange("No.", WhseShptHeaderParam."No.");
@@ -128,7 +128,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."AFDPDisablePurchaseBackorders" then
+        if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostReceipt() then begin
             TempPurchLine.Quantity := TempPurchLine."Quantity Received";
@@ -170,7 +170,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."AFDPDisablePurchaseBackorders" then
+        if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostReceipt() then
             if not DeleteWhseRcptLine then begin
@@ -189,7 +189,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."AFDPDisablePurchaseBackorders" then
+        if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostReceipt() then begin
             WarehouseReceiptLine.SetRange("No.", WhseReceiptHeader."No.");
