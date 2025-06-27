@@ -40,13 +40,22 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 05/31/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."Disable Sales Backorders" then
+        if not InventorySetup."AFDP Enable Sales Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostShipment() then begin
             TempSalesLine."Quantity Shipped" += TempSalesLine."Qty. to Ship";
             TempSalesLine."Qty. Shipped (Base)" += TempSalesLine."Qty. to Ship (Base)";
             TempSalesLine.Quantity := TempSalesLine."Quantity Shipped";
             TempSalesLine."Quantity (Base)" := TempSalesLine."Qty. Shipped (Base)";
+            if TempSalesLine.Quantity = 0 then begin
+                TempSalesLine."AFDP Original Unit Price" := TempSalesLine."Unit Price";
+                TempSalesLine."AFDP Original Amount" := TempSalesLine.Amount;
+                // TempSalesLine."Unit Price" := 0;
+                TempSalesLine.Amount := 0;
+                TempSalesLine."Amount Including VAT" := 0;
+                TempSalesLine."VAT Base Amount" := 0;
+                TempSalesLine."Line Amount" := 0;
+            end;
             IsHandled := true;
         end;
         //<<AFDP 05/31/2025 'Short Orders'
@@ -76,7 +85,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."Disable Sales Backorders" then
+        if not InventorySetup."AFDP Enable Sales Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostShipment() then
             if not DeleteWhseShptLine then begin
@@ -95,7 +104,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."Disable Sales Backorders" then
+        if not InventorySetup."AFDP Enable Sales Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostShipment() then begin
             WhseShptLine.SetRange("No.", WhseShptHeaderParam."No.");
@@ -119,11 +128,20 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."Disable Purchase Backorders" then
+        if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostReceipt() then begin
             TempPurchLine.Quantity := TempPurchLine."Quantity Received";
             TempPurchLine."Quantity (Base)" := TempPurchLine."Qty. Received (Base)";
+            if TempPurchLine.Quantity = 0 then begin
+                TempPurchLine."AFDP Original Unit Price" := TempPurchLine."Unit Cost (LCY)";
+                TempPurchLine."AFDP Original Amount" := TempPurchLine.Amount;
+                // TempPurchLine."Unit Cost (LCY)" := 0;
+                TempPurchLine.Amount := 0;
+                TempPurchLine."Amount Including VAT" := 0;
+                TempPurchLine."VAT Base Amount" := 0;
+                TempPurchLine."Line Amount" := 0;
+            end;
         end;
         //<<AFDP 06/01/2025 'Short Orders'
     end;
@@ -152,7 +170,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."Disable Purchase Backorders" then
+        if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostReceipt() then
             if not DeleteWhseRcptLine then begin
@@ -171,7 +189,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
-        if not InventorySetup."Disable Purchase Backorders" then
+        if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
         if INVCSingleInstance.GetIsWarehousePostReceipt() then begin
             WarehouseReceiptLine.SetRange("No.", WhseReceiptHeader."No.");

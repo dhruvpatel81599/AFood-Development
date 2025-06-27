@@ -7,16 +7,16 @@ pageextension 50305 "AFDP Inventory Setup" extends "Inventory Setup"
         //>>AFDP 05/30/2025 'Short Orders'
         addlast(General)
         {
-            field("Disable Sales Backorders"; Rec."Disable Sales Backorders")
+            field("Enable Sales Short"; Rec."AFDP Enable Sales Short")
             {
                 ApplicationArea = all;
-                Caption = 'Disable Sales Backorders';
+                Caption = 'Enable Sales Short';
                 ToolTip = 'If enabled, sales backorders will not be allowed.';
             }
-            field("Disable Purchase Backorders"; Rec."Disable Purchase Backorders")
+            field("Enable Purchase Short"; Rec."AFDP Enable Purchase Short")
             {
                 ApplicationArea = all;
-                Caption = 'Disable Purchase Backorders';
+                Caption = 'Enable Purchase Short';
                 ToolTip = 'If enabled, purchase backorders will not be allowed.';
             }
         }

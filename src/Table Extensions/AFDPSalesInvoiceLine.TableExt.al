@@ -1,10 +1,10 @@
 namespace AFood.DP.AFoodDevelopment;
-using Microsoft.Purchases.Document;
-tableextension 50304 "AFDP Purchase Line" extends "Purchase Line"
+using Microsoft.Sales.History;
+tableextension 50307 "AFDP Sales Invoice Line" extends "Sales Invoice Line"
 {
     fields
     {
-        //>>AFDP 05/30/2025 'Short Orders'
+        //>>AFDP 06/02/2025 'Short Orders'
         field(50300; "AFDP Original Quantity"; Decimal)
         {
             Caption = 'Original Quantity';
@@ -14,20 +14,20 @@ tableextension 50304 "AFDP Purchase Line" extends "Purchase Line"
         }
         field(50301; "AFDP Original Unit Price"; Decimal)
         {
-            AutoFormatExpression = Rec."Currency Code";
+            AutoFormatExpression = GetCurrencyCode();
             AutoFormatType = 2;
             Caption = 'Original Unit Price';
             Editable = false;
         }
         field(50302; "AFDP Original Amount"; Decimal)
         {
-            AutoFormatExpression = Rec."Currency Code";
+            AutoFormatExpression = GetCurrencyCode();
             AutoFormatType = 1;
             Caption = 'Original Amount';
             Editable = false;
         }
-        //<<AFDP 05/30/2025 'Short Orders'
+        //<<AFDP 06/02/2025 'Short Orders'
     }
 }
 
-//AFDP 05/30/2025 'Short Orders'
+//AFDP 06/02/2025 'Short Orders'

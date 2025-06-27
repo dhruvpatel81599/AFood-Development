@@ -150,8 +150,8 @@ codeunit 50300 "AFDP Sales Event Management"
         SalesLine.SetRange("Document No.", SalesHeader."No.");
         if SalesLine.FindSet() then
             repeat
-                if SalesLine."Quantity Shipped" = 0 then begin
-                    SalesLine."Original Quantity" := SalesLine.Quantity;
+                if (SalesLine."Quantity Shipped" = 0) and (SalesLine."AFDP Original Unit Price" = 0) then begin
+                    SalesLine."AFDP Original Quantity" := SalesLine.Quantity;
                     SalesLine.Modify(true);
                 end;
             until SalesLine.Next() = 0;
