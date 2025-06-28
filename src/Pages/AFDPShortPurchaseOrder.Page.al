@@ -9,6 +9,9 @@ using System.Integration.Excel;
 using System.Text;
 using Microsoft.Warehouse.Structure;
 using System.Security.User;
+using Microsoft.Inventory.Setup;
+using Microsoft.Inventory.Journal;
+using Microsoft.Inventory.Posting;
 page 50301 "AFDP Short Purchase Order"
 {
     ApplicationArea = All;
@@ -85,6 +88,7 @@ page 50301 "AFDP Short Purchase Order"
                     trigger OnValidate()
                     begin
                         DefFilter();
+                        BinCodeOnAfterValidate();
                     end;
                 }
                 //<<AFDP 06/22/2025 'T0008-Receiving Enhancements'
@@ -406,9 +410,35 @@ page 50301 "AFDP Short Purchase Order"
                     ToolTip = 'Create a return order for the selected bin content.';
                     trigger OnAction()
                     var
-                    // CreateReturnOrder: Codeunit "Create Return Order";
+                        BinContent: Record "Bin Content";
+                        AFDPWarehouseEntries: Record "AFDP Warehouse Entries";
+                        InventorySetup: Record "Inventory Setup";
+                        ItemJournalLineRec: Record "Item Journal Line";
+                        PurchaseEventMgt: Codeunit "AFDP Purchase Event Management";
                     begin
-                        ;//CreateReturnOrder.CreateReturnOrder(Rec);
+                        //----\\
+                        InventorySetup.Get();
+                        InventorySetup.TestField("AFDP Receiving Template Name");
+                        InventorySetup.TestField("AFDP Receiving Batch Name");
+                        //----\\
+                        CurrPage.SetSelectionFilter(BinContent);
+                        if BinContent.FindSet() then
+                            repeat
+                                if BinContent.Quantity > 0 then
+                                    PurchaseEventMgt.SumarizedAFDPWarehouseEntriesByLot(BinContent, AFDPWarehouseEntries);
+                            until BinContent.Next() < 1;
+
+                        if not AFDPWarehouseEntries.IsEmpty() then begin
+                            PurchaseEventMgt.CreateItemReclassJournalFromSummarizedWarehouseLotEntries(AFDPWarehouseEntries);
+                            // //--Post Reclassification Journal--\\
+                            // ItemJournalLineRec.Reset();
+                            // ItemJournalLineRec.SetRange("Journal Template Name", InventorySetup."AFDP Receiving Template Name");
+                            // ItemJournalLineRec.SetRange("Journal Batch Name", InventorySetup."AFDP Receiving Batch Name");
+                            // if ItemJournalLineRec.FindSet() then
+                            //     CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post Batch", ItemJournalLineRec);
+                            // //---------------------------------\\
+                            CurrPage.Update(false);
+                        end;
                     end;
                 }
             }
@@ -532,6 +562,12 @@ page 50301 "AFDP Short Purchase Order"
     begin
         CurrPage.Update(not IsNullGuid(Rec.SystemId));
     end;
+    //>>AFDP 06/27/2025 'T0008-Receiving Enhancements'
+    local procedure BinCodeOnAfterValidate()
+    begin
+        CurrPage.Update(not IsNullGuid(Rec.SystemId));
+    end;
+    //<<AFDP 06/27/2025 'T0008-Receiving Enhancements'
 
     local procedure RecalculatePickQuantityBaseForCurrentUnitOfMeasureCodeAsFilter()
     var
