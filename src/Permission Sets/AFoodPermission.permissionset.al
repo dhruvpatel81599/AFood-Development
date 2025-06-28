@@ -14,5 +14,10 @@ permissionset 50300 AFoodPermission
         tabledata "AFDP Item Rename Import Entry" = RIMD,
         table "AFDP Item Rename Import Entry" = X,
         xmlport "AFDP Item Number Rename Tool" = X,
-        xmlport "AFDP Item Tracking Import Tool" = X;
+        xmlport "AFDP Item Tracking Import Tool" = X,
+        tabledata "AFDP Warehouse Entries" = RIMD,
+        table "AFDP Warehouse Entries" = X,
+        report "INVC Item Number Rename" = X,
+        page "AFDP Item Tracking ImportEntry" = X,
+        page "AFDP Short Purchase Order" = X;
 }
