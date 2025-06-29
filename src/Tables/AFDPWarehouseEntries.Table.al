@@ -232,6 +232,17 @@ table 50302 "AFDP Warehouse Entries"
             Caption = 'Dedicated';
             Editable = false;
         }
+        field(50300; "AFDP Units_DU_TSL"; Decimal)
+        {
+            Caption = 'Case';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+        }
+        field(50301; "AFDP UOM_Units_DU_TSL"; Code[10])
+        {
+            Caption = 'Unit of Measure - Cases';
+            Editable = false;
+        }
     }
 
     keys
