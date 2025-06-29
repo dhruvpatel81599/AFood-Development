@@ -408,6 +408,7 @@ page 50301 "AFDP Short Purchase Order"
                     Caption = 'Create Return Order';
                     Image = ReturnOrder;
                     ToolTip = 'Create a return order for the selected bin content.';
+                    Visible = false;
                     trigger OnAction()
                     var
                         BinContent: Record "Bin Content";
@@ -420,24 +421,34 @@ page 50301 "AFDP Short Purchase Order"
                         InventorySetup.Get();
                         InventorySetup.TestField("AFDP Receiving Template Name");
                         InventorySetup.TestField("AFDP Receiving Batch Name");
+                        //--Delete all record From AFDP Warehouse Entries--\\
+                        AFDPWarehouseEntries.DeleteAll(true);
                         //----\\
+                        BinContent.Reset();
                         CurrPage.SetSelectionFilter(BinContent);
+                        BinContent.SetRange("Item No.");
+                        BinContent.SetRange("Unit of Measure Code");
+                        BinContent.SetRange("Variant Code");
                         if BinContent.FindSet() then
                             repeat
+                                BinContent.CalcFields("Quantity");
                                 if BinContent.Quantity > 0 then
                                     PurchaseEventMgt.SumarizedAFDPWarehouseEntriesByLot(BinContent, AFDPWarehouseEntries);
-                            until BinContent.Next() < 1;
+                            until BinContent.Next() = 0;
 
                         if not AFDPWarehouseEntries.IsEmpty() then begin
                             PurchaseEventMgt.CreateItemReclassJournalFromSummarizedWarehouseLotEntries(AFDPWarehouseEntries);
-                            // //--Post Reclassification Journal--\\
-                            // ItemJournalLineRec.Reset();
-                            // ItemJournalLineRec.SetRange("Journal Template Name", InventorySetup."AFDP Receiving Template Name");
-                            // ItemJournalLineRec.SetRange("Journal Batch Name", InventorySetup."AFDP Receiving Batch Name");
-                            // if ItemJournalLineRec.FindSet() then
-                            //     CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post Batch", ItemJournalLineRec);
-                            // //---------------------------------\\
+                            //--Post Reclassification Journal--\\
+                            ItemJournalLineRec.Reset();
+                            ItemJournalLineRec.SetRange("Journal Template Name", InventorySetup."AFDP Receiving Template Name");
+                            ItemJournalLineRec.SetRange("Journal Batch Name", InventorySetup."AFDP Receiving Batch Name");
+                            ItemJournalLineRec.SetRange("AFDP Receiving Return Order", true);
+                            if ItemJournalLineRec.FindSet() then
+                                CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post Batch", ItemJournalLineRec);
+                            //---------------------------------\\
+                            PurchaseEventMgt.CreateReturnPurchaseOrder(AFDPWarehouseEntries);
                             CurrPage.Update(false);
+                            Message('Return order created successfully.');
                         end;
                     end;
                 }

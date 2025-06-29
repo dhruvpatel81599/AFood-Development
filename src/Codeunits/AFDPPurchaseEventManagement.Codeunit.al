@@ -1,11 +1,13 @@
 namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Purchases.Document;
+using Microsoft.Warehouse.Journal;
 using Microsoft.Inventory.Setup;
 using Microsoft.Warehouse.Ledger;
 using Microsoft.Warehouse.Structure;
 using Microsoft.Inventory.Journal;
 using Microsoft.Inventory.Location;
 using Microsoft.Foundation.NoSeries;
+using Microsoft.Inventory.Tracking;
 
 codeunit 50303 "AFDP Purchase Event Management"
 {
@@ -48,6 +50,7 @@ codeunit 50303 "AFDP Purchase Event Management"
         WarehouseEntry: Record "Warehouse Entry";
     begin
         WarehouseEntry.Reset();
+        WarehouseEntry.SetCurrentKey("Entry No.");
         WarehouseEntry.SetRange("Location Code", BinContent."Location Code");
         WarehouseEntry.SetRange("Bin Code", BinContent."Bin Code");
         WarehouseEntry.SetRange("Item No.", BinContent."Item No.");
@@ -65,6 +68,8 @@ codeunit 50303 "AFDP Purchase Event Management"
                 if not AFDPWarehouseEntries.FindFirst() then begin
                     AFDPWarehouseEntries.Init();
                     AFDPWarehouseEntries.TransferFields(WarehouseEntry);
+                    AFDPWarehouseEntries."AFDP Units_DU_TSL" := WarehouseEntry."Units_DU_TSL";
+                    AFDPWarehouseEntries."AFDP UOM_Units_DU_TSL" := WarehouseEntry."Unit of Measure - Units_DU_TSL";
                     AFDPWarehouseEntries.Insert();
                 end else begin
                     AFDPWarehouseEntries."Qty. (Base)" += WarehouseEntry."Qty. (Base)";
@@ -76,6 +81,8 @@ codeunit 50303 "AFDP Purchase Event Management"
 
     procedure CreateItemReclassJournalFromSummarizedWarehouseLotEntries(var AFDPWarehouseEntries: Record "AFDP Warehouse Entries")
     begin
+        AFDPWarehouseEntries.Reset();
+        AFDPWarehouseEntries.SetFilter("Quantity", '<>0');
         if AFDPWarehouseEntries.FindSet() then
             repeat
                 CreateItemReclassJournalForMissingInventory(AFDPWarehouseEntries);
@@ -127,11 +134,199 @@ codeunit 50303 "AFDP Purchase Event Management"
         ItemJournalLineRec.Validate("Bin Code", AFDPWarehouseEntries."Bin Code");
         ItemJournalLineRec.Validate("New Bin Code", LocationRec."AFDP Default Missing Bin");
         ItemJournalLineRec.Validate(Quantity, AFDPWarehouseEntries."Quantity");
+        ItemJournalLineRec.Validate("Quantity (Base)", AFDPWarehouseEntries."Qty. (Base)");
+        ItemJournalLineRec.validate(Units_DU_TSL, AFDPWarehouseEntries."AFDP Units_DU_TSL");
+        ItemJournalLineRec.Validate("Unit of Measure - Units_DU_TSL", AFDPWarehouseEntries."AFDP UOM_Units_DU_TSL");
         ItemJournalLineRec.Validate("Unit of Measure Code", AFDPWarehouseEntries."Unit of Measure Code");
         ItemJournalLineRec.Validate("Variant Code", AFDPWarehouseEntries."Variant Code");
         ItemJournalLineRec.Validate("Lot No.", AFDPWarehouseEntries."Lot No.");
-        ItemJournalLineRec.Validate("Quantity (Base)", AFDPWarehouseEntries."Qty. (Base)");
+        // ItemJournalLineRec.Validate("New Lot No.", AFDPWarehouseEntries."Lot No.");
+        ItemJournalLineRec.Validate("Expiration Date", AFDPWarehouseEntries."Expiration Date");
+        ItemJournalLineRec.Validate("AFDP Receiving Return Order", true);
         ItemJournalLineRec.Insert();
+        //--Insert Reservation Entry--\\
+        InsertReservationEntryForItemReclassJournal(ItemJournalLineRec, AFDPWarehouseEntries);
+    end;
+
+    local procedure InsertReservationEntryForItemReclassJournal(var ItemJournalLineRec: Record "Item Journal Line"; var AFDPWarehouseEntries: Record "AFDP Warehouse Entries")
+    var
+        ReservationEntry: Record "Reservation Entry";
+        LastReservationEntryNo: Integer;
+    begin
+        LastReservationEntryNo := GetLastReservationEntryNo();
+        ReservationEntry.Init();
+        ReservationEntry."Entry No." := LastReservationEntryNo + 1;
+        ReservationEntry.Validate("Item No.", ItemJournalLineRec."Item No.");
+        ReservationEntry.Validate("Location Code", ItemJournalLineRec."Location Code");
+        ReservationEntry.Validate("Reservation Status", ReservationEntry."Reservation Status"::Prospect);
+        ReservationEntry.Validate("Source Type", 83);
+        ReservationEntry.validate("Source Subtype", ReservationEntry."Source Subtype"::"4"); // 4 = Item Reclassification
+        ReservationEntry.Validate("Source ID", ItemJournalLineRec."Journal Template Name");
+        ReservationEntry.Validate("Source Batch Name", ItemJournalLineRec."Journal Batch Name");
+        ReservationEntry.Validate("Source Ref. No.", ItemJournalLineRec."Line No.");
+        ReservationEntry.Validate(Positive, false);
+        if (ItemJournalLineRec."Unit of Measure Code" = 'LB') and (ItemJournalLineRec."Unit of Measure - Units_DU_TSL" = 'CASE') then begin
+            ReservationEntry.Validate("Quantity", -ItemJournalLineRec."Quantity");
+            ReservationEntry.Validate("Quantity (Base)", -ItemJournalLineRec."Quantity (Base)");
+            ReservationEntry.Validate("Units (Base)_DU_TSL", -ItemJournalLineRec."Units_DU_TSL");
+            ReservationEntry.Validate("Units to Handle_DU_TSL", -ItemJournalLineRec."Units_DU_TSL");
+        end else
+            if (ItemJournalLineRec."Unit of Measure Code" = 'CASE') and (ItemJournalLineRec."Unit of Measure - Units_DU_TSL" = '') then begin
+                ReservationEntry.Validate("Quantity", -ItemJournalLineRec.Quantity);
+                ReservationEntry.Validate("Quantity (Base)", -ItemJournalLineRec."Quantity (Base)");
+            end else begin
+                ReservationEntry.Validate("Quantity", -ItemJournalLineRec.Quantity);
+                ReservationEntry.Validate("Quantity (Base)", -ItemJournalLineRec."Quantity (Base)");
+            end;
+
+        ReservationEntry.Validate("Expiration Date", AFDPWarehouseEntries."Expiration Date");
+        ReservationEntry.Validate("New Expiration Date", AFDPWarehouseEntries."Expiration Date");
+        ReservationEntry.Validate("Lot No.", AFDPWarehouseEntries."Lot No.");
+        ReservationEntry.Validate("New Lot No.", AFDPWarehouseEntries."Lot No.");
+        ReservationEntry.Validate("Item Tracking", ReservationEntry."Item Tracking"::"Lot No.");
+        ReservationEntry.Insert();
+    end;
+
+    local procedure GetLastReservationEntryNo(): Integer;
+    var
+        ReservationEntry: Record "Reservation Entry";
+    begin
+        ReservationEntry.Reset();
+        ReservationEntry.SetCurrentKey("Entry No.");
+        ReservationEntry.SetRange("Entry No.");
+        if ReservationEntry.FindLast() then
+            exit(ReservationEntry."Entry No.")
+        else
+            exit(0);
+    end;
+
+    procedure CreateReturnPurchaseOrder(var AFDPWarehouseEntries: Record "AFDP Warehouse Entries")
+    var
+        PurchOrderHeader: Record "Purchase Header";
+        PurchHdrRec: Record "Purchase Header";
+        ReturnOrderHeaderCreated: Boolean;
+    begin
+        Clear(ReturnOrderHeaderCreated);
+        AFDPWarehouseEntries.Reset();
+        AFDPWarehouseEntries.SetFilter("Quantity", '<>0');
+        if AFDPWarehouseEntries.FindSet() then
+            repeat
+                if AFDPWarehouseEntries."Source Document" = AFDPWarehouseEntries."Source Document"::"P. Order" then begin
+                    if not ReturnOrderHeaderCreated then begin
+                        PurchOrderHeader.Reset();
+                        PurchOrderHeader.SetRange("Document Type", PurchOrderHeader."Document Type"::Order);
+                        PurchOrderHeader.SetRange("No.", AFDPWarehouseEntries."Source No.");
+                        if PurchOrderHeader.FindFirst() then
+                            ReturnOrderHeaderCreated := CreateReturnPurchaseOrderHeaderForMissingInventory(PurchOrderHeader, PurchHdrRec);
+                    end;
+                    if ReturnOrderHeaderCreated then
+                        CreateReturnPurchaseOrderLineForMissingInventory(AFDPWarehouseEntries, PurchHdrRec);
+                end;
+            until AFDPWarehouseEntries.Next() = 0;
+    end;
+
+    local procedure CreateReturnPurchaseOrderHeaderForMissingInventory(PurchOrderHeader: Record "Purchase Header"; var PurchHdrRec: Record "Purchase Header"): Boolean
+    begin
+        PurchHdrRec.Init();
+        PurchHdrRec.TransferFields(PurchOrderHeader);
+        PurchHdrRec."Document Type" := PurchHdrRec."Document Type"::"Return Order";
+        PurchHdrRec."No." := '';
+        PurchHdrRec.Status := PurchHdrRec.Status::Open;
+        PurchHdrRec.InitInsert();
+        PurchHdrRec.Insert();
+        PurchHdrRec.Validate("Order Date", Today);
+        PurchHdrRec.Validate("Posting Date", Today);
+        PurchHdrRec.Validate(Status, PurchHdrRec.Status::Open);
+        PurchHdrRec.Modify(true);
+        exit(true);
+    end;
+
+    local procedure CreateReturnPurchaseOrderLineForMissingInventory(var AFDPWarehouseEntries: Record "AFDP Warehouse Entries"; var PurchHdrRec: Record "Purchase Header")
+    var
+        ReturnPurchLineRec: Record "Purchase Line";
+        PurchaseLine: Record "Purchase Line";
+        LocationRec: Record Location;
+    begin
+        //----\\
+        LocationRec.get(AFDPWarehouseEntries."Location Code");
+        LocationRec.TestField("AFDP Default Missing Bin");
+        //----\\
+        ReturnPurchLineRec.Reset();
+        ReturnPurchLineRec.SetRange("Document Type", ReturnPurchLineRec."Document Type"::"Return Order");
+        ReturnPurchLineRec.SetRange("Document No.", PurchHdrRec."No.");
+        ReturnPurchLineRec.SetRange("No.", AFDPWarehouseEntries."Item No.");
+        ReturnPurchLineRec.SetRange("Order Line No.", AFDPWarehouseEntries."Source Line No.");
+        if not ReturnPurchLineRec.FindFirst() then begin
+            ReturnPurchLineRec.Init();
+            ReturnPurchLineRec."Document Type" := ReturnPurchLineRec."Document Type"::"Return Order";
+            ReturnPurchLineRec.Validate("Document No.", PurchHdrRec."No.");
+            ReturnPurchLineRec.InitNewLine(ReturnPurchLineRec);
+            ReturnPurchLineRec."Line No." := ReturnPurchLineRec."Line No." + 10000;
+            ReturnPurchLineRec.Validate(Type, ReturnPurchLineRec.Type::Item);
+            ReturnPurchLineRec.Validate("No.", AFDPWarehouseEntries."Item No.");
+            ReturnPurchLineRec.Validate(Quantity, AFDPWarehouseEntries.Quantity);
+            ReturnPurchLineRec.Validate("Unit of Measure Code", AFDPWarehouseEntries."Unit of Measure Code");
+            ReturnPurchLineRec.Validate("Variant Code", AFDPWarehouseEntries."Variant Code");
+            ReturnPurchLineRec.Validate(Units_DU_TSL, AFDPWarehouseEntries."AFDP Units_DU_TSL");
+            ReturnPurchLineRec.Validate("Unit of Measure - Units_DU_TSL", AFDPWarehouseEntries."AFDP UOM_Units_DU_TSL");
+            //--Find Purchase Line--\\
+            PurchaseLine.Reset();
+            PurchaseLine.SetRange("Document Type", PurchHdrRec."Document Type");
+            PurchaseLine.SetRange("Document No.", PurchHdrRec."No.");
+            PurchaseLine.SetRange("No.", AFDPWarehouseEntries."Item No.");
+            PurchaseLine.SetRange("Line No.", AFDPWarehouseEntries."Source Line No.");
+            if PurchaseLine.FindFirst() then begin
+                ReturnPurchLineRec.Validate("Direct Unit Cost", PurchaseLine."Direct Unit Cost");
+                ReturnPurchLineRec.Validate("Unit Price (LCY)", PurchaseLine."Unit Price (LCY)");
+            end;
+            ReturnPurchLineRec.Validate("Order Line No.", AFDPWarehouseEntries."Source Line No.");
+            ReturnPurchLineRec.Validate("Bin Code", LocationRec."AFDP Default Missing Bin");
+            ReturnPurchLineRec.Insert();
+        end else begin
+            ReturnPurchLineRec.Validate("Quantity", (ReturnPurchLineRec."Quantity" + AFDPWarehouseEntries.Quantity));
+            ReturnPurchLineRec.Validate("Units_DU_TSL", (ReturnPurchLineRec."Units_DU_TSL" + AFDPWarehouseEntries."AFDP Units_DU_TSL"));
+            ReturnPurchLineRec.Modify(true);
+        end;
+        //--Insert Reservation Entry--\\
+        InsertReservationEntryForPurchReturnOrderLine(ReturnPurchLineRec, AFDPWarehouseEntries);
+    end;
+
+    local procedure InsertReservationEntryForPurchReturnOrderLine(var ReturnPurchLineRec: Record "Purchase Line"; var AFDPWarehouseEntries: Record "AFDP Warehouse Entries")
+    var
+        ReservationEntry: Record "Reservation Entry";
+        LastReservationEntryNo: Integer;
+    begin
+        LastReservationEntryNo := GetLastReservationEntryNo();
+        ReservationEntry.Init();
+        ReservationEntry."Entry No." := LastReservationEntryNo + 1;
+        ReservationEntry.Validate("Item No.", ReturnPurchLineRec."No.");
+        ReservationEntry.Validate("Location Code", ReturnPurchLineRec."Location Code");
+        ReservationEntry.Validate("Reservation Status", ReservationEntry."Reservation Status"::Tracking);
+        ReservationEntry.Validate("Source Type", 39);
+        ReservationEntry.validate("Source Subtype", ReservationEntry."Source Subtype"::"5"); // 5 = Purchase Return Order
+        ReservationEntry.Validate("Source ID", ReturnPurchLineRec."Document No.");
+        ReservationEntry.Validate("Source Ref. No.", ReturnPurchLineRec."Line No.");
+        ReservationEntry.Validate(Positive, false);
+        if (ReturnPurchLineRec."Unit of Measure Code" = 'LB') and (ReturnPurchLineRec."Unit of Measure - Units_DU_TSL" = 'CASE') then begin
+            ReservationEntry.Validate("Quantity", -AFDPWarehouseEntries."Quantity");
+            ReservationEntry.Validate("Quantity (Base)", -AFDPWarehouseEntries."Qty. (Base)");
+            ReservationEntry.Validate("Units (Base)_DU_TSL", -AFDPWarehouseEntries."AFDP Units_DU_TSL");
+            ReservationEntry.Validate("Units to Handle_DU_TSL", -AFDPWarehouseEntries."AFDP Units_DU_TSL");
+        end else
+            if (ReturnPurchLineRec."Unit of Measure Code" = 'CASE') and (ReturnPurchLineRec."Unit of Measure - Units_DU_TSL" = '') then begin
+                ReservationEntry.Validate("Quantity", -AFDPWarehouseEntries.Quantity);
+                ReservationEntry.Validate("Quantity (Base)", -AFDPWarehouseEntries."Qty. (Base)");
+            end else begin
+                ReservationEntry.Validate("Quantity", -AFDPWarehouseEntries.Quantity);
+                ReservationEntry.Validate("Quantity (Base)", -AFDPWarehouseEntries."Qty. (Base)");
+            end;
+
+        ReservationEntry.Validate("Expiration Date", AFDPWarehouseEntries."Expiration Date");
+        ReservationEntry.Validate("Shipment Date", ReturnPurchLineRec."Expected Receipt Date");
+        ReservationEntry.Validate("Lot No.", AFDPWarehouseEntries."Lot No.");
+        //ReservationEntry.Validate("New Lot No.", AFDPWarehouseEntries."Lot No.");
+        ReservationEntry.Validate("Item Tracking", ReservationEntry."Item Tracking"::"Lot No.");
+        ReservationEntry.Insert();
     end;
     //<<AFDP 06/28/2025 'T0008-Receiving Enhancements'
     #endregion Functions
