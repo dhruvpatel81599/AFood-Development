@@ -408,7 +408,6 @@ page 50301 "AFDP Short Purchase Order"
                     Caption = 'Create Return Order';
                     Image = ReturnOrder;
                     ToolTip = 'Create a return order for the selected bin content.';
-                    Visible = false;
                     trigger OnAction()
                     var
                         BinContent: Record "Bin Content";
