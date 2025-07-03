@@ -187,41 +187,49 @@ page 50301 "AFDP Short Purchase Order"
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies if the bin is the default bin for the associated item.';
+                    Visible = false;
                 }
                 field(Dedicated; Rec.Dedicated)
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies if the bin is used as a dedicated bin, which means that its bin content is available only to certain resources.';
+                    Visible = false;
                 }
                 field("Warehouse Class Code"; Rec."Warehouse Class Code")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies the warehouse class code. Only items with the same warehouse class can be stored in this bin.';
+                    Visible = false;
                 }
                 field("Bin Type Code"; Rec."Bin Type Code")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies the code of the bin type that was selected for this bin.';
+                    Visible = false;
                 }
                 field("Bin Ranking"; Rec."Bin Ranking")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies the bin ranking.';
+                    Visible = false;
                 }
                 field("Block Movement"; Rec."Block Movement")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies how the movement of a particular item, or bin content, into or out of this bin, is blocked.';
+                    Visible = false;
                 }
                 field("Min. Qty."; Rec."Min. Qty.")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies the minimum number of units of the item that you want to have in the bin at all times.';
+                    Visible = false;
                 }
                 field("Max. Qty."; Rec."Max. Qty.")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies the maximum number of units of the item that you want to have in the bin.';
+                    Visible = false;
                 }
                 field(CalcQtyUOM; Rec.CalcQtyUOM())
                 {
@@ -235,30 +243,46 @@ page 50301 "AFDP Short Purchase Order"
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies how many units of the item, in the base unit of measure, are stored in the bin.';
                 }
+                field(Units_DU_TSL; Rec."Units_DU_TSL")
+                {
+                    ApplicationArea = Warehouse;
+                    ToolTip = 'Specifies the number of units of the item specified on the line.';
+                }
                 field("Pick Quantity (Base)"; Rec."Pick Quantity (Base)")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies how many units of the item, in the base unit of measure, will be picked from the bin.';
+                    Visible = false;
+                }
+                field("Pick Units_DU_TSL"; Rec."Pick Units_DU_TSL")
+                {
+                    ApplicationArea = Warehouse;
+                    ToolTip = 'Specifies how many units of the item, in the unit of measure specified on the line, will be picked from the bin.';
+                    Visible = false;
                 }
                 field("ATO Components Pick Qty (Base)"; Rec."ATO Components Pick Qty (Base)")
                 {
                     ApplicationArea = Assembly;
                     ToolTip = 'Specifies how many assemble-to-order units are picked for assembly.';
+                    Visible = false;
                 }
                 field("Negative Adjmt. Qty. (Base)"; Rec."Negative Adjmt. Qty. (Base)")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies how many item units, in the base unit of measure, will be posted on journal lines as negative quantities.';
+                    Visible = false;
                 }
                 field("Put-away Quantity (Base)"; Rec."Put-away Quantity (Base)")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies how many units of the item, in the base unit of measure, will be put away in the bin.';
+                    Visible = false;
                 }
                 field("Positive Adjmt. Qty. (Base)"; Rec."Positive Adjmt. Qty. (Base)")
                 {
                     ApplicationArea = Warehouse;
                     ToolTip = 'Specifies how many item units, in the base unit of measure, will be posted on journal lines as positive quantities.';
+                    Visible = false;
                 }
                 field(CalcQtyAvailToTakeUOM; Rec.CalcQtyAvailToTakeUOM())
                 {
@@ -483,6 +507,7 @@ page 50301 "AFDP Short Purchase Order"
             exit;
         ItemDescription := '';
         Rec.GetWhseLocation(LocationCode, ZoneCode);
+        rec.SetFilter(Quantity, '<>0');
         DefFilter();
     end;
 
@@ -557,10 +582,10 @@ page 50301 "AFDP Short Purchase Order"
         Rec.TestField("Neg. Adjmt. Qty.", 0);
     end;
 
-    local procedure LocationGet(LocationCode: Code[10])
+    local procedure LocationGet(LocationCode1: Code[10])
     begin
-        if AdjmtLocation.Code <> LocationCode then
-            AdjmtLocation.Get(LocationCode);
+        if AdjmtLocation.Code <> LocationCode1 then
+            AdjmtLocation.Get(LocationCode1);
     end;
 
     local procedure LocationCodeOnAfterValidate()
@@ -572,12 +597,11 @@ page 50301 "AFDP Short Purchase Order"
     begin
         CurrPage.Update(not IsNullGuid(Rec.SystemId));
     end;
-    //>>AFDP 06/27/2025 'T0008-Receiving Enhancements'
+
     local procedure BinCodeOnAfterValidate()
     begin
         CurrPage.Update(not IsNullGuid(Rec.SystemId));
     end;
-    //<<AFDP 06/27/2025 'T0008-Receiving Enhancements'
 
     local procedure RecalculatePickQuantityBaseForCurrentUnitOfMeasureCodeAsFilter()
     var
