@@ -12,6 +12,11 @@ tableextension 50311 "AFDP Location" extends Location
             ToolTip = 'Specify the default missing bin';
             TableRelation = Bin.Code where("Location Code" = field("Code"));
         }
+        field(50301; "AFDP Default Damaged Location"; Code[10])
+        {
+            Caption = 'Default Damaged Location Code';
+            TableRelation = Location;
+        }
     }
 }
 
