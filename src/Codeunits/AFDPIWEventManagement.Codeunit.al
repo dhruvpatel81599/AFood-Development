@@ -538,4 +538,4 @@ codeunit 50305 "AFDP IW Event Management"
 
 }
 
-//AFDP 07/09/2025 'T0008-Receiving Enhancements'
+//AFDP 07/09/2025 'T0011-Dual UOM on Handheld-For LP'
