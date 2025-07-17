@@ -284,5 +284,6 @@ codeunit 50304 "AFDP Item Dual UOM Management"
     #endregion Functions
 }
 
+//AFDP 07/09/2025 'T0008-Receiving Enhancements'
 
 

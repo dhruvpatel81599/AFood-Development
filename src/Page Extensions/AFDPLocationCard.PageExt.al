@@ -21,6 +21,12 @@ pageextension 50313 "AFDP Location Card" extends "Location Card"
                     Caption = 'Default Damaged Location Code';
                     ToolTip = 'Specify the default damaged location code';
                 }
+                field(AFDPReceivingZoneCode; Rec."AFDP Receiving Zone Code")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Receiving Zone';
+                    ToolTip = 'Specify the receiving zone code';
+                }
             }
         }
     }

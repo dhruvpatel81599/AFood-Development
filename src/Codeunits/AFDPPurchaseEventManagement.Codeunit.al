@@ -360,24 +360,35 @@ codeunit 50303 "AFDP Purchase Event Management"
             ReturnPurchLineRec.Validate("Variant Code", AFDPWarehouseEntries."Variant Code");
             ReturnPurchLineRec.Validate(Units_DU_TSL, AFDPWarehouseEntries."AFDP Units_DU_TSL");
             ReturnPurchLineRec.Validate("Unit of Measure - Units_DU_TSL", AFDPWarehouseEntries."AFDP UOM_Units_DU_TSL");
+            ReturnPurchLineRec.Validate("Order Line No.", AFDPWarehouseEntries."Source Line No.");
+            // ReturnPurchLineRec.Validate("Bin Code", LocationRec."AFDP Default Missing Bin");
+            ReturnPurchLineRec.Validate("Location Code", LocationRec."AFDP Default Damaged Location");
+            ReturnPurchLineRec.Insert();
             //--Find Purchase Line--\\
             PurchaseLine.Reset();
-            PurchaseLine.SetRange("Document Type", PurchHdrRec."Document Type");
-            PurchaseLine.SetRange("Document No.", PurchHdrRec."No.");
+            PurchaseLine.SetRange("Document Type", PurchaseLine."Document Type"::Order);
+            PurchaseLine.SetRange("Document No.", AFDPWarehouseEntries."Source No.");
             PurchaseLine.SetRange("No.", AFDPWarehouseEntries."Item No.");
             PurchaseLine.SetRange("Line No.", AFDPWarehouseEntries."Source Line No.");
             if PurchaseLine.FindFirst() then begin
                 ReturnPurchLineRec.Validate("Direct Unit Cost", PurchaseLine."Direct Unit Cost");
                 ;//ReturnPurchLineRec.Validate("Unit Price (LCY)", PurchaseLine."Unit Price (LCY)");
             end;
-            ReturnPurchLineRec.Validate("Order Line No.", AFDPWarehouseEntries."Source Line No.");
-            // ReturnPurchLineRec.Validate("Bin Code", LocationRec."AFDP Default Missing Bin");
-            ReturnPurchLineRec.Validate("Location Code", LocationRec."AFDP Default Damaged Location");
-            ReturnPurchLineRec.Insert();
+            ReturnPurchLineRec.Modify();
         end else begin
             ReturnPurchLineRec.Validate("Quantity", (ReturnPurchLineRec."Quantity" + AFDPWarehouseEntries.Quantity));
             ReturnPurchLineRec.Validate("Units_DU_TSL", (ReturnPurchLineRec."Units_DU_TSL" + AFDPWarehouseEntries."AFDP Units_DU_TSL"));
-            ReturnPurchLineRec.Modify(true);
+            //--Find Purchase Line--\\
+            PurchaseLine.Reset();
+            PurchaseLine.SetRange("Document Type", PurchaseLine."Document Type"::Order);
+            PurchaseLine.SetRange("Document No.", AFDPWarehouseEntries."Source No.");
+            PurchaseLine.SetRange("No.", AFDPWarehouseEntries."Item No.");
+            PurchaseLine.SetRange("Line No.", AFDPWarehouseEntries."Source Line No.");
+            if PurchaseLine.FindFirst() then
+                if ReturnPurchLineRec."Direct Unit Cost" <> PurchaseLine."Direct Unit Cost" then
+                    ReturnPurchLineRec.Validate("Direct Unit Cost", PurchaseLine."Direct Unit Cost");
+            //---\\
+            ReturnPurchLineRec.Modify();
         end;
         //--Insert Reservation Entry--\\
         InsertReservationEntryForPurchReturnOrderLine(ReturnPurchLineRec, AFDPWarehouseEntries);

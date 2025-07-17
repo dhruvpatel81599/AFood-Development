@@ -1,5 +1,5 @@
 namespace AFood.DP.AFoodDevelopment;
-codeunit 50302 "INVC Single Instance"
+codeunit 50302 "AFDP Single Instance"
 {
     SingleInstance = true;
     //>>AFDP 05/31/2025 'Short Orders'
