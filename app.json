@@ -28,6 +28,24 @@
       "name": "Dual Unit of Measure",
       "publisher": "Theta Systems Limited",
       "version": "25.0.0.0"
+    },
+    {
+      "id": "ba1776ba-1198-4b4c-a61e-c4612f1880d5",
+      "name": "IWorks Common",
+      "publisher": "Insight Works",
+      "version": "2.17.9252.1"
+    },
+    {
+      "id": "d04cb6c5-68c8-41d7-8e25-824b48e14f04",
+      "name": "Warehouse Insight Advanced WMS",
+      "publisher": "Insight Works",
+      "version": "2.14.9259.1"
+    },
+    {
+      "id": "c670dab0-a6c8-4702-9416-3e3328c52ebb",
+      "name": "License Plate Management",
+      "publisher": "Insight Works",
+      "version": "1.97.9173.1"
     }
   ],
   "screenshots": [],
