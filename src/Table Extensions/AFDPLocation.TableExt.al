@@ -17,6 +17,11 @@ tableextension 50311 "AFDP Location" extends Location
             Caption = 'Default Damaged Location Code';
             TableRelation = Location;
         }
+        field(50302; "AFDP Receiving Zone Code"; Code[10])
+        {
+            Caption = 'Zone Code';
+            TableRelation = Zone.Code where("Location Code" = field("Code"));
+        }
     }
 }
 

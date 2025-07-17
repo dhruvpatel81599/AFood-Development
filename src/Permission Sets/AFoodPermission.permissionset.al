@@ -10,7 +10,7 @@ permissionset 50300 AFoodPermission
         codeunit "AFDP Purchase Event Management" = X,
         codeunit "AFDP Sales Event Management" = X,
         codeunit "AFDP Warehouse EventManagement" = X,
-        codeunit "INVC Single Instance" = X,
+        codeunit "AFDP Single Instance" = X,
         tabledata "AFDP Item Rename Import Entry" = RIMD,
         table "AFDP Item Rename Import Entry" = X,
         xmlport "AFDP Item Number Rename Tool" = X,

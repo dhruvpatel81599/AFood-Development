@@ -13,6 +13,8 @@ tableextension 50314 "AFDP IWX LP Line" extends "IWX LP Line"
             end;
 
             trigger OnAfterValidate()
+            var
+                LotNo: Code[50];
             begin
                 if (Type = Type::Item) and ("No." <> '') then begin
                     ItemDUUOMMgt.GetGlobalItem(Item, "No.");
@@ -23,19 +25,24 @@ tableextension 50314 "AFDP IWX LP Line" extends "IWX LP Line"
                     "AFDP DU Unit of Measure Code" := Item."Unit of Measure - Units_DU_TSL";
                 end;
                 UpdateCalledByFieldNameAfterValidate(FieldName("No."));
-            end;
-        }
-        modify(Quantity)
-        {
-            trigger OnAfterValidate()
-            var
-                LotNo: Code[50];
-            begin
+                //---\\
                 LotNo := ItemDUUOMMgt.FindLotNoFromWarehouseEntry(Rec);
                 if (LotNo <> '') then
                     Validate("Lot No.", LotNo);
+                //---\\
             end;
         }
+        // modify(Quantity)
+        // {
+        //     trigger OnAfterValidate()
+        //     var
+        //         LotNo: Code[50];
+        //     begin
+        //         LotNo := ItemDUUOMMgt.FindLotNoFromWarehouseEntry(Rec);
+        //         if (LotNo <> '') then
+        //             Validate("Lot No.", LotNo);
+        //     end;
+        // }
         field(50300; "AFDP DU Units Quantity"; Decimal)
         {
             BlankZero = true;

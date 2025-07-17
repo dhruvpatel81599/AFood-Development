@@ -36,7 +36,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure SalesPost_OnPostUpdateOrderLineOnBeforeGetQuantityShipped(var TempSalesLine: Record "Sales Line"; var IsHandled: Boolean; var SalesHeader: Record "Sales Header")
     var
         InventorySetup: Record "Inventory Setup";
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 05/31/2025 'Short Orders'
         InventorySetup.Get();
@@ -64,7 +64,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Whse. Post Shipment", 'OnPostSourceDocumentOnBeforePostSalesHeader', '', false, false)]
     local procedure SalesWhsePostShipment_OnPostSourceDocumentOnBeforePostSalesHeader(var SalesPost: Codeunit "Sales-Post"; var SalesHeader: Record "Sales Header"; WhseShptHeader: Record "Warehouse Shipment Header"; var CounterSourceDocOK: Integer; var WhsePostParameters: Record "Whse. Post Parameters"; var IsHandled: Boolean)
     var
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         INVCSingleInstance.SetIsWarehousePostShipment(true);
     end;
@@ -72,7 +72,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Whse. Post Shipment", 'OnPostSourceDocumentOnBeforePrintSalesDocuments', '', false, false)]
     local procedure SalesWhsePostShipment_OnPostSourceDocumentOnBeforePrintSalesDocuments(LastShippingNo: Code[20])
     var
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         INVCSingleInstance.SetIsWarehousePostShipment(false);
     end;
@@ -81,7 +81,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure WhsePostShipment_OnBeforeDeleteUpdateWhseShptLine(WhseShptLine: Record "Warehouse Shipment Line"; var DeleteWhseShptLine: Boolean; var WhseShptLineBuf: Record "Warehouse Shipment Line")
     var
         InventorySetup: Record "Inventory Setup";
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
@@ -100,7 +100,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     var
         InventorySetup: Record "Inventory Setup";
         WhseShptLine: Record "Warehouse Shipment Line";
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
@@ -124,7 +124,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure PurchPost_OnPostUpdateOrderLineOnPurchHeaderReceive(var TempPurchLine: Record "Purchase Line"; PurchRcptHeader: Record "Purch. Rcpt. Header")
     var
         InventorySetup: Record "Inventory Setup";
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
@@ -149,7 +149,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Receipt", 'OnPostSourceDocumentOnBeforePostPurchaseHeader', '', false, false)]
     local procedure PurchWhsePostShipment_OnPostSourceDocumentOnBeforePostPurchaseHeader(var PurchHeader: Record "Purchase Header"; WhseRcptHeader: Record "Warehouse Receipt Header"; SuppressCommit: Boolean; var CounterSourceDocOK: Integer; var IsHandled: Boolean)
     var
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         INVCSingleInstance.SetIsWarehousePostReceipt(true);
     end;
@@ -157,7 +157,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Receipt", 'OnPostSourceDocumentOnAfterPostPurchaseHeader', '', false, false)]
     local procedure PurchWhsePostShipment_OnPostSourceDocumentOnAfterPostPurchaseHeader(PurchaseHeader: record "Purchase Header")
     var
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         INVCSingleInstance.SetIsWarehousePostReceipt(false);
     end;
@@ -166,7 +166,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure WhsePostReceipt_OnBeforePostUpdateWhseRcptLine(var WarehouseReceiptLine: Record "Warehouse Receipt Line"; var WarehouseReceiptLineBuf: Record "Warehouse Receipt Line"; var DeleteWhseRcptLine: Boolean; var WarehouseReceiptHeader: Record "Warehouse Receipt Header")
     var
         InventorySetup: Record "Inventory Setup";
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
@@ -185,7 +185,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     var
         InventorySetup: Record "Inventory Setup";
         WarehouseReceiptLine: Record "Warehouse Receipt Line";
-        INVCSingleInstance: Codeunit "INVC Single Instance";
+        INVCSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
