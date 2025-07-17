@@ -292,4 +292,4 @@ codeunit 50306 "AFDP IW Event Mgt. For Pick"
     end;
 }
 
-//AFDP 07/09/2025 'T0008-Receiving Enhancements'
+//AFDP 07/14/2025 'T0013-Dual UOM on Handheld-Pick'
