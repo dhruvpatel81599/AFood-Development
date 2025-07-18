@@ -215,6 +215,23 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             UpdateBinCodeOnWarehouseReceiptLine(Rec."No.", Rec."Bin Code");
         rec.SetHideValidationDialog(false);
     end;
+
+    [EventSubscriber(ObjectType::Table, database::"Purchase Line", 'OnValidateQtyToReceiveOnAfterInitQty', '', false, false)]
+    local procedure PurchaseLine_OnValidateQtyToReceiveOnAfterInitQty(var PurchaseLine: Record "Purchase Line"; var xPurchaseLine: Record "Purchase Line"; CallingFieldNo: Integer; var IsHandled: Boolean)
+    var
+        Text001: Label 'You cannot receive more than %1 base units for item no: %2';
+        Text002: Label 'You cannot receive more than %1 units for item no: %2';
+    begin
+        //>>AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
+        if not OverReceiptProcessing(PurchaseLine) then begin
+            if not CanReceiveQty(PurchaseLine) then
+                Error(Text002, PurchaseLine."Outstanding Quantity", PurchaseLine."No.");
+
+            if not CanReceiveBaseQty(PurchaseLine) then
+                Error(Text001, PurchaseLine."Outstanding Qty. (Base)", PurchaseLine."No.");
+        end;
+        //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
+    end;
     //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
     #endregion EventSubscribers
 
@@ -233,6 +250,57 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             until WhseRcptLine.Next() = 0;
     end;
     //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
+    //>>AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
+    local procedure OverReceiptProcessing(var PurchaseLine: Record "Purchase Line"): Boolean
+    var
+        OverReceiptMgt: Codeunit "Over-Receipt Mgt.";
+    begin
+        if not OverReceiptMgt.IsOverReceiptAllowed() or (Abs(PurchaseLine."Qty. to Receive") <= Abs(PurchaseLine."Outstanding Quantity")) then
+            exit(false);
+
+        if (PurchaseLine."Over-Receipt Code" = '') and (OverReceiptMgt.GetDefaultOverReceiptCode(PurchaseLine) = '') then
+            exit(false);
+
+        PurchaseLine.Validate("Over-Receipt Quantity", PurchaseLine."Qty. to Receive" - PurchaseLine.Quantity + PurchaseLine."Quantity Received" + PurchaseLine."Over-Receipt Quantity");
+        exit(true);
+    end;
+
+    local procedure CanReceiveQty(var PurchaseLine: Record "Purchase Line"): Boolean
+    begin
+        if Abs(PurchaseLine."Qty. to Receive") > Abs(PurchaseLine."Outstanding Quantity") then
+            exit(false);
+
+        if (PurchaseLine."Qty. to Receive" < 0) and (PurchaseLine.Quantity > 0) or
+           (PurchaseLine."Qty. to Receive" > 0) and (PurchaseLine.Quantity < 0)
+        then
+            exit(false);
+
+        if (PurchaseLine."Outstanding Quantity" < 0) and (PurchaseLine.Quantity > 0) or
+           (PurchaseLine."Outstanding Quantity" > 0) and (PurchaseLine.Quantity < 0)
+        then
+            exit(false);
+
+        exit(true);
+    end;
+
+    local procedure CanReceiveBaseQty(var PurchaseLine: Record "Purchase Line"): Boolean
+    begin
+        if Abs(PurchaseLine."Qty. to Receive (Base)") > Abs(PurchaseLine."Outstanding Qty. (Base)") then
+            exit(false);
+
+        if (PurchaseLine."Qty. to Receive (Base)" < 0) and (PurchaseLine."Quantity (Base)" > 0) or
+           (PurchaseLine."Qty. to Receive (Base)" > 0) and (PurchaseLine."Quantity (Base)" < 0)
+        then
+            exit(false);
+
+        if (PurchaseLine."Outstanding Qty. (Base)" < 0) and (PurchaseLine."Quantity (Base)" > 0) or
+           (PurchaseLine."Outstanding Qty. (Base)" > 0) and (PurchaseLine."Quantity (Base)" < 0)
+        then
+            exit(false);
+
+        exit(true);
+    end;
+    //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
     #endregion Functions
 }
 

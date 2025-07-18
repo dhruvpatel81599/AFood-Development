@@ -34,10 +34,22 @@ codeunit 50302 "AFDP Single Instance"
         exit(LotExpirationDate);
     end;
     //<<AFDP 07/09/2025 'T0008-Receiving Enhancements'
+    //>>AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
+    procedure SetIsRunFromItemTrackingImport(SetValue: Boolean)
+    begin
+        IsRunFromItemTrackingImport := SetValue;
+    end;
+
+    procedure GetIsRunFromItemTrackingImport(): Boolean
+    begin
+        exit(IsRunFromItemTrackingImport);
+    end;
+    //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
     var
         IsWarehousePostShipment: Boolean;
         IsWarehousePostReceipt: Boolean;
         LotExpirationDate: date;
+        IsRunFromItemTrackingImport: Boolean;
 }
 
 //AFDP 05/30/2025 'Short Orders'
