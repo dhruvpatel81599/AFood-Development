@@ -218,16 +218,20 @@ codeunit 50304 "AFDP Item Dual UOM Management"
     var
         WarehouseEntry: Record "Warehouse Entry";
         IWXLPHeader: Record "IWX LP Header";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
         OldLotNo: Code[50];
         LotNo: Code[50];
         LotNo1: Code[50];
         LotNo2: Code[50];
         LotQty: Decimal;
+        LotExpirationDate: date;
     begin
         Clear(OldLotNo);
+        Clear(LotExpirationDate);
         LotNo := '';
         LotNo1 := '';
         LotNo2 := '';
+        AFDPSingleInstance.SetLotExpirationDate(LotExpirationDate);
         if IWXLPLine."License Plate No." = '' then
             exit(LotNo);
         if IWXLPHeader.Get(IWXLPLine."License Plate No.") then begin
@@ -245,21 +249,29 @@ codeunit 50304 "AFDP Item Dual UOM Management"
                         if WarehouseEntry."Lot No." <> '' then begin
                             LotQty := GetSummarizeLotQty(WarehouseEntry);
                             if LotQty <> 0 then
-                                if LotNo1 = '' then
-                                    LotNo1 := WarehouseEntry."Lot No."
-                                else
-                                    if LotNo2 = '' then
+                                if LotNo1 = '' then begin
+                                    LotNo1 := WarehouseEntry."Lot No.";
+                                    AFDPSingleInstance.SetLotExpirationDate(WarehouseEntry."Expiration Date");
+                                end else
+                                    if LotNo2 = '' then begin
                                         LotNo2 := WarehouseEntry."Lot No.";
-                            if (LotNo1 <> '') and (LotNo2 <> '') then
+                                        AFDPSingleInstance.SetLotExpirationDate(WarehouseEntry."Expiration Date");
+                                    end;
+
+                            if (LotNo1 <> '') and (LotNo2 <> '') then begin
+                                AFDPSingleInstance.SetLotExpirationDate(LotExpirationDate);
                                 exit(LotNo);
+                            end;
                         end;
                     OldLotNo := WarehouseEntry."Lot No.";
                 until WarehouseEntry.Next() = 0;
         end;
         if (LotNo1 <> '') and (LotNo2 = '') then
             exit(LotNo1)
-        else
+        else begin
+            AFDPSingleInstance.SetLotExpirationDate(LotExpirationDate);
             exit(LotNo);
+        end;
     end;
 
     local procedure GetSummarizeLotQty(var WarehouseEntry: Record "Warehouse Entry"): Decimal

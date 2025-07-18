@@ -14,6 +14,7 @@ tableextension 50314 "AFDP IWX LP Line" extends "IWX LP Line"
 
             trigger OnAfterValidate()
             var
+                AFDPSingleInstance: Codeunit "AFDP Single Instance";
                 LotNo: Code[50];
             begin
                 if (Type = Type::Item) and ("No." <> '') then begin
@@ -27,8 +28,11 @@ tableextension 50314 "AFDP IWX LP Line" extends "IWX LP Line"
                 UpdateCalledByFieldNameAfterValidate(FieldName("No."));
                 //---\\
                 LotNo := ItemDUUOMMgt.FindLotNoFromWarehouseEntry(Rec);
-                if (LotNo <> '') then
+                if (LotNo <> '') then begin
                     Validate("Lot No.", LotNo);
+                    if AFDPSingleInstance.GetLotExpirationDate() <> 0D then
+                        Validate("Expiration Date", AFDPSingleInstance.GetLotExpirationDate());
+                end;
                 //---\\
             end;
         }

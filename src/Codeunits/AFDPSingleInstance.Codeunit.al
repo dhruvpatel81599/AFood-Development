@@ -23,11 +23,21 @@ codeunit 50302 "AFDP Single Instance"
         exit(IsWarehousePostReceipt);
     end;
     //<<AFDP 05/31/2025 'Short Orders'
+    //>>AFDP 07/09/2025 'T0008-Receiving Enhancements'
+    procedure SetLotExpirationDate(SetValue: date)
+    begin
+        LotExpirationDate := SetValue;
+    end;
 
-
+    procedure GetLotExpirationDate(): Date
+    begin
+        exit(LotExpirationDate);
+    end;
+    //<<AFDP 07/09/2025 'T0008-Receiving Enhancements'
     var
         IsWarehousePostShipment: Boolean;
         IsWarehousePostReceipt: Boolean;
+        LotExpirationDate: date;
 }
 
 //AFDP 05/30/2025 'Short Orders'
