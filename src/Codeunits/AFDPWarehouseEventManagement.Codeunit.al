@@ -7,6 +7,8 @@ using Microsoft.Purchases.Document;
 using Microsoft.Purchases.Posting;
 using Microsoft.Inventory.Setup;
 using Microsoft.Sales.Posting;
+using System.Utilities;
+using Microsoft.Purchases.Pricing;
 
 codeunit 50301 "AFDP Warehouse EventManagement"
 {
@@ -220,12 +222,11 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure PurchaseLine_OnValidateQtyToReceiveOnAfterInitQty(var PurchaseLine: Record "Purchase Line"; var xPurchaseLine: Record "Purchase Line"; CallingFieldNo: Integer; var IsHandled: Boolean)
     var
         Text001: Label 'You cannot receive more than %1 base units for item no: %2';
-        Text002: Label 'You cannot receive more than %1 units for item no: %2';
     begin
         //>>AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
         if not OverReceiptProcessing(PurchaseLine) then begin
             if not CanReceiveQty(PurchaseLine) then
-                Error(Text002, PurchaseLine."Outstanding Quantity", PurchaseLine."No.");
+                Error(CannotReceiveErrorInfo(PurchaseLine));
 
             if not CanReceiveBaseQty(PurchaseLine) then
                 Error(Text001, PurchaseLine."Outstanding Qty. (Base)", PurchaseLine."No.");
@@ -299,6 +300,24 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             exit(false);
 
         exit(true);
+    end;
+
+    local procedure CannotReceiveErrorInfo(var PurchaseLine: Record "Purchase Line"): ErrorInfo
+    var
+        ErrorMesageManagement: Codeunit "Error Message Management";
+        QtyReceiveNotValidTitleLbl: Label 'Qty. to Receive isn''t valid';
+        Text008: Label 'You cannot receive more than %1 units for item no: %2';
+        QtyReceiveActionLbl: Label 'Set value to %1', comment = '%1=Qty. to Receive';
+        QtyReceiveActionDescriptionLbl: Label 'Corrects %1 value to %2', Comment = '%1 - Qty. to Receive field caption, %2 - Quantity';
+    begin
+        exit(ErrorMesageManagement.BuildActionableErrorInfo(
+            QtyReceiveNotValidTitleLbl,
+            StrSubstNo(Text008, PurchaseLine."Outstanding Quantity", PurchaseLine."No."),
+            PurchaseLine.RecordId,
+            StrSubstNo(QtyReceiveActionLbl, PurchaseLine."Outstanding Quantity"),
+            Codeunit::"Purchase Line - Price",
+            'SetPurchaseReceiveQty',
+            StrSubstNo(QtyReceiveActionDescriptionLbl, PurchaseLine.FieldCaption("Qty. to Receive"), PurchaseLine.Quantity)));
     end;
     //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
     #endregion Functions
