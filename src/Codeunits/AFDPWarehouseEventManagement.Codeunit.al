@@ -36,13 +36,13 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure SalesPost_OnPostUpdateOrderLineOnBeforeGetQuantityShipped(var TempSalesLine: Record "Sales Line"; var IsHandled: Boolean; var SalesHeader: Record "Sales Header")
     var
         InventorySetup: Record "Inventory Setup";
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 05/31/2025 'Short Orders'
         InventorySetup.Get();
         if not InventorySetup."AFDP Enable Sales Short" then
             exit;
-        if INVCSingleInstance.GetIsWarehousePostShipment() then begin
+        if AFDPSingleInstance.GetIsWarehousePostShipment() then begin
             TempSalesLine."Quantity Shipped" += TempSalesLine."Qty. to Ship";
             TempSalesLine."Qty. Shipped (Base)" += TempSalesLine."Qty. to Ship (Base)";
             TempSalesLine.Quantity := TempSalesLine."Quantity Shipped";
@@ -64,30 +64,30 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Whse. Post Shipment", 'OnPostSourceDocumentOnBeforePostSalesHeader', '', false, false)]
     local procedure SalesWhsePostShipment_OnPostSourceDocumentOnBeforePostSalesHeader(var SalesPost: Codeunit "Sales-Post"; var SalesHeader: Record "Sales Header"; WhseShptHeader: Record "Warehouse Shipment Header"; var CounterSourceDocOK: Integer; var WhsePostParameters: Record "Whse. Post Parameters"; var IsHandled: Boolean)
     var
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
-        INVCSingleInstance.SetIsWarehousePostShipment(true);
+        AFDPSingleInstance.SetIsWarehousePostShipment(true);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Whse. Post Shipment", 'OnPostSourceDocumentOnBeforePrintSalesDocuments', '', false, false)]
     local procedure SalesWhsePostShipment_OnPostSourceDocumentOnBeforePrintSalesDocuments(LastShippingNo: Code[20])
     var
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
-        INVCSingleInstance.SetIsWarehousePostShipment(false);
+        AFDPSingleInstance.SetIsWarehousePostShipment(false);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Shipment", 'OnBeforeDeleteUpdateWhseShptLine', '', false, false)]
     local procedure WhsePostShipment_OnBeforeDeleteUpdateWhseShptLine(WhseShptLine: Record "Warehouse Shipment Line"; var DeleteWhseShptLine: Boolean; var WhseShptLineBuf: Record "Warehouse Shipment Line")
     var
         InventorySetup: Record "Inventory Setup";
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
         if not InventorySetup."AFDP Enable Sales Short" then
             exit;
-        if INVCSingleInstance.GetIsWarehousePostShipment() then
+        if AFDPSingleInstance.GetIsWarehousePostShipment() then
             if not DeleteWhseShptLine then begin
                 WhseShptLineBuf."Qty. Outstanding" := WhseShptLineBuf."Qty. to Ship";
                 DeleteWhseShptLine := true;
@@ -100,13 +100,13 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     var
         InventorySetup: Record "Inventory Setup";
         WhseShptLine: Record "Warehouse Shipment Line";
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
         if not InventorySetup."AFDP Enable Sales Short" then
             exit;
-        if INVCSingleInstance.GetIsWarehousePostShipment() then begin
+        if AFDPSingleInstance.GetIsWarehousePostShipment() then begin
             WhseShptLine.SetRange("No.", WhseShptHeaderParam."No.");
             WhseShptLine.SetRange("Qty. Shipped", 0);
             WhseShptLine.DeleteAll();
@@ -124,13 +124,13 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure PurchPost_OnPostUpdateOrderLineOnPurchHeaderReceive(var TempPurchLine: Record "Purchase Line"; PurchRcptHeader: Record "Purch. Rcpt. Header")
     var
         InventorySetup: Record "Inventory Setup";
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
         if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
-        if INVCSingleInstance.GetIsWarehousePostReceipt() then begin
+        if AFDPSingleInstance.GetIsWarehousePostReceipt() then begin
             TempPurchLine.Quantity := TempPurchLine."Quantity Received";
             TempPurchLine."Quantity (Base)" := TempPurchLine."Qty. Received (Base)";
             if TempPurchLine.Quantity = 0 then begin
@@ -149,30 +149,30 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Receipt", 'OnPostSourceDocumentOnBeforePostPurchaseHeader', '', false, false)]
     local procedure PurchWhsePostShipment_OnPostSourceDocumentOnBeforePostPurchaseHeader(var PurchHeader: Record "Purchase Header"; WhseRcptHeader: Record "Warehouse Receipt Header"; SuppressCommit: Boolean; var CounterSourceDocOK: Integer; var IsHandled: Boolean)
     var
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
-        INVCSingleInstance.SetIsWarehousePostReceipt(true);
+        AFDPSingleInstance.SetIsWarehousePostReceipt(true);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Receipt", 'OnPostSourceDocumentOnAfterPostPurchaseHeader', '', false, false)]
     local procedure PurchWhsePostShipment_OnPostSourceDocumentOnAfterPostPurchaseHeader(PurchaseHeader: record "Purchase Header")
     var
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
-        INVCSingleInstance.SetIsWarehousePostReceipt(false);
+        AFDPSingleInstance.SetIsWarehousePostReceipt(false);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Receipt", 'OnBeforePostUpdateWhseRcptLine', '', false, false)]
     local procedure WhsePostReceipt_OnBeforePostUpdateWhseRcptLine(var WarehouseReceiptLine: Record "Warehouse Receipt Line"; var WarehouseReceiptLineBuf: Record "Warehouse Receipt Line"; var DeleteWhseRcptLine: Boolean; var WarehouseReceiptHeader: Record "Warehouse Receipt Header")
     var
         InventorySetup: Record "Inventory Setup";
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
         if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
-        if INVCSingleInstance.GetIsWarehousePostReceipt() then
+        if AFDPSingleInstance.GetIsWarehousePostReceipt() then
             if not DeleteWhseRcptLine then begin
                 WarehouseReceiptLineBuf."Qty. Outstanding" := WarehouseReceiptLineBuf."Qty. to Receive";
                 DeleteWhseRcptLine := true;
@@ -185,13 +185,13 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     var
         InventorySetup: Record "Inventory Setup";
         WarehouseReceiptLine: Record "Warehouse Receipt Line";
-        INVCSingleInstance: Codeunit "AFDP Single Instance";
+        AFDPSingleInstance: Codeunit "AFDP Single Instance";
     begin
         //>>AFDP 06/01/2025 'Short Orders'
         InventorySetup.Get();
         if not InventorySetup."AFDP Enable Purchase Short" then
             exit;
-        if INVCSingleInstance.GetIsWarehousePostReceipt() then begin
+        if AFDPSingleInstance.GetIsWarehousePostReceipt() then begin
             WarehouseReceiptLine.SetRange("No.", WhseReceiptHeader."No.");
             WarehouseReceiptLine.SetRange("Qty. Received", 0);
             WarehouseReceiptLine.DeleteAll();
