@@ -1,5 +1,5 @@
 namespace AFood.DP.AFoodDevelopment;
-codeunit 50302 "INVC Single Instance"
+codeunit 50302 "AFDP Single Instance"
 {
     SingleInstance = true;
     //>>AFDP 05/31/2025 'Short Orders'
@@ -33,11 +33,23 @@ codeunit 50302 "INVC Single Instance"
     begin
         exit(IsRunFromItemTrackingImport);
     end;
-    //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
+    //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'        
+    //>>AFDP 07/09/2025 'T0008-Receiving Enhancements'
+    procedure SetLotExpirationDate(SetValue: date)
+    begin
+        LotExpirationDate := SetValue;
+    end;
+
+    procedure GetLotExpirationDate(): Date
+    begin
+        exit(LotExpirationDate);
+    end;
+    //<<AFDP 07/09/2025 'T0008-Receiving Enhancements'
     var
         IsWarehousePostShipment: Boolean;
         IsWarehousePostReceipt: Boolean;
         IsRunFromItemTrackingImport: Boolean;
+        LotExpirationDate: date;
 }
 
 //AFDP 05/30/2025 'Short Orders'
