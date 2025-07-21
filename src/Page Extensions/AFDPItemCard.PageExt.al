@@ -14,6 +14,17 @@ pageextension 50312 "AFDP Item Card" extends "Item Card"
                 Editable = false;
             }
         }
+        //>>AFDP 07/19/2025 'T0005-Customer Lot Preference'
+        addlast(ItemTracking)
+        {
+            field("AFDP Default Sales Shelf Life"; Rec."AFDP Default Sales Shelf Life")
+            {
+                Caption = 'Default Sales Shelf Life';
+                ApplicationArea = ItemTracking;
+                ToolTip = 'Default Sales Shelf Life';
+            }
+        }
+        //<<AFDP 07/19/2025 'T0005-Customer Lot Preference'
     }
 }
 

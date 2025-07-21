@@ -1,6 +1,6 @@
 namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Inventory.Item;
-report 50303 "INVC Item Number Rename"
+report 50303 "AFDP Item Number Rename"
 {
     Caption = 'Item Number Rename';
     ProcessingOnly = true;
