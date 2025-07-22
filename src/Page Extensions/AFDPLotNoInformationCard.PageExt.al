@@ -1,21 +1,12 @@
 namespace AFood.DP.AFoodDevelopment;
-using Microsoft.Inventory.Item;
-pageextension 50312 "AFDP Item Card" extends "Item Card"
+
+using Microsoft.Inventory.Tracking;
+pageextension 50320 "AFDP Lot No Information Card" extends "Lot No. Information Card"
 {
     layout
     {
-        addlast(Item)
-        {
-            field("AFDP Old Item No."; Rec."AFDP Old Item No.")
-            {
-                ApplicationArea = all;
-                Caption = 'Old Item No.';
-                ToolTip = 'Specify the old item number for AFDP';
-                Editable = false;
-            }
-        }
-        //>>AFDP 07/19/2025 'T0005-Customer Lot Preference'
-        addlast(ItemTracking)
+        //>>AFDP 07/22/2025 'T0005-Customer Lot Preference'
+        addlast(General)
         {
             field("AFDP Default Sales Shelf Life"; Rec."AFDP Default Sales Shelf Life")
             {
@@ -36,8 +27,8 @@ pageextension 50312 "AFDP Item Card" extends "Item Card"
                 ToolTip = 'Plant Number';
             }
         }
-        //<<AFDP 07/19/2025 'T0005-Customer Lot Preference'
+        //<<AFDP 07/22/2025 'T0005-Customer Lot Preference'
     }
 }
 
-//AFDP 06/11/2025 'T0006-Item Number Rename'
+//AFDP 07/22/2025 'T0005-Customer Lot Preference'
