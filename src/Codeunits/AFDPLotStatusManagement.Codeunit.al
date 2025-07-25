@@ -140,7 +140,10 @@ codeunit 50307 "AFDP Lot Status Management"
             CustomerLotPreferenceShelfLifeDays := (CalcDate(CustomerLotPreferenceShelfLife, Today) - Today);
         //------------------------------------------------------\\
         Clear(NoOfDaysRemaining);
-        NoOfDaysRemaining := LotExpirationDate - Today;
+        if ShipmentDate = 0D then
+            ShipmentDate := Today; // Default to today if no shipment date is set
+        // NoOfDaysRemaining := LotExpirationDate - Today;
+        NoOfDaysRemaining := LotExpirationDate - ShipmentDate;
         //--Check Customer Shelf Life Is Valid--\\
         if CustomerLotPreferenceShelfLifeDays <> 0 then
             if NoOfDaysRemaining >= CustomerLotPreferenceShelfLifeDays then
