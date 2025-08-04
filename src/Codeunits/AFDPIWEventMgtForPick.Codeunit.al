@@ -1,3 +1,5 @@
+//>>AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
+/*
 namespace AFood.DP.AFoodDevelopment;
 
 using Microsoft.Inventory.Tracking;
@@ -293,3 +295,5 @@ codeunit 50306 "AFDP IW Event Mgt. For Pick"
 }
 
 //AFDP 07/14/2025 'T0013-Dual UOM on Handheld-Pick'
+*/
+//<<AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
