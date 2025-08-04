@@ -1,7 +1,10 @@
+//>>AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
+/*
 namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Sales.Document;
 using Microsoft.Inventory.Tracking;
 using Microsoft.Inventory.Transfer;
+
 pageextension 50319 "AFDP IWX License Plate Subform" extends "IWX License Plate Subform"
 {
     layout
@@ -61,3 +64,5 @@ pageextension 50319 "AFDP IWX License Plate Subform" extends "IWX License Plate 
 }
 
 //AFDP 07/01/2025 'T0008-Receiving Enhancements'
+*/
+//<<AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
