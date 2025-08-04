@@ -1,3 +1,5 @@
+//>>AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
+/*
 namespace AFood.DP.AFoodDevelopment;
 
 using Microsoft.Inventory.Tracking;
@@ -103,34 +105,6 @@ codeunit 50305 "AFDP IW Event Management"
         OverrideWHI := true;
     end;
 
-    /*
-    local procedure AFDPIWUpdateDUCaseQtyOnLPLine(var IWXEventParam: Record "IWX Event Param"; var Output: BigText; var OverrideWHI: Boolean)
-    var
-        LPNo: Code[20];
-        ItemNo: Code[20];
-        CaseQty: Decimal;
-    begin
-        //--Check Dual Units Item or not--\\
-        if not this.IsDUUnitsItem(IWXEventParam) then
-            exit;
-        //------\\        
-        CaseQty := this.GetDUUnitsCase(IWXEventParam);
-        if CaseQty = 0 then begin
-            Output.AddText(this.GenerateError(this.GetCaseQtyRequiredErr()));
-            OverrideWHI := true;
-            exit;
-        end;
-        //-------\\        
-        // indicate the event has been handled
-        OverrideWHI := true;
-        // get the variables/data required to execute the procedure        
-        LPNo := Copystr(IWXEventParam.GetExtendedValue('lp_number'), 1, MaxStrLen(LPNo));
-        ItemNo := GetItemNo(IWXEventParam);
-        //--Update Case Qty On LP Line--\\
-        UpdateCaseQtyOnLPLine(LPNo, ItemNo, CaseQty);
-        //----\\
-    end;
-    */
     local procedure AFDPIWUpdateDUCaseQtyOnLPLine(var IWXEventParam: Record "IWX Event Param"; var Output: BigText)
     var
         WHICommonFunction: Codeunit "WHI Common Functions";
@@ -539,3 +513,5 @@ codeunit 50305 "AFDP IW Event Management"
 }
 
 //AFDP 07/09/2025 'T0011-Dual UOM on Handheld-For LP'
+*/
+//<<AFDP 08/04/2025 'T0017-Remove Insight Work
