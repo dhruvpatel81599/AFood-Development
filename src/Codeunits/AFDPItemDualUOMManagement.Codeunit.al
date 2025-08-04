@@ -163,6 +163,8 @@ codeunit 50304 "AFDP Item Dual UOM Management"
         exit(0.00001);
     end;
 
+    //>>AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
+    /*
     procedure GetBinCodeFromLPHeader(var IWXLPLine: Record "IWX LP Line"): Code[20]
     var
         IWXLPHeader: Record "IWX LP Header";
@@ -272,7 +274,7 @@ codeunit 50304 "AFDP Item Dual UOM Management"
             AFDPSingleInstance.SetLotExpirationDate(LotExpirationDate);
             exit(LotNo);
         end;
-    end;
+    end;    
 
     local procedure GetSummarizeLotQty(var WarehouseEntry: Record "Warehouse Entry"): Decimal
     var
@@ -293,6 +295,8 @@ codeunit 50304 "AFDP Item Dual UOM Management"
         else
             exit(0);
     end;
+    */
+    //<<AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
     #endregion Functions
 }
 

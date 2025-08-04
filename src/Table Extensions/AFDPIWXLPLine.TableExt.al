@@ -1,3 +1,5 @@
+//>>AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
+/*
 namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Inventory.Item;
 using Microsoft.Purchases.Document;
@@ -130,3 +132,5 @@ tableextension 50314 "AFDP IWX LP Line" extends "IWX LP Line"
 }
 
 //AFDP 07/01/2025 'T0008-Receiving Enhancements'
+*/
+//<<AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
