@@ -514,4 +514,4 @@ codeunit 50305 "AFDP IW Event Management"
 
 //AFDP 07/09/2025 'T0011-Dual UOM on Handheld-For LP'
 */
-//<<AFDP 08/04/2025 'T0017-Remove Insight Work
+//<<AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
