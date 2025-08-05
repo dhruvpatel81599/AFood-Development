@@ -23,10 +23,12 @@ pageextension 50321 "AFDP Whse Shipment Subform" extends "Whse. Shipment Subform
         }
         //<<AFDP 08/04/2025 'T0014-Warehouse Shipment – Edit Qty'
     }
-    trigger OnOpenPage()
+    trigger OnAfterGetRecord()
     begin
+        // Ensure the fields are updated when the record is retrieved
         Rec."AFDP Cases to Allocate" := rec.Units_DU_TSL;
         Rec."AFDP Qty. to Allocate" := Rec.Quantity;
+        CurrPage.Update();
     end;
 }
 
