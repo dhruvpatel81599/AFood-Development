@@ -11,6 +11,20 @@ tableextension 50310 "AFDP Item" extends Item
             ToolTip = 'Specify the old item number for AFDP';
             Editable = false;
         }
+        //>>AFDP 07/19/2025 'T0005-Customer Lot Preference'
+        field(50301; "AFDP Default Sales Shelf Life"; DateFormula)
+        {
+            Caption = 'Default Sales Shelf Life';
+        }
+        field(50302; "AFDP Plant Number Mandatory"; Boolean)
+        {
+            Caption = 'Plant Number Mandatory';
+        }
+        field(50303; "AFDP Plant Number"; Enum "AFDP Plant Number Option")
+        {
+            Caption = 'Plant Number';
+        }
+        //<<AFDP 07/19/2025 'T0005-Customer Lot Preference'        
     }
 }
 

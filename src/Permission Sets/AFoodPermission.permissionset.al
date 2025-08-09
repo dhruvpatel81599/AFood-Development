@@ -1,4 +1,7 @@
 namespace AFood.DP.AFoodDevelopment;
+
+using AFood.DP.AFoodDevelopment;
+
 permissionset 50300 AFoodPermission
 {
     Assignable = true;
@@ -17,7 +20,11 @@ permissionset 50300 AFoodPermission
         codeunit "AFDP Single Instance" = X,
         tabledata "AFDP Warehouse Entries" = RIMD,
         table "AFDP Warehouse Entries" = X,
-        report "INVC Item Number Rename" = X,
+        report "AFDP Item Number Rename" = X,
         page "AFDP Item Tracking ImportEntry" = X,
-        page "AFDP Short Purchase Order" = X;
+        page "AFDP Short Purchase Order" = X,
+        tabledata "AFDP Customer Lot Preferences" = RIMD,
+        table "AFDP Customer Lot Preferences" = X,
+        codeunit "AFDP Item Dual UOM Management" = X,
+        page "AFDP Warehouse Entries" = X;
 }
