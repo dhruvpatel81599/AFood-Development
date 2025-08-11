@@ -1,5 +1,6 @@
 namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Warehouse.Reports;
+using Microsoft.Warehouse.Setup;
 
 reportextension 50300 "AFDP Picking List" extends "Picking List"
 {
@@ -8,6 +9,14 @@ reportextension 50300 "AFDP Picking List" extends "Picking List"
         add(WhseActLine)
         {
             column(Units_DU_TSL; Units_DU_TSL) { }
+        }
+        modify(WhseActLine)
+        {
+            trigger OnBeforeAfterGetRecord()
+            begin
+                if WhseActLine."Action Type" <> WhseActLine."Action Type"::Take then
+                    CurrReport.Skip();
+            end;
         }
     }
 
