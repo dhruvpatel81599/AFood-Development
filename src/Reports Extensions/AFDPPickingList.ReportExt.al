@@ -9,6 +9,7 @@ reportextension 50300 "AFDP Picking List" extends "Picking List"
         add(WhseActLine)
         {
             column(Units_DU_TSL; Units_DU_TSL) { }
+            column(Expiration_Date; "Expiration Date") { }
         }
         modify(WhseActLine)
         {
