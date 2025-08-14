@@ -13,6 +13,18 @@
             "enableSqlInformationDebugger": true,
             "tenant": "4c53bb4d-5a6b-4d5c-92d6-6db6076d4474",
             "schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "AF_Test_7112025",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "AF_Test_7112025",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "tenant": "4c53bb4d-5a6b-4d5c-92d6-6db6076d4474"
         }
     ]
 }
