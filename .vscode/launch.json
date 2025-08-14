@@ -14,11 +14,11 @@
             "tenant": "4c53bb4d-5a6b-4d5c-92d6-6db6076d4474"
         },
         {
-            "name": "Sandbox",
+            "name": "AF_Mock_GoLive",
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "Sandbox",
+            "environmentName": "AF_Mock_GoLive",
             "breakOnError": "All",
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
