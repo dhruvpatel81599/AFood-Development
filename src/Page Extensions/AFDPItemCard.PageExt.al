@@ -28,13 +28,22 @@ pageextension 50312 "AFDP Item Card" extends "Item Card"
                 Caption = 'Plant Number Mandatory';
                 ApplicationArea = ItemTracking;
                 ToolTip = 'Plant Number Mandatory';
+                //>>AFDP 08/26/2025 'T0022-Plant Number'
+                trigger OnValidate()
+                begin
+                    CurrPage.Update();
+                end;
+                //<<AFDP 08/26/2025 'T0022-Plant Number'
             }
-            field("AFDP Plant Number"; Rec."AFDP Plant Number")
+            //>>AFDP 08/26/2025 'T0022-Plant Number'
+            field("AFDP Default Plant Number"; Rec."AFDP Default Plant Number")
             {
-                Caption = 'Plant Number';
+                Caption = 'Default Plant Number';
                 ApplicationArea = ItemTracking;
-                ToolTip = 'Plant Number';
+                ToolTip = 'Default Plant Number';
+                Enabled = rec."AFDP Plant Number Mandatory";
             }
+            //<<AFDP 08/26/2025 'T0022-Plant Number'
         }
         //<<AFDP 07/19/2025 'T0005-Customer Lot Preference'
     }

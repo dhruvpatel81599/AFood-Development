@@ -1,0 +1,29 @@
+namespace AFood.DP.AFoodDevelopment;
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Tracking;
+pageextension 50324 "AFDP Reservation Entries" extends "Reservation Entries"
+{
+    layout
+    {
+        addafter("Lot No.")
+        {
+            //>>AFDP 08/26/2025 'T0022-Plant Number'
+            field("AFDP Plant Number Mandatory"; Rec."AFDP Plant Number Mandatory")
+            {
+                Caption = 'Plant Number Mandatory';
+                ApplicationArea = ItemTracking;
+                ToolTip = 'Plant Number Mandatory';
+            }
+            field("AFDP Default Plant Number"; Rec."AFDP Default Plant Number")
+            {
+                Caption = 'Default Plant Number';
+                ApplicationArea = ItemTracking;
+                ToolTip = 'Default Plant Number';
+                Enabled = Rec."AFDP Plant Number Mandatory";
+            }
+            //<<AFDP 08/26/2025 'T0022-Plant Number'
+        }
+    }
+}
+
+//AFDP 08/26/2025 'T0022-Plant Number'
