@@ -252,15 +252,22 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         //<<AFDP 08/26/2025 'T0022-Plant Number'
     end;
 
-    [EventSubscriber(ObjectType::Page, page::"Item Tracking Lines", 'OnWriteToDataOnBeforeCommit', '', false, false)]
-    local procedure ItemTrackingLines_OnWriteToDataOnBeforeCommit(var TrackingSpecification: Record "Tracking Specification"; var TempReservEntry: Record "Reservation Entry")
+    [EventSubscriber(ObjectType::Page, page::"Item Tracking Lines", 'OnBeforeQueryClosePage', '', false, false)]
+    local procedure ItemTrackingLines_OnBeforeQueryClosePage(var TrackingSpecification: Record "Tracking Specification"; var TotalItemTrackingLine: Record "Tracking Specification"; var TempReservationEntry: Record "Reservation Entry" temporary; var UndefinedQtyArray: array[3] of Decimal; var SourceQuantityArray: array[5] of Decimal; var CurrentRunMode: Enum "Item Tracking Run Mode"; var IsHandled: Boolean)
     begin
-        //>>AFDP 08/26/2025 'T0022-Plant Number'
-        if TrackingSpecification.Find('-') then
+        //>>AFDP 08/26/2025 'T0022-Plant Number'  
+        TotalItemTrackingLine.Reset();
+        TotalItemTrackingLine.SetRange("Item No.", TrackingSpecification."Item No.");
+        TotalItemTrackingLine.SetRange("Source ID", TrackingSpecification."Source ID");
+        TotalItemTrackingLine.SetRange("Source Type", TrackingSpecification."Source Type");
+        TotalItemTrackingLine.SetRange("Source Subtype", TrackingSpecification."Source Subtype");
+        TotalItemTrackingLine.SetRange("Source Type", TrackingSpecification."Source Type");
+        TotalItemTrackingLine.SetRange("Source Ref. No.", TrackingSpecification."Source Ref. No.");
+        if TotalItemTrackingLine.FindSet() then
             repeat
-                if not IsPlantNumberValid(TrackingSpecification."Item No.", TrackingSpecification."AFDP Default Plant Number") then
-                    Error('Plant Number is mandatory for Item No: %1', TrackingSpecification."Item No.");
-            until TrackingSpecification.Next() = 0;
+                if not IsPlantNumberValid(TotalItemTrackingLine."Item No.", TotalItemTrackingLine."AFDP Default Plant Number") then
+                    Error('Plant Number is mandatory for Item No: %1', TotalItemTrackingLine."Item No.");
+            until TotalItemTrackingLine.Next() = 0;
         //<<AFDP 08/26/2025 'T0022-Plant Number'
     end;
     #endregion EventSubscribers
