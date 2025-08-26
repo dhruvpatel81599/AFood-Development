@@ -1,6 +1,8 @@
 namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Sales.Document;
 using Microsoft.Purchases.History;
+using Microsoft.Inventory.Tracking;
+using Microsoft.Inventory.Item;
 using Microsoft.Warehouse.Posting;
 using Microsoft.Warehouse.Document;
 using Microsoft.Purchases.Document;
@@ -233,7 +235,34 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         end;
         //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
     end;
-    //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
+    //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'    
+    [EventSubscriber(ObjectType::Table, database::"Tracking Specification", 'OnBeforeUpdateTrackingSpecification', '', false, false)]
+    local procedure TrackingSpecification_OnBeforeUpdateTrackingSpecification(var TrackingSpecification: Record "Tracking Specification"; var FromTrackingSpecification: Record "Tracking Specification")
+    var
+        Item: Record Item;
+    begin
+        //>>AFDP 08/26/2025 'T0022-Plant Number'
+        if FromTrackingSpecification."Item No." <> '' then begin
+            Item.Get(FromTrackingSpecification."Item No.");
+            if FromTrackingSpecification."AFDP Plant Number Mandatory" <> Item."AFDP Plant Number Mandatory" then
+                FromTrackingSpecification."AFDP Plant Number Mandatory" := Item."AFDP Plant Number Mandatory";
+            if FromTrackingSpecification."AFDP Default Plant Number" <> Item."AFDP Default Plant Number" then
+                FromTrackingSpecification."AFDP Default Plant Number" := Item."AFDP Default Plant Number";
+        end;
+        //<<AFDP 08/26/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Page, page::"Item Tracking Lines", 'OnWriteToDataOnBeforeCommit', '', false, false)]
+    local procedure ItemTrackingLines_OnWriteToDataOnBeforeCommit(var TrackingSpecification: Record "Tracking Specification"; var TempReservEntry: Record "Reservation Entry")
+    begin
+        //>>AFDP 08/26/2025 'T0022-Plant Number'
+        if TrackingSpecification.Find('-') then
+            repeat
+                if not IsPlantNumberValid(TrackingSpecification."Item No.", TrackingSpecification."AFDP Default Plant Number") then
+                    Error('Plant Number is mandatory for Item No: %1', TrackingSpecification."Item No.");
+            until TrackingSpecification.Next() = 0;
+        //<<AFDP 08/26/2025 'T0022-Plant Number'
+    end;
     #endregion EventSubscribers
 
     #region Functions
@@ -320,6 +349,17 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             StrSubstNo(QtyReceiveActionDescriptionLbl, PurchaseLine.FieldCaption("Qty. to Receive"), PurchaseLine.Quantity)));
     end;
     //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
+    //>>AFDP 08/26/2025 'T0022-Plant Number'
+    local procedure IsPlantNumberValid(ItemNo: Code[20]; PlantNumber: Code[20]): Boolean
+    var
+        Item: Record Item;
+    begin
+        Item.Get(ItemNo);
+        if Item."AFDP Plant Number Mandatory" and (PlantNumber = '') then
+            exit(false);
+        exit(true);
+    end;
+    //<<AFDP 08/26/2025 'T0022-Plant Number'
     #endregion Functions
 }
 
