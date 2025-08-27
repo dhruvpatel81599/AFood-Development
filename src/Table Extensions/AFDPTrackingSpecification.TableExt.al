@@ -10,11 +10,12 @@ tableextension 50318 "AFDP Tracking Specification" extends "Tracking Specificati
         field(50300; "AFDP Plant Number Mandatory"; Boolean)
         {
             Caption = 'Plant Number Mandatory';
-            // Editable = false;
+            Editable = false;
         }
         field(50301; "AFDP Default Plant Number"; Code[20])
         {
             Caption = 'Default Plant Number';
+            Editable = false;
             trigger OnValidate()
             var
                 WMSManagement: Codeunit "WMS Management";
