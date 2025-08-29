@@ -377,25 +377,25 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         //<<AFDP 08/27/2025 'T0022-Plant Number'
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Lot No. Information", 'OnBeforeInsertEvent', '', false, false)]
-    local procedure LotNoInformation_OnBeforeInsertEvent(var Rec: Record "Lot No. Information"; RunTrigger: Boolean)
-    begin
-        //>>AFDP 08/27/2025 'T0022-Plant Number'        
-        if rec."Item No." <> '10021000007315' then
-            exit;
-        message('Lot No. Information Record Inserted For Item Number: %1', Rec."Item No.");
-        //<<AFDP 08/27/2025 'T0022-Plant Number'
-    end;
+    // [EventSubscriber(ObjectType::Table, Database::"Lot No. Information", 'OnBeforeInsertEvent', '', false, false)]
+    // local procedure LotNoInformation_OnBeforeInsertEvent(var Rec: Record "Lot No. Information"; RunTrigger: Boolean)
+    // begin
+    //     //>>AFDP 08/27/2025 'T0022-Plant Number'        
+    //     if rec."Item No." <> '10021000007315' then
+    //         exit;
+    //     message('Lot No. Information Record Inserted For Item Number: %1', Rec."Item No.");
+    //     //<<AFDP 08/27/2025 'T0022-Plant Number'
+    // end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Warehouse Activity Line", 'OnBeforeInsertEvent', '', false, false)]
-    local procedure WarehouseActivityLine_OnBeforeInsertEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
-    begin
-        //>>AFDP 08/27/2025 'T0022-Plant Number'        
-        if rec."Item No." <> '10021000007315' then
-            exit;
-        message('Warehouse Activity Line Record Inserted For Item Number: %1', Rec."Item No.");
-        //<<AFDP 08/27/2025 'T0022-Plant Number'
-    end;
+    // [EventSubscriber(ObjectType::Table, Database::"Warehouse Activity Line", 'OnBeforeInsertEvent', '', false, false)]
+    // local procedure WarehouseActivityLine_OnBeforeInsertEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
+    // begin
+    //     //>>AFDP 08/27/2025 'T0022-Plant Number'        
+    //     if rec."Item No." <> '10021000007315' then
+    //         exit;
+    //     message('Warehouse Activity Line Record Inserted For Item Number: %1', Rec."Item No.");
+    //     //<<AFDP 08/27/2025 'T0022-Plant Number'
+    // end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create Pick", 'OnBeforeTempWhseActivLineInsert', '', false, false)]
     local procedure CreatePick_OnBeforeTempWhseActivLineInsert(var TempWarehouseActivityLine: Record "Warehouse Activity Line" temporary; ActionType: Integer; WhseSource2: Option)
@@ -422,6 +422,18 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         LotNoInfo."AFDP Plant Number Mandatory" := TrackingSpecification."AFDP Plant Number Mandatory";
         LotNoInfo."AFDP Default Plant Number" := TrackingSpecification."AFDP Default Plant Number";
         LotNoInfo.Modify();
+        //<<AFDP 08/29/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", 'OnAfterRegWhseItemTrkgLine', '', false, false)]
+    local procedure WhseActivityRegister_OnAfterRegWhseItemTrkgLine(var WhseActivLine2: Record "Warehouse Activity Line"; var TempTrackingSpecification: Record "Tracking Specification" temporary)
+    begin
+        //>>AFDP 08/29/2025 'T0022-Plant Number'
+        if WhseActivLine2."Lot No." = '' then
+            exit;
+        TempTrackingSpecification."AFDP Plant Number Mandatory" := WhseActivLine2."AFDP Plant Number Mandatory";
+        TempTrackingSpecification."AFDP Default Plant Number" := WhseActivLine2."AFDP Default Plant Number";
+        TempTrackingSpecification.Modify();
         //<<AFDP 08/29/2025 'T0022-Plant Number'
     end;
 
