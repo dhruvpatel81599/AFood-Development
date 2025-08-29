@@ -415,6 +415,16 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         //<<AFDP 08/29/2025 'T0022-Plant Number'
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Tracking Management", 'OnAfterCreateLotInformation', '', false, false)]
+    local procedure ItemTrackingManagement_OnAfterCreateLotInformation(var LotNoInfo: Record "Lot No. Information"; var TrackingSpecification: Record "Tracking Specification")
+    begin
+        //>>AFDP 08/29/2025 'T0022-Plant Number'
+        LotNoInfo."AFDP Plant Number Mandatory" := TrackingSpecification."AFDP Plant Number Mandatory";
+        LotNoInfo."AFDP Default Plant Number" := TrackingSpecification."AFDP Default Plant Number";
+        LotNoInfo.Modify();
+        //<<AFDP 08/29/2025 'T0022-Plant Number'
+    end;
+
     // [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnBeforeInsertEvent', '', false, false)]
     // local procedure ReservationEntry_OnBeforeInsertEvent(var Rec: Record "Reservation Entry"; RunTrigger: Boolean)
     // begin
