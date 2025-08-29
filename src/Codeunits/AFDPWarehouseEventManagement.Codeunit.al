@@ -425,6 +425,18 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         //<<AFDP 08/29/2025 'T0022-Plant Number'
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", 'OnAfterRegWhseItemTrkgLine', '', false, false)]
+    local procedure WhseActivityRegister_OnAfterRegWhseItemTrkgLine(var WhseActivLine2: Record "Warehouse Activity Line"; var TempTrackingSpecification: Record "Tracking Specification" temporary)
+    begin
+        //>>AFDP 08/29/2025 'T0022-Plant Number'
+        if WhseActivLine2."Lot No." = '' then
+            exit;
+        TempTrackingSpecification."AFDP Plant Number Mandatory" := WhseActivLine2."AFDP Plant Number Mandatory";
+        TempTrackingSpecification."AFDP Default Plant Number" := WhseActivLine2."AFDP Default Plant Number";
+        TempTrackingSpecification.Modify();
+        //<<AFDP 08/29/2025 'T0022-Plant Number'
+    end;
+
     // [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnBeforeInsertEvent', '', false, false)]
     // local procedure ReservationEntry_OnBeforeInsertEvent(var Rec: Record "Reservation Entry"; RunTrigger: Boolean)
     // begin
