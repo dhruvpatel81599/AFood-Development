@@ -397,6 +397,24 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         //<<AFDP 08/27/2025 'T0022-Plant Number'
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create Pick", 'OnBeforeTempWhseActivLineInsert', '', false, false)]
+    local procedure CreatePick_OnBeforeTempWhseActivLineInsert(var TempWarehouseActivityLine: Record "Warehouse Activity Line" temporary; ActionType: Integer; WhseSource2: Option)
+    var
+        LotNoInfo: Record "Lot No. Information";
+    begin
+        //>>AFDP 08/29/2025 'T0022-Plant Number'
+        LotNoInfo.Reset();
+        LotNoInfo.SetRange("Item No.", TempWarehouseActivityLine."Item No.");
+        LotNoInfo.SetRange("Lot No.", TempWarehouseActivityLine."Lot No.");
+        if LotNoInfo.IsEmpty() then
+            exit;
+        if LotNoInfo.FindFirst() then begin
+            TempWarehouseActivityLine."AFDP Plant Number Mandatory" := LotNoInfo."AFDP Plant Number Mandatory";
+            TempWarehouseActivityLine."AFDP Default Plant Number" := LotNoInfo."AFDP Default Plant Number";
+        end;
+        //<<AFDP 08/29/2025 'T0022-Plant Number'
+    end;
+
     // [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnBeforeInsertEvent', '', false, false)]
     // local procedure ReservationEntry_OnBeforeInsertEvent(var Rec: Record "Reservation Entry"; RunTrigger: Boolean)
     // begin
