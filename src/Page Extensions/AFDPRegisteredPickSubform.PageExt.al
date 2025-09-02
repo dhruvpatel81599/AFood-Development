@@ -18,9 +18,9 @@ pageextension 50326 "AFDP Registered Pick Subform" extends "Registered Pick Subf
             }
             field("AFDP Default Plant Number"; Rec."AFDP Default Plant Number")
             {
-                Caption = 'Default Plant Number';
+                Caption = 'Plant Number';
                 ApplicationArea = ItemTracking;
-                ToolTip = 'Default Plant Number';
+                ToolTip = 'Plant Number';
                 Enabled = Rec."AFDP Plant Number Mandatory";
             }
             //<<AFDP 08/29/2025 'T0022-Plant Number'

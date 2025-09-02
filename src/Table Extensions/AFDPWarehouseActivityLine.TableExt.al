@@ -13,7 +13,7 @@ tableextension 50320 "AFDP Warehouse Activity Line" extends "Warehouse Activity 
         }
         field(50301; "AFDP Default Plant Number"; Code[20])
         {
-            Caption = 'Default Plant Number';
+            Caption = 'Plant Number';
         }
         //<<AFDP 08/27/2025 'T0022-Plant Number'        
         //>>AFDP 08/28/2025 'T0021-Show License Plate on Pick'

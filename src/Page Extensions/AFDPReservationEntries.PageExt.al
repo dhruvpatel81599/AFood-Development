@@ -16,10 +16,10 @@ pageextension 50324 "AFDP Reservation Entries" extends "Reservation Entries"
             }
             field("AFDP Default Plant Number"; Rec."AFDP Default Plant Number")
             {
-                Caption = 'Default Plant Number';
+                Caption = 'Plant Number';
                 ApplicationArea = ItemTracking;
-                ToolTip = 'Default Plant Number';
-                Enabled = Rec."AFDP Plant Number Mandatory";
+                ToolTip = 'Plant Number';
+                // Enabled = Rec."AFDP Plant Number Mandatory";
             }
             //<<AFDP 08/26/2025 'T0022-Plant Number'
         }
