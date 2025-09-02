@@ -16,9 +16,9 @@ pageextension 50323 "AFDP Item Tracking Lines" extends "Item Tracking Lines"
             }
             field("AFDP Default Plant Number"; Rec."AFDP Default Plant Number")
             {
-                Caption = 'Default Plant Number';
+                Caption = 'Plant Number';
                 ApplicationArea = ItemTracking;
-                ToolTip = 'Default Plant Number';
+                ToolTip = 'Plant Number';
                 // Enabled = Rec."AFDP Plant Number Mandatory";
                 trigger OnValidate()
                 begin

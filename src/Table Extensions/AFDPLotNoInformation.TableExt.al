@@ -21,7 +21,7 @@ tableextension 50315 "AFDP Lot No. Information" extends "Lot No. Information"
         // }
         field(50303; "AFDP Default Plant Number"; Code[20])
         {
-            Caption = 'Default Plant Number';
+            Caption = 'Plant Number';
         }
         //<<AFDP 08/26/2025 'T0022-Plant Number'
         //<<AFDP 07/22/2025 'T0005-Customer Lot Preference'

@@ -28,9 +28,9 @@ pageextension 50320 "AFDP Lot No Information Card" extends "Lot No. Information 
             }
             field("AFDP Default Plant Number"; Rec."AFDP Default Plant Number")
             {
-                Caption = 'Default Plant Number';
+                Caption = 'Plant Number';
                 ApplicationArea = ItemTracking;
-                ToolTip = 'Default Plant Number';
+                ToolTip = 'Plant Number';
                 Enabled = rec."AFDP Plant Number Mandatory";
             }
         }
