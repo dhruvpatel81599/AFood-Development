@@ -8,6 +8,7 @@ using Microsoft.Purchases.Posting;
 using Microsoft.Inventory.Setup;
 using Microsoft.Sales.Posting;
 using System.Utilities;
+using Microsoft.Warehouse.Activity;
 using Microsoft.Purchases.Pricing;
 
 codeunit 50301 "AFDP Warehouse EventManagement"
@@ -234,6 +235,17 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
     end;
     //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
+    //>>AFDP 09/03/2025 'T0021-Show License Plate on Pick'
+    [EventSubscriber(ObjectType::Table, Database::"Warehouse Activity Line", 'OnAfterInsertEvent', '', false, false)]
+    local procedure SalesLine_OnAfterModifyEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
+    begin
+        if Rec.IsTemporary then
+            exit;
+        if not RunTrigger then
+            exit;
+        SetLicensePlateOnWarehouseActivityLine(Rec);
+    end;
+    //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
     #endregion EventSubscribers
 
     #region Functions
@@ -320,6 +332,21 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             StrSubstNo(QtyReceiveActionDescriptionLbl, PurchaseLine.FieldCaption("Qty. to Receive"), PurchaseLine.Quantity)));
     end;
     //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
+    //>>AFDP 09/03/2025 'T0021-Show License Plate on Pick'
+    local procedure SetLicensePlateOnWarehouseActivityLine(var WarehouseActivityLine: Record "Warehouse Activity Line")
+    var
+        MobLicensePlateContent: Record "MOB License Plate Content";
+    begin
+        MobLicensePlateContent.Reset();
+        MobLicensePlateContent.SetRange("No.", WarehouseActivityLine."Item No.");
+        MobLicensePlateContent.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
+        MobLicensePlateContent.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        if MobLicensePlateContent.FindFirst() then begin
+            WarehouseActivityLine."AFDP License Plate" := MobLicensePlateContent."License Plate No.";
+            WarehouseActivityLine.Modify();
+        end;
+    end;
+    //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
     #endregion Functions
 }
 
