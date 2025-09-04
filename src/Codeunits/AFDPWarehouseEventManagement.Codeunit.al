@@ -1,5 +1,6 @@
 namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Sales.Document;
+using Microsoft.Warehouse.Setup;
 using Microsoft.Purchases.History;
 using Microsoft.Warehouse.Activity;
 using Microsoft.Inventory.Tracking;
@@ -488,6 +489,8 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             exit;
         // if not RunTrigger then
         //     exit;
+        if rec."Action Type" <> rec."Action Type"::Take then
+            exit;
         SetLicensePlateOnWarehouseActivityLine(Rec);
     end;
     //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
