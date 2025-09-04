@@ -237,12 +237,12 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
     //>>AFDP 09/03/2025 'T0021-Show License Plate on Pick'
     [EventSubscriber(ObjectType::Table, Database::"Warehouse Activity Line", 'OnAfterInsertEvent', '', false, false)]
-    local procedure SalesLine_OnAfterModifyEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
+    local procedure WarehouseActivityLine_OnAfterInsertEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
     begin
         if Rec.IsTemporary then
             exit;
-        if not RunTrigger then
-            exit;
+        // if not RunTrigger then
+        //     exit;
         SetLicensePlateOnWarehouseActivityLine(Rec);
     end;
     //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
