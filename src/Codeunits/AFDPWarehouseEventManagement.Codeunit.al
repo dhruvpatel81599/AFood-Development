@@ -2,6 +2,9 @@ namespace AFood.DP.AFoodDevelopment;
 using Microsoft.Sales.Document;
 using Microsoft.Warehouse.Setup;
 using Microsoft.Purchases.History;
+using Microsoft.Warehouse.Activity;
+using Microsoft.Inventory.Tracking;
+using Microsoft.Inventory.Item;
 using Microsoft.Warehouse.Posting;
 using Microsoft.Warehouse.Document;
 using Microsoft.Purchases.Document;
@@ -11,6 +14,7 @@ using Microsoft.Sales.Posting;
 using System.Utilities;
 using Microsoft.Warehouse.Activity;
 using Microsoft.Purchases.Pricing;
+using Microsoft.Warehouse.Journal;
 
 codeunit 50301 "AFDP Warehouse EventManagement"
 {
@@ -235,20 +239,247 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         end;
         //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
     end;
-    //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
-    //>>AFDP 09/03/2025 'T0021-Show License Plate on Pick'
-    [EventSubscriber(ObjectType::Table, Database::"Warehouse Activity Line", 'OnAfterInsertEvent', '', false, false)]
-    local procedure WarehouseActivityLine_OnAfterInsertEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
+    //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'        
+    // [EventSubscriber(ObjectType::Table, database::"Tracking Specification", 'OnBeforeUpdateTrackingSpecification', '', false, false)]
+    // local procedure TrackingSpecification_OnBeforeUpdateTrackingSpecification(var TrackingSpecification: Record "Tracking Specification"; var FromTrackingSpecification: Record "Tracking Specification")
+    // var
+    //     Item: Record Item;
+    // begin
+    //     //>>AFDP 08/26/2025 'T0022-Plant Number'
+    //     if FromTrackingSpecification."Item No." <> '' then begin
+    //         Item.Get(FromTrackingSpecification."Item No.");
+    //         if FromTrackingSpecification."AFDP Plant Number Mandatory" <> Item."AFDP Plant Number Mandatory" then
+    //             FromTrackingSpecification."AFDP Plant Number Mandatory" := Item."AFDP Plant Number Mandatory";
+    //         if FromTrackingSpecification."AFDP Default Plant Number" <> Item."AFDP Default Plant Number" then
+    //             FromTrackingSpecification."AFDP Default Plant Number" := Item."AFDP Default Plant Number";
+    //     end;
+    //     //<<AFDP 08/26/2025 'T0022-Plant Number'
+    // end;
+    [EventSubscriber(ObjectType::Page, page::"Item Tracking Lines", 'OnInsertRecordOnBeforeTempItemTracklineInsert', '', false, false)]
+    local procedure ItemTrackingLines_OnInsertRecordOnBeforeTempItemTracklineInsert(var TempTrackingSpecificationInsert: Record "Tracking Specification" temporary; var TempTrackingSpecification: Record "Tracking Specification" temporary)
+    var
+        Item: Record Item;
     begin
-        if Rec.IsTemporary then
-            exit;
-        // if not RunTrigger then
-        //     exit;
-        if rec."Action Type" <> rec."Action Type"::Take then
-            exit;
-        SetLicensePlateOnWarehouseActivityLine(Rec);
+        //>>AFDP 08/26/2025 'T0022-Plant Number'
+        if TempTrackingSpecification."Item No." <> '' then begin
+            Item.Get(TempTrackingSpecification."Item No.");
+            //--Update TempTrackingSpecification Record--//
+            if TempTrackingSpecification."AFDP Plant Number Mandatory" <> Item."AFDP Plant Number Mandatory" then
+                TempTrackingSpecification."AFDP Plant Number Mandatory" := Item."AFDP Plant Number Mandatory";
+            if TempTrackingSpecification."AFDP Default Plant Number" = '' then
+                if TempTrackingSpecification."AFDP Default Plant Number" <> Item."AFDP Default Plant Number" then
+                    TempTrackingSpecification."AFDP Default Plant Number" := Item."AFDP Default Plant Number";
+            //--Update TempTrackingSpecificationInsert Record--//
+            if TempTrackingSpecificationInsert."AFDP Plant Number Mandatory" <> Item."AFDP Plant Number Mandatory" then
+                TempTrackingSpecificationInsert."AFDP Plant Number Mandatory" := Item."AFDP Plant Number Mandatory";
+            if TempTrackingSpecificationInsert."AFDP Default Plant Number" = '' then
+                if TempTrackingSpecificationInsert."AFDP Default Plant Number" <> Item."AFDP Default Plant Number" then
+                    TempTrackingSpecificationInsert."AFDP Default Plant Number" := Item."AFDP Default Plant Number";
+        end;
+        //<<AFDP 08/26/2025 'T0022-Plant Number'
     end;
-    //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
+
+    [EventSubscriber(ObjectType::Page, page::"Item Tracking Lines", 'OnBeforeQueryClosePage', '', false, false)]
+    local procedure ItemTrackingLines_OnBeforeQueryClosePage(var TrackingSpecification: Record "Tracking Specification"; var TotalItemTrackingLine: Record "Tracking Specification"; var TempReservationEntry: Record "Reservation Entry" temporary; var UndefinedQtyArray: array[3] of Decimal; var SourceQuantityArray: array[5] of Decimal; var CurrentRunMode: Enum "Item Tracking Run Mode"; var IsHandled: Boolean)
+    var
+        TempPlantNumberTrackingSpecification: Record "Tracking Specification" temporary;
+    begin
+        //>>AFDP 08/26/2025 'T0022-Plant Number'
+        TempPlantNumberTrackingSpecification.copy(TrackingSpecification);
+        TempPlantNumberTrackingSpecification.Insert();
+        TempPlantNumberTrackingSpecification.Reset();
+        TempPlantNumberTrackingSpecification.SetRange("Item No.", TrackingSpecification."Item No.");
+        if TempPlantNumberTrackingSpecification.FindSet() then
+            repeat
+                if TempPlantNumberTrackingSpecification."Lot No." <> '' then
+                    if not IsPlantNumberValid(TempPlantNumberTrackingSpecification."Item No.", TempPlantNumberTrackingSpecification."AFDP Default Plant Number") then
+                        Error('Plant Number is mandatory for Item No: %1', TempPlantNumberTrackingSpecification."Item No.");
+            until TempPlantNumberTrackingSpecification.Next() = 0;
+        //<<AFDP 08/26/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reservation Engine Mgt.", 'OnBeforeModifyItemTrkgByReservStatus', '', false, false)]
+    local procedure ReservationEngineMgt_OnBeforeModifyItemTrkgByReservStatus(var TempReservationEntry: Record "Reservation Entry" temporary; var TrackingSpecification: Record "Tracking Specification"; ReservStatus: Enum "Reservation Status"; var QtyToAdd: Decimal; var QtyToAddAsBlank: Decimal; ItemTrackingCode: Record "Item Tracking Code"; var IsHandled: Boolean)
+    begin
+        //>>AFDP 08/27/2025 'T0022-Plant Number'
+        if TrackingSpecification."Lot No." = '' then
+            exit;
+        TempReservationEntry."AFDP Plant Number Mandatory" := TrackingSpecification."AFDP Plant Number Mandatory";
+        TempReservationEntry."AFDP Default Plant Number" := TrackingSpecification."AFDP Default Plant Number";
+        //<<AFDP 08/27/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"WMS Management", 'OnAfterCheckTrackingSpecificationChangeNeeded', '', false, false)]
+    local procedure WMSManagement_OnAfterCheckTrackingSpecificationChangeNeeded(TrackingSpecification: Record "Tracking Specification"; xTrackingSpecification: Record "Tracking Specification"; var CheckNeeded: Boolean)
+    begin
+        //>>AFDP 08/27/2025 'T0022-Plant Number'
+        if TrackingSpecification."AFDP Plant Number Mandatory" <> xTrackingSpecification."AFDP Plant Number Mandatory" then
+            CheckNeeded := true;
+        if TrackingSpecification."AFDP Default Plant Number" <> xTrackingSpecification."AFDP Default Plant Number" then
+            CheckNeeded := true;
+        //<<AFDP 08/27/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Tracking Specification", 'OnAfterHasSameTracking', '', false, false)]
+    local procedure TrackingSpecification_OnAfterHasSameTracking(var TrackingSpecification: Record "Tracking Specification"; FromTrackingSpecification: Record "Tracking Specification"; var IsSameTracking: Boolean);
+    begin
+        //>>AFDP 08/27/2025 'T0022-Plant Number'         
+        if not IsSameTracking then
+            exit;
+        if ((TrackingSpecification."AFDP Plant Number Mandatory" = FromTrackingSpecification."AFDP Plant Number Mandatory") and
+            (TrackingSpecification."AFDP Default Plant Number" = FromTrackingSpecification."AFDP Default Plant Number")) then
+            IsSameTracking := true
+        else
+            IsSameTracking := false;
+        //<<AFDP 08/27/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnAfterCopyTrackingFromTrackingSpec', '', false, false)]
+    local procedure ReservationEntry_OnAfterCopyTrackingFromTrackingSpec(var ReservationEntry: Record "Reservation Entry"; TrackingSpecification: Record "Tracking Specification")
+    begin
+        //>>AFDP 08/27/2025 'T0022-Plant Number'
+        ReservationEntry."AFDP Plant Number Mandatory" := TrackingSpecification."AFDP Plant Number Mandatory";
+        ReservationEntry."AFDP Default Plant Number" := TrackingSpecification."AFDP Default Plant Number";
+        //<<AFDP 08/27/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnAfterCopyTrackingFromReservEntry', '', false, false)]
+    local procedure ReservationEntry_OnAfterCopyTrackingFromReservEntry(var ReservationEntry: Record "Reservation Entry"; FromReservationEntry: Record "Reservation Entry")
+    begin
+        //>>AFDP 08/27/2025 'T0022-Plant Number'
+        ReservationEntry."AFDP Plant Number Mandatory" := FromReservationEntry."AFDP Plant Number Mandatory";
+        ReservationEntry."AFDP Default Plant Number" := FromReservationEntry."AFDP Default Plant Number";
+        //<<AFDP 08/27/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnAfterCopyTrackingFromReservEntryNewTracking', '', false, false)]
+    local procedure ReservationEntry_OnAfterCopyTrackingFromReservEntryNewTracking(var ReservationEntry: Record "Reservation Entry"; FromReservationEntry: Record "Reservation Entry")
+    begin
+        //>>AFDP 08/27/2025 'T0022-Plant Number'
+        ReservationEntry."AFDP Plant Number Mandatory" := FromReservationEntry."AFDP Plant Number Mandatory";
+        ReservationEntry."AFDP Default Plant Number" := FromReservationEntry."AFDP Default Plant Number";
+        //<<AFDP 08/27/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnAfterSetNewTrackingFromTrackingSpecification', '', false, false)]
+    local procedure ReservationEntry_OnAfterSetNewTrackingFromTrackingSpecification(var ReservationEntry: Record "Reservation Entry"; TrackingSpecification: Record "Tracking Specification")
+    begin
+        //>>AFDP 08/27/2025 'T0022-Plant Number'
+        ReservationEntry."AFDP Plant Number Mandatory" := TrackingSpecification."AFDP Plant Number Mandatory";
+        ReservationEntry."AFDP Default Plant Number" := TrackingSpecification."AFDP Default Plant Number";
+        //<<AFDP 08/27/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnAfterCopyNewTrackingFromReservEntry', '', false, false)]
+    local procedure ReservationEntry_OnAfterCopyNewTrackingFromReservEntry(var ReservationEntry: Record "Reservation Entry"; FromReservEntry: Record "Reservation Entry")
+    begin
+        //>>AFDP 08/27/2025 'T0022-Plant Number'
+        ReservationEntry."AFDP Plant Number Mandatory" := FromReservEntry."AFDP Plant Number Mandatory";
+        ReservationEntry."AFDP Default Plant Number" := FromReservEntry."AFDP Default Plant Number";
+        //<<AFDP 08/27/2025 'T0022-Plant Number'
+    end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Lot No. Information", 'OnBeforeInsertEvent', '', false, false)]
+    // local procedure LotNoInformation_OnBeforeInsertEvent(var Rec: Record "Lot No. Information"; RunTrigger: Boolean)
+    // begin
+    //     //>>AFDP 08/27/2025 'T0022-Plant Number'        
+    //     if rec."Item No." <> '10021000007315' then
+    //         exit;
+    //     message('Lot No. Information Record Inserted For Item Number: %1', Rec."Item No.");
+    //     //<<AFDP 08/27/2025 'T0022-Plant Number'
+    // end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Warehouse Activity Line", 'OnBeforeInsertEvent', '', false, false)]
+    // local procedure WarehouseActivityLine_OnBeforeInsertEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
+    // begin
+    //     //>>AFDP 08/27/2025 'T0022-Plant Number'        
+    //     if rec."Item No." <> '10021000007315' then
+    //         exit;
+    //     message('Warehouse Activity Line Record Inserted For Item Number: %1', Rec."Item No.");
+    //     //<<AFDP 08/27/2025 'T0022-Plant Number'
+    // end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create Pick", 'OnBeforeTempWhseActivLineInsert', '', false, false)]
+    local procedure CreatePick_OnBeforeTempWhseActivLineInsert(var TempWarehouseActivityLine: Record "Warehouse Activity Line" temporary; ActionType: Integer; WhseSource2: Option)
+    var
+        LotNoInfo: Record "Lot No. Information";
+    begin
+        //>>AFDP 08/29/2025 'T0022-Plant Number'
+        LotNoInfo.Reset();
+        LotNoInfo.SetRange("Item No.", TempWarehouseActivityLine."Item No.");
+        LotNoInfo.SetRange("Lot No.", TempWarehouseActivityLine."Lot No.");
+        if LotNoInfo.IsEmpty() then
+            exit;
+        if LotNoInfo.FindFirst() then begin
+            TempWarehouseActivityLine."AFDP Plant Number Mandatory" := LotNoInfo."AFDP Plant Number Mandatory";
+            TempWarehouseActivityLine."AFDP Default Plant Number" := LotNoInfo."AFDP Default Plant Number";
+        end;
+        //<<AFDP 08/29/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Tracking Management", 'OnAfterCreateLotInformation', '', false, false)]
+    local procedure ItemTrackingManagement_OnAfterCreateLotInformation(var LotNoInfo: Record "Lot No. Information"; var TrackingSpecification: Record "Tracking Specification")
+    begin
+        //>>AFDP 08/29/2025 'T0022-Plant Number'
+        LotNoInfo."AFDP Plant Number Mandatory" := TrackingSpecification."AFDP Plant Number Mandatory";
+        LotNoInfo."AFDP Default Plant Number" := TrackingSpecification."AFDP Default Plant Number";
+        LotNoInfo.Modify();
+        //<<AFDP 08/29/2025 'T0022-Plant Number'
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", 'OnAfterRegWhseItemTrkgLine', '', false, false)]
+    local procedure WhseActivityRegister_OnAfterRegWhseItemTrkgLine(var WhseActivLine2: Record "Warehouse Activity Line"; var TempTrackingSpecification: Record "Tracking Specification" temporary)
+    begin
+        //>>AFDP 08/29/2025 'T0022-Plant Number'
+        if WhseActivLine2."Lot No." = '' then
+            exit;
+        TempTrackingSpecification."AFDP Plant Number Mandatory" := WhseActivLine2."AFDP Plant Number Mandatory";
+        TempTrackingSpecification."AFDP Default Plant Number" := WhseActivLine2."AFDP Default Plant Number";
+        TempTrackingSpecification.Modify();
+        //<<AFDP 08/29/2025 'T0022-Plant Number'
+    end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnBeforeInsertEvent', '', false, false)]
+    // local procedure ReservationEntry_OnBeforeInsertEvent(var Rec: Record "Reservation Entry"; RunTrigger: Boolean)
+    // begin
+    //     //>>AFDP 08/27/2025 'T0022-Plant Number'        
+    //     if rec."Item No." <> '10021000007315' then
+    //         exit;
+    //     message('Reservation Entry Record Inserted For Item Number: %1', Rec."Item No.");
+    //     //<<AFDP 08/27/2025 'T0022-Plant Number'
+    // end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", 'OnBeforeModifyEvent', '', false, false)]
+    // local procedure ReservationEntry_OnBeforeModifyEvent(var Rec: Record "Reservation Entry"; var xRec: Record "Reservation Entry"; RunTrigger: Boolean)
+    // begin
+    //     //>>AFDP 08/27/2025 'T0022-Plant Number'        
+    //     if rec."Item No." <> '10021000007315' then
+    //         exit;
+    //     if rec."Lot No." <> xRec."Lot No." then
+    //         message('Reservation Entry Record Inserted For Item Number: %1', Rec."Item No.");
+    //     //<<AFDP 08/27/2025 'T0022-Plant Number'
+    // end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Tracking Specification", 'OnBeforeInsertEvent', '', false, false)]
+    // local procedure TrackingSpecification_OnBeforeInsertEvent(var Rec: Record "Tracking Specification"; RunTrigger: Boolean)
+    // begin
+    //     //>>AFDP 08/27/2025 'T0022-Plant Number'        
+    //     if rec."Item No." <> '10021000007315' then
+    //         exit;
+    //     message('Tracking Specification Record Inserted For Item Number: %1', Rec."Item No.");
+    //     //<<AFDP 08/27/2025 'T0022-Plant Number'
+    // end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Tracking Specification", 'OnBeforeModifyEvent', '', false, false)]
+    // local procedure TrackingSpecification_OnBeforeModifyEvent(var Rec: Record "Tracking Specification"; var xRec: Record "Tracking Specification"; RunTrigger: Boolean)
+    // begin
+    //     //>>AFDP 08/27/2025 'T0022-Plant Number'        
+    //     if rec."Item No." <> '10021000007315' then
+    //         exit;
+    //     if rec."Lot No." <> xRec."Lot No." then
+    //         message('Tracking Specification Record Inserted For Item Number: %1', Rec."Item No.");
+    //     //<<AFDP 08/27/2025 'T0022-Plant Number'
+    // end;
     #endregion EventSubscribers
 
     #region Functions
@@ -335,6 +566,17 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             StrSubstNo(QtyReceiveActionDescriptionLbl, PurchaseLine.FieldCaption("Qty. to Receive"), PurchaseLine.Quantity)));
     end;
     //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
+    //>>AFDP 08/26/2025 'T0022-Plant Number'
+    local procedure IsPlantNumberValid(ItemNo: Code[20]; PlantNumber: Code[20]): Boolean
+    var
+        Item: Record Item;
+    begin
+        Item.Get(ItemNo);
+        if Item."AFDP Plant Number Mandatory" and (PlantNumber = '') then
+            exit(false);
+        exit(true);
+    end;
+    //<<AFDP 08/26/2025 'T0022-Plant Number'
     //>>AFDP 09/03/2025 'T0021-Show License Plate on Pick'
     local procedure SetLicensePlateOnWarehouseActivityLine(var WarehouseActivityLine: Record "Warehouse Activity Line")
     var
@@ -349,7 +591,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             WarehouseActivityLine.Modify();
         end;
     end;
-    //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
+    //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'    
     #endregion Functions
 }
 

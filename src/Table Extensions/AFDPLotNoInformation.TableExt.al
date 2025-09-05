@@ -14,10 +14,16 @@ tableextension 50315 "AFDP Lot No. Information" extends "Lot No. Information"
         {
             Caption = 'Plant Number Mandatory';
         }
-        field(50303; "AFDP Plant Number"; Enum "AFDP Plant Number Option")
+        //>>AFDP 08/26/2025 'T0022-Plant Number'
+        // field(50303; "AFDP Plant Number"; Enum "AFDP Plant Number Option")
+        // {
+        //     Caption = 'Plant Number';
+        // }
+        field(50303; "AFDP Default Plant Number"; Code[20])
         {
             Caption = 'Plant Number';
         }
+        //<<AFDP 08/26/2025 'T0022-Plant Number'
         //<<AFDP 07/22/2025 'T0005-Customer Lot Preference'
     }
 }

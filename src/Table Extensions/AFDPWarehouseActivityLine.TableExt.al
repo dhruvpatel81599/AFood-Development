@@ -6,6 +6,16 @@ tableextension 50320 "AFDP Warehouse Activity Line" extends "Warehouse Activity 
 {
     fields
     {
+        //>>AFDP 08/27/2025 'T0022-Plant Number'
+        field(50300; "AFDP Plant Number Mandatory"; Boolean)
+        {
+            Caption = 'Plant Number Mandatory';
+        }
+        field(50301; "AFDP Default Plant Number"; Code[20])
+        {
+            Caption = 'Plant Number';
+        }
+        //<<AFDP 08/27/2025 'T0022-Plant Number' 
         //>>AFDP 08/28/2025 'T0021-Show License Plate on Pick'
         field(50302; "AFDP License Plate"; Code[20])
         {
@@ -16,8 +26,8 @@ tableextension 50320 "AFDP Warehouse Activity Line" extends "Warehouse Activity 
             //                                             "Bin Code" = field("Bin Code")));
             Editable = false;
         }
-        //<<AFDP 08/28/2025 'T0021-Show License Plate on Pick'
+        //<<AFDP 08/28/2025 'T0021-Show License Plate on Pick'               
     }
 }
+//AFDP 08/27/2025 'T0022-Plant Number'
 
-//AFDP 08/28/2025 'T0021-Show License Plate on Pick'

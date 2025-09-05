@@ -20,11 +20,17 @@ tableextension 50310 "AFDP Item" extends Item
         {
             Caption = 'Plant Number Mandatory';
         }
-        field(50303; "AFDP Plant Number"; Enum "AFDP Plant Number Option")
+        //>>AFDP 08/26/2025 'T0022-Plant Number'
+        // field(50303; "AFDP Plant Number"; Enum "AFDP Plant Number Option")
+        // {
+        //     Caption = 'Plant Number';
+        // }
+        field(50303; "AFDP Default Plant Number"; Code[20])
         {
-            Caption = 'Plant Number';
+            Caption = 'Default Plant Number';
         }
-        //<<AFDP 07/19/2025 'T0005-Customer Lot Preference'        
+        //<<AFDP 08/26/2025 'T0022-Plant Number'
+        //<<AFDP 07/19/2025 'T0005-Customer Lot Preference'
     }
 }
 
