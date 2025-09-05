@@ -56,11 +56,13 @@ codeunit 50303 "AFDP Purchase Event Management"
     //     //<<AFDP 07/01/2025 'T0008-Receiving Enhancements'
     // end;
 
+    //>>AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
+    /*
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", 'OnSetupSplitJnlLineOnBeforeReallocateTrkgSpecification', '', false, false)]
     local procedure ItemJnlPostLine_OnSetupSplitJnlLineOnBeforeReallocateTrkgSpecification(var ItemTrackingCode: Record "Item Tracking Code"; var TempTrackingSpecification: Record "Tracking Specification" temporary; var ItemJnlLine: Record "Item Journal Line"; var SignFactor: Integer; var IsHandled: Boolean)
-    begin
-        //>>AFDP 06/28/2025 'T0008-Receiving Enhancements'
-        if ItemJnlLine."LPM License Plate No." = '' then exit; // Skip if no license plate number
+    begin        
+        //>>AFDP 06/28/2025 'T0008-Receiving Enhancements'        
+        if ItemJnlLine."LPM License Plate No." = '' then exit; // Skip if no license plate number        
         if ItemJnlLine."Line No." <> TempTrackingSpecification."Source Ref. No." then exit; // Skip if line number does not match        
         if ItemJnlLine."Item No." <> TempTrackingSpecification."Item No." then exit; // Skip if item number does not match
         if ItemJnlLine.Description <> TempTrackingSpecification.Description then exit; // Skip if description does not match
@@ -75,7 +77,11 @@ codeunit 50303 "AFDP Purchase Event Management"
         end;
         //<<AFDP 06/28/2025 'T0008-Receiving Enhancements'
     end;
+    */
+    //<<AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
 
+    //>>AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
+    /*
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Batch", 'OnBeforeOnRun', '', false, false)]
     local procedure ItemJnlPostBatch_OnBeforeOnRun(var ItemJournalLine: Record "Item Journal Line")
     var
@@ -105,6 +111,8 @@ codeunit 50303 "AFDP Purchase Event Management"
         end;
         //<<AFDP 07/01/2025 'T0008-Receiving Enhancements'
     end;
+    */
+    //<<AFDP 08/04/2025 'T0017-Remove Insight Work Customization'
     #endregion EventSubscribers
 
     #region Functions    
