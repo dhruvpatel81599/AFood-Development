@@ -234,6 +234,13 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         //<<AFDP 07/18/2025 'T0012-Item Tracking Import Tools'
     end;
     //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
+    [EventSubscriber(ObjectType::Table, database::"Warehouse Receipt Line", 'OnAfterInitQtyToReceive', '', false, false)]
+    local procedure WarehouseReceiptLine_OnAfterInitQtyToReceive(var WarehouseReceiptLine: Record "Warehouse Receipt Line"; CurrentFieldNo: Integer)
+    begin
+        //>>AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
+
+        //<<AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
+    end;
     #endregion EventSubscribers
 
     #region Functions

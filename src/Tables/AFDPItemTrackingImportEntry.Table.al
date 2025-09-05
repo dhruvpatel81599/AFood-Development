@@ -19,26 +19,26 @@ table 50300 "AFDP Item Tracking ImportEntry"
         {
             Caption = 'PO Date';
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
         field(6; "Vendor Item No."; Code[20])
         {
             Caption = 'Vendor Item No.';
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
         field(7; Description; Text[100])
         {
             Caption = 'Description';
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
         field(8; "Quantity Shipped"; Decimal)
         {
             Caption = 'Quantity Shipped';
             DecimalPlaces = 0 : 5;
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
         //>>AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
         field(9; "Net Weight"; Decimal)
@@ -46,32 +46,32 @@ table 50300 "AFDP Item Tracking ImportEntry"
             Caption = 'Net Weight';
             DecimalPlaces = 0 : 5;
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
         //<<AFDP 06/16/2025 'T0012-Item Tracking Import Tools'
         field(10; "Lot Number"; Code[20])
         {
             Caption = 'Lot Number';
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
         field(12; "Expiration Date"; Date)
         {
             Caption = 'Expiration Date';
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
         field(13; "Production Date"; Date)
         {
             Caption = 'Production Date';
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
         field(20; "Tracking Created"; Boolean)
         {
             Caption = 'Tracking Created';
             DataClassification = CustomerContent;
-            Editable = false;
+            // Editable = false;  //AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         }
     }
     keys
