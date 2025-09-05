@@ -28,7 +28,13 @@
       "name": "Dual Unit of Measure",
       "publisher": "Theta Systems Limited",
       "version": "25.0.0.0"
-    }    
+    },    
+    {
+      "id": "a5727ce6-368c-49e2-84cb-1a6052f0551c",
+      "name": "Tasklet Mobile WMS",
+      "publisher": "Tasklet Factory",
+      "version": "5.57.260.1"
+    }
   ],
   "screenshots": [],
   "platform": "1.0.0.0",
