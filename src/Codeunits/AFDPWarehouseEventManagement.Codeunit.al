@@ -480,6 +480,19 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     //         message('Tracking Specification Record Inserted For Item Number: %1', Rec."Item No.");
     //     //<<AFDP 08/27/2025 'T0022-Plant Number'
     // end;
+    //>>AFDP 09/03/2025 'T0021-Show License Plate on Pick'
+    [EventSubscriber(ObjectType::Table, Database::"Warehouse Activity Line", 'OnAfterInsertEvent', '', false, false)]
+    local procedure WarehouseActivityLine_OnAfterInsertEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
+    begin
+        if Rec.IsTemporary then
+            exit;
+        // if not RunTrigger then
+        //     exit;
+        if rec."Action Type" <> rec."Action Type"::Take then
+            exit;
+        SetLicensePlateOnWarehouseActivityLine(Rec);
+    end;
+    //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
     #endregion EventSubscribers
 
     #region Functions
