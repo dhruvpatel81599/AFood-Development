@@ -69,12 +69,14 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
     }
     trigger OnPreXmlPort()
     begin
-        //-- Clear previous entries--\\
-        ItemTrackingImportEntry1.Reset();
-        ItemTrackingImportEntry1.SetCurrentKey("Entry No.");
-        ItemTrackingImportEntry1.SetRange("Tracking Created");
-        ItemTrackingImportEntry1.DeleteAll();
-        //-----------\\
+        //>>AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
+        // //-- Clear previous entries--\\
+        // ItemTrackingImportEntry1.Reset();
+        // ItemTrackingImportEntry1.SetCurrentKey("Entry No.");
+        // ItemTrackingImportEntry1.SetRange("Tracking Created");
+        // ItemTrackingImportEntry1.DeleteAll();
+        // //-----------\\
+        //<<AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         ProgressWindow.OPEN('Importing Lot No.: #1#############');
         TotalRecordImported := 0;
     end;
@@ -82,10 +84,12 @@ xmlport 50300 "AFDP Item Tracking Import Tool"
     trigger OnPostXmlPort()
     begin
         ProgressWindow.CLOSE();
-        if TotalRecordImported > 0 then begin
-            ClearQtyToReceiveOnPurchseLineForImportEntry();
-            InsertItemTrackingLineForImportEntry();
-        end;
+        //>>AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
+        // if TotalRecordImported > 0 then begin
+        //     ClearQtyToReceiveOnPurchseLineForImportEntry();
+        //     InsertItemTrackingLineForImportEntry();
+        // end;
+        //<<AFDP 08/14/2025 'T0020-Item Tracking Import Tools III'
         MESSAGE('Total Record Imported: %1', TotalRecordImported);
     end;
 
