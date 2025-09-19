@@ -9,6 +9,7 @@ tableextension 50322 "AFDP Lot Bin Buffer" extends "Lot Bin Buffer"
         field(50300; "AFDP Cases"; Decimal)
         {
             CalcFormula = sum("Warehouse Entry"."Units_DU_TSL" where("Item No." = field("Item No."),
+                                                                    "Bin Code" = field("Bin Code"),
                                                                   "Location Code" = field("Location Code"),
                                                                   "Variant Code" = field("Variant Code"),
                                                                   "Lot No." = field("Lot No.")));
