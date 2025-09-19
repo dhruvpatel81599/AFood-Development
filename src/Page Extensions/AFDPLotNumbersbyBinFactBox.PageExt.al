@@ -8,7 +8,7 @@ pageextension 50327 "AFDPLotNumbersbyBinFactBox" extends "Lot Numbers by Bin Fac
 {
     layout
     {
-        addafter("Qty. (Base)")
+        addafter("Lot No.")
         {
             //>>AFDP 00/19/2025 'T0030-General Development Request'
             field("AFDP Cases"; Rec."AFDP Cases")
