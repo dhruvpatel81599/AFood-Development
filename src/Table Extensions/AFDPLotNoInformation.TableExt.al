@@ -13,6 +13,7 @@ tableextension 50315 "AFDP Lot No. Information" extends "Lot No. Information"
         field(50302; "AFDP Plant Number Mandatory"; Boolean)
         {
             Caption = 'Plant Number Mandatory';
+            Editable = false;
         }
         //>>AFDP 08/26/2025 'T0022-Plant Number'
         // field(50303; "AFDP Plant Number"; Enum "AFDP Plant Number Option")
