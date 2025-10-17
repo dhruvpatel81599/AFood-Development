@@ -12,9 +12,9 @@ using Microsoft.Purchases.Posting;
 using Microsoft.Inventory.Setup;
 using Microsoft.Sales.Posting;
 using System.Utilities;
-using Microsoft.Warehouse.Activity;
 using Microsoft.Purchases.Pricing;
 using Microsoft.Warehouse.Journal;
+using Microsoft.Inventory.Ledger;
 
 codeunit 50301 "AFDP Warehouse EventManagement"
 {
@@ -496,6 +496,9 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             exit;
         // if not RunTrigger then
         //     exit;
+        //>>AFDP 10/17/2025 'T0025-Pick Using Average Weight'
+        SetAverageWeightOnWarehouseActivityLine(Rec);
+        //<<AFDP 10/17/2025 'T0025-Pick Using Average Weight'
         if rec."Action Type" <> rec."Action Type"::Take then
             exit;
         SetLicensePlateOnWarehouseActivityLine(Rec);
@@ -613,6 +616,41 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         end;
     end;
     //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
+    //>>AFDP 10/17/2025 'T0025-Pick Using Average Weight'
+    local procedure SetAverageWeightOnWarehouseActivityLine(var WarehouseActivityLine: Record "Warehouse Activity Line")
+    var
+        ItemledgerEntry: Record "Item Ledger Entry";
+        TotalQuantity: Decimal;
+        TotalCase: Decimal;
+        AverageWeight: Decimal;
+    begin
+        if WarehouseActivityLine."Lot No." = '' then
+            exit;
+        if WarehouseActivityLine.Units_DU_TSL = 0 then
+            exit;
+        ItemledgerEntry.Reset();
+        ItemledgerEntry.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        ItemledgerEntry.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
+        ItemledgerEntry.SetFilter("Remaining Quantity", '>0');
+        ItemledgerEntry.SetRange("Location Code", WarehouseActivityLine."Location Code");
+        ItemledgerEntry.SetRange("Variant Code", WarehouseActivityLine."Variant Code");
+        ItemledgerEntry.SetRange(Open, true);
+        if ItemledgerEntry.IsEmpty() then
+            exit;
+        ItemledgerEntry.CalcSums(Quantity);
+        TotalQuantity := ItemledgerEntry.Quantity;
+        ItemledgerEntry.CalcSums(Units_DU_TSL);
+        TotalCase := ItemledgerEntry.Units_DU_TSL;
+        if TotalCase <> 0 then
+            AverageWeight := Round(TotalQuantity / TotalCase, 0.01, '=')
+        else
+            AverageWeight := 0;
+        //--Set Qty. to Handle--//
+        WarehouseActivityLine.Validate("Qty. to Handle", WarehouseActivityLine.Units_DU_TSL * AverageWeight);
+        WarehouseActivityLine.Validate("Units Handled_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
+        WarehouseActivityLine.Modify();
+    end;
+    //<<AFDP 10/17/2025 'T0025-Pick Using Average Weight'
     #endregion Functions
 }
 
