@@ -640,7 +640,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             AverageWeight := 0;
         //--Set Qty. to Handle--//
         WarehouseActivityLine.Validate("Qty. to Handle", WarehouseActivityLine.Units_DU_TSL * AverageWeight);
-        WarehouseActivityLine.Validate("Units Handled_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
+        WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
         WarehouseActivityLine.Modify();
     end;
     //<<AFDP 10/17/2025 'T0025-Pick Using Average Weight'
