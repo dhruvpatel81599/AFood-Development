@@ -15,6 +15,7 @@ using System.Utilities;
 using Microsoft.Purchases.Pricing;
 using Microsoft.Warehouse.Journal;
 using Microsoft.Inventory.Ledger;
+using Microsoft.Warehouse.Structure;
 
 codeunit 50301 "AFDP Warehouse EventManagement"
 {
@@ -620,9 +621,12 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure SetAverageWeightOnWarehouseActivityLine(var WarehouseActivityLine: Record "Warehouse Activity Line")
     var
         ItemledgerEntry: Record "Item Ledger Entry";
+        BinContent: Record "Bin Content";
         TotalQuantity: Decimal;
         TotalCase: Decimal;
         AverageWeight: Decimal;
+        PickQtyBase: Decimal;
+        BinContentQtyBase: Decimal;
     begin
         if WarehouseActivityLine."Lot No." = '' then
             exit;
@@ -641,10 +645,30 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         TotalQuantity := ItemledgerEntry.Quantity;
         ItemledgerEntry.CalcSums(Units_DU_TSL);
         TotalCase := ItemledgerEntry.Units_DU_TSL;
+        // if TotalCase <> 0 then
+        //     AverageWeight := Round(TotalQuantity / TotalCase, 0.01, '=')
+        // else
+        //     AverageWeight := 0;
         if TotalCase <> 0 then
-            AverageWeight := Round(TotalQuantity / TotalCase, 0.01, '=')
+            AverageWeight := (TotalQuantity / TotalCase)
         else
             AverageWeight := 0;
+        //--Get Available Quantity from Bin Content--\\
+        BinContent.Reset();
+        BinContent.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        BinContent.SetRange("Location Code", WarehouseActivityLine."Location Code");
+        BinContent.SetRange("Variant Code", WarehouseActivityLine."Variant Code");
+        BinContent.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        if BinContent.FindFirst() then begin
+            BinContent.CalcFields("Pick Quantity (Base)");
+            PickQtyBase := BinContent."Pick Quantity (Base)";
+            BinContent.CalcFields("Quantity (Base)");
+            BinContentQtyBase := BinContent."Quantity (Base)";
+            if (BinContentQtyBase - PickQtyBase) < 0 then
+                exit;
+            if (BinContentQtyBase - PickQtyBase) < (WarehouseActivityLine.Units_DU_TSL * AverageWeight) then
+                exit;
+        end;
         //--Set Qty. to Handle--//
         WarehouseActivityLine.Validate("Qty. to Handle", WarehouseActivityLine.Units_DU_TSL * AverageWeight);
         WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
