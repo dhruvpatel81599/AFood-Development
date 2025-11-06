@@ -12,9 +12,10 @@ using Microsoft.Purchases.Posting;
 using Microsoft.Inventory.Setup;
 using Microsoft.Sales.Posting;
 using System.Utilities;
-using Microsoft.Warehouse.Activity;
 using Microsoft.Purchases.Pricing;
 using Microsoft.Warehouse.Journal;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Warehouse.Structure;
 
 codeunit 50301 "AFDP Warehouse EventManagement"
 {
@@ -480,6 +481,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     //         message('Tracking Specification Record Inserted For Item Number: %1', Rec."Item No.");
     //     //<<AFDP 08/27/2025 'T0022-Plant Number'
     // end;
+    //>>AFDP 06/17/2025 'T0012-Item Tracking Import Tools'
     //>>AFDP 09/03/2025 'T0021-Show License Plate on Pick'
     [EventSubscriber(ObjectType::Table, Database::"Warehouse Activity Line", 'OnAfterInsertEvent', '', false, false)]
     local procedure WarehouseActivityLine_OnAfterInsertEvent(var Rec: Record "Warehouse Activity Line"; RunTrigger: Boolean)
@@ -488,6 +490,9 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             exit;
         // if not RunTrigger then
         //     exit;
+        //>>AFDP 10/17/2025 'T0025-Pick Using Average Weight'
+        SetAverageWeightOnWarehouseActivityLine(Rec);
+        //<<AFDP 10/17/2025 'T0025-Pick Using Average Weight'
         if rec."Action Type" <> rec."Action Type"::Take then
             exit;
         SetLicensePlateOnWarehouseActivityLine(Rec);
@@ -604,7 +609,163 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             WarehouseActivityLine.Modify();
         end;
     end;
-    //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'    
+    //<<AFDP 09/03/2025 'T0021-Show License Plate on Pick'
+    //>>AFDP 10/17/2025 'T0025-Pick Using Average Weight'
+    local procedure SetAverageWeightOnWarehouseActivityLine(var WarehouseActivityLine: Record "Warehouse Activity Line")
+    var
+        ItemledgerEntry: Record "Item Ledger Entry";
+        BinContent: Record "Bin Content";
+        TotalQuantity: Decimal;
+        TotalCase: Decimal;
+        AverageWeight: Decimal;
+        PickQtyBase: Decimal;
+        BinContentQtyBase: Decimal;
+        QtyAvailableToTake: Decimal;
+    begin
+        if WarehouseActivityLine."Lot No." = '' then
+            exit;
+        if WarehouseActivityLine.Units_DU_TSL = 0 then
+            exit;
+        ItemledgerEntry.Reset();
+        ItemledgerEntry.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        ItemledgerEntry.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
+        ItemledgerEntry.SetFilter("Remaining Quantity", '>0');
+        ItemledgerEntry.SetRange("Location Code", WarehouseActivityLine."Location Code");
+        ItemledgerEntry.SetRange("Variant Code", WarehouseActivityLine."Variant Code");
+        ItemledgerEntry.SetRange(Open, true);
+        if ItemledgerEntry.IsEmpty() then
+            exit;
+        ItemledgerEntry.CalcSums(Quantity);
+        TotalQuantity := ItemledgerEntry.Quantity;
+        ItemledgerEntry.CalcSums(Units_DU_TSL);
+        TotalCase := ItemledgerEntry.Units_DU_TSL;
+        // if TotalCase <> 0 then
+        //     AverageWeight := Round(TotalQuantity / TotalCase, 0.01, '=')
+        // else
+        //     AverageWeight := 0;
+        if TotalCase <> 0 then
+            AverageWeight := (TotalQuantity / TotalCase)
+        else
+            AverageWeight := 0;
+
+        //--Update Place Line From Take Line--\\
+        if WarehouseActivityLine."Action Type" = WarehouseActivityLine."Action Type"::Place then
+            if CheckTakeLineExists(WarehouseActivityLine) then
+                exit;
+        if WarehouseActivityLine."Action Type" = WarehouseActivityLine."Action Type"::Place then begin
+            WarehouseActivityLine.Validate("Qty. to Handle", 0);
+            WarehouseActivityLine.Validate("Units to Handle_DU_TSL", 0);
+            WarehouseActivityLine.Modify();
+            exit;
+        end;
+        //--Get Available Quantity from Bin Content--\\        
+        BinContent.Reset();
+        BinContent.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        BinContent.SetRange("Location Code", WarehouseActivityLine."Location Code");
+        BinContent.SetRange("Variant Code", WarehouseActivityLine."Variant Code");
+        if WarehouseActivityLine."Action Type" = WarehouseActivityLine."Action Type"::Take then
+            BinContent.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        if BinContent.FindFirst() then begin
+            // QtyAvailableToTake := BinContent.CalcQtyAvailToTakeUOM();
+            PickQtyBase := GetPickQtyBase(WarehouseActivityLine);
+            // BinContent.CalcFields("Pick Quantity (Base)");
+            // PickQtyBase := BinContent."Pick Quantity (Base)";
+            BinContent.CalcFields("Quantity (Base)");
+            BinContentQtyBase := BinContent."Quantity (Base)";
+            // if (BinContentQtyBase - PickQtyBase) < 0 then
+            //     exit;
+            // if QtyAvailableToTake <= 0 then
+            //     exit;
+            if (BinContentQtyBase - PickQtyBase) > 0 then
+                if (BinContentQtyBase - PickQtyBase) < (WarehouseActivityLine.Units_DU_TSL * AverageWeight) then begin
+                    // if (QtyAvailableToTake) < (WarehouseActivityLine.Units_DU_TSL * AverageWeight) then begin
+                    //--Set Qty. to Handle--//
+                    WarehouseActivityLine.Validate("Qty. to Handle", BinContentQtyBase - PickQtyBase);
+                    WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
+                    WarehouseActivityLine.Modify();
+                end else begin
+                    //--Set Qty. to Handle--//
+                    WarehouseActivityLine.Validate("Qty. to Handle", WarehouseActivityLine.Units_DU_TSL * AverageWeight);
+                    WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
+                    WarehouseActivityLine.Modify();
+                end;
+        end;
+        //--Update Place Line if Exists--\\
+        if WarehouseActivityLine."Action Type" = WarehouseActivityLine."Action Type"::Take then
+            if CheckPlaceLineExists(WarehouseActivityLine) then
+                exit;
+    end;
+
+    local procedure CheckTakeLineExists(var WarehouseActivityLine: Record "Warehouse Activity Line"): Boolean
+    var
+        WhseActivLineTake: Record "Warehouse Activity Line";
+    begin
+        WhseActivLineTake.Reset();
+        WhseActivLineTake.SetRange("Source Type", WarehouseActivityLine."Source Type");
+        WhseActivLineTake.SetRange("Source Subtype", WarehouseActivityLine."Source Subtype");
+        WhseActivLineTake.SetRange("Source No.", WarehouseActivityLine."Source No.");
+        WhseActivLineTake.SetRange("Source Line No.", WarehouseActivityLine."Source Line No.");
+        WhseActivLineTake.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        WhseActivLineTake.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
+        WhseActivLineTake.SetRange("Action Type", WhseActivLineTake."Action Type"::Take);
+        if WhseActivLineTake.FindFirst() then begin
+            WarehouseActivityLine.Validate("Qty. to Handle", WhseActivLineTake."Qty. to Handle");
+            WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WhseActivLineTake."Units to Handle_DU_TSL");
+            WarehouseActivityLine.Modify();
+            exit(true);
+        end;
+        exit(false);
+    end;
+
+    local procedure CheckPlaceLineExists(var WarehouseActivityLine: Record "Warehouse Activity Line"): Boolean
+    var
+        WhseActivLinePlace: Record "Warehouse Activity Line";
+    begin
+        WhseActivLinePlace.Reset();
+        WhseActivLinePlace.SetRange("Source Type", WarehouseActivityLine."Source Type");
+        WhseActivLinePlace.SetRange("Source Subtype", WarehouseActivityLine."Source Subtype");
+        WhseActivLinePlace.SetRange("Source No.", WarehouseActivityLine."Source No.");
+        WhseActivLinePlace.SetRange("Source Line No.", WarehouseActivityLine."Source Line No.");
+        WhseActivLinePlace.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        WhseActivLinePlace.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
+        WhseActivLinePlace.SetRange("Action Type", WhseActivLinePlace."Action Type"::Place);
+        if WhseActivLinePlace.FindFirst() then begin
+            WhseActivLinePlace.Validate("Qty. to Handle", WarehouseActivityLine."Qty. to Handle");
+            WhseActivLinePlace.Validate("Units to Handle_DU_TSL", WarehouseActivityLine."Units to Handle_DU_TSL");
+            WhseActivLinePlace.Modify();
+            exit(true);
+        end;
+        exit(false);
+    end;
+
+    local procedure GetPickQtyBase(var WarehouseActivityLine: Record "Warehouse Activity Line"): Decimal
+    var
+        WarehouseActivityLinePickQty: Record "Warehouse Activity Line";
+        TotalPickQtyBase: Decimal;
+        LastPickedQtyBase: Decimal;
+    begin
+        TotalPickQtyBase := 0;
+        LastPickedQtyBase := 0;
+        WarehouseActivityLinePickQty.Reset();
+        WarehouseActivityLinePickQty.SetRange("Action Type", WarehouseActivityLinePickQty."Action Type"::Take);
+        WarehouseActivityLinePickQty.SetRange("Assemble to Order", false);
+        WarehouseActivityLinePickQty.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        WarehouseActivityLinePickQty.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        WarehouseActivityLinePickQty.SetRange("Location Code", WarehouseActivityLine."Location Code");
+        WarehouseActivityLinePickQty.SetRange("Variant Code", WarehouseActivityLine."Variant Code");
+        WarehouseActivityLinePickQty.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
+        if WarehouseActivityLinePickQty.FindSet() then
+            repeat
+                if WarehouseActivityLinePickQty."No." <> WarehouseActivityLine."No." then
+                    TotalPickQtyBase += WarehouseActivityLinePickQty."Qty. Outstanding (Base)"
+                else begin
+                    TotalPickQtyBase += WarehouseActivityLinePickQty."Qty. Outstanding (Base)";
+                    LastPickedQtyBase := WarehouseActivityLinePickQty."Qty. Outstanding (Base)";
+                end;
+            until WarehouseActivityLinePickQty.Next() = 0;
+        exit(TotalPickQtyBase - LastPickedQtyBase);
+    end;
+    //<<AFDP 10/17/2025 'T0025-Pick Using Average Weight'
     #endregion Functions
 }
 
