@@ -621,6 +621,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         PickQtyBase: Decimal;
         BinContentQtyBase: Decimal;
         QtyAvailableToTake: Decimal;
+        CaseAvailableForBin: Decimal;
     begin
         if WarehouseActivityLine."Lot No." = '' then
             exit;
@@ -670,8 +671,9 @@ codeunit 50301 "AFDP Warehouse EventManagement"
             PickQtyBase := GetPickQtyBase(WarehouseActivityLine);
             // BinContent.CalcFields("Pick Quantity (Base)");
             // PickQtyBase := BinContent."Pick Quantity (Base)";
-            BinContent.CalcFields("Quantity (Base)");
+            BinContent.CalcFields("Quantity (Base)", Units_DU_TSL);
             BinContentQtyBase := BinContent."Quantity (Base)";
+            CaseAvailableForBin := BinContent.Units_DU_TSL;
             // if (BinContentQtyBase - PickQtyBase) < 0 then
             //     exit;
             // if QtyAvailableToTake <= 0 then
@@ -683,12 +685,18 @@ codeunit 50301 "AFDP Warehouse EventManagement"
                     WarehouseActivityLine.Validate("Qty. to Handle", BinContentQtyBase - PickQtyBase);
                     WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
                     WarehouseActivityLine.Modify();
-                end else begin
-                    //--Set Qty. to Handle--//
-                    WarehouseActivityLine.Validate("Qty. to Handle", WarehouseActivityLine.Units_DU_TSL * AverageWeight);
-                    WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
-                    WarehouseActivityLine.Modify();
-                end;
+                end else
+                    if CaseAvailableForBin = WarehouseActivityLine.Units_DU_TSL then begin
+                        //--Set Qty. to Handle--//
+                        WarehouseActivityLine.Validate("Qty. to Handle", BinContentQtyBase);
+                        WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
+                        WarehouseActivityLine.Modify();
+                    end else begin
+                        //--Set Qty. to Handle--//
+                        WarehouseActivityLine.Validate("Qty. to Handle", WarehouseActivityLine.Units_DU_TSL * AverageWeight);
+                        WarehouseActivityLine.Validate("Units to Handle_DU_TSL", WarehouseActivityLine.Units_DU_TSL);
+                        WarehouseActivityLine.Modify();
+                    end;
         end;
         //--Update Place Line if Exists--\\
         if WarehouseActivityLine."Action Type" = WarehouseActivityLine."Action Type"::Take then
