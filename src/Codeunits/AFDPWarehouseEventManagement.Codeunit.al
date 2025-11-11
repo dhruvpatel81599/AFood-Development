@@ -16,6 +16,7 @@ using Microsoft.Purchases.Pricing;
 using Microsoft.Warehouse.Journal;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Warehouse.Structure;
+using Microsoft.Warehouse.Ledger;
 
 codeunit 50301 "AFDP Warehouse EventManagement"
 {
@@ -667,17 +668,12 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         if WarehouseActivityLine."Action Type" = WarehouseActivityLine."Action Type"::Take then
             BinContent.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
         if BinContent.FindFirst() then begin
-            // QtyAvailableToTake := BinContent.CalcQtyAvailToTakeUOM();
             PickQtyBase := GetPickQtyBase(WarehouseActivityLine);
-            // BinContent.CalcFields("Pick Quantity (Base)");
-            // PickQtyBase := BinContent."Pick Quantity (Base)";
             BinContent.CalcFields("Quantity (Base)", Units_DU_TSL);
-            BinContentQtyBase := BinContent."Quantity (Base)";
-            CaseAvailableForBin := BinContent.Units_DU_TSL;
-            // if (BinContentQtyBase - PickQtyBase) < 0 then
-            //     exit;
-            // if QtyAvailableToTake <= 0 then
-            //     exit;
+            // BinContentQtyBase := BinContent."Quantity (Base)";
+            BinContentQtyBase := GetRemaingQtyForAvailableCase(WarehouseActivityLine);
+            // CaseAvailableForBin := BinContent.Units_DU_TSL;
+            CaseAvailableForBin := GetCaseQtyBase(WarehouseActivityLine);
             if (BinContentQtyBase - PickQtyBase) > 0 then
                 if (BinContentQtyBase - PickQtyBase) < (WarehouseActivityLine.Units_DU_TSL * AverageWeight) then begin
                     // if (QtyAvailableToTake) < (WarehouseActivityLine.Units_DU_TSL * AverageWeight) then begin
@@ -772,6 +768,44 @@ codeunit 50301 "AFDP Warehouse EventManagement"
                 end;
             until WarehouseActivityLinePickQty.Next() = 0;
         exit(TotalPickQtyBase - LastPickedQtyBase);
+    end;
+
+    local procedure GetCaseQtyBase(var WarehouseActivityLine: Record "Warehouse Activity Line"): Decimal
+    var
+        WarehouseEntry: Record "Warehouse Entry";
+        TotalCaseQtyBase: Decimal;
+    begin
+        TotalCaseQtyBase := 0;
+        WarehouseEntry.Reset();
+        WarehouseEntry.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        WarehouseEntry.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        WarehouseEntry.SetRange("Location Code", WarehouseActivityLine."Location Code");
+        WarehouseEntry.SetRange("Variant Code", WarehouseActivityLine."Variant Code");
+        WarehouseEntry.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
+        if WarehouseEntry.FindSet() then
+            repeat
+                TotalCaseQtyBase += WarehouseEntry.Units_DU_TSL;
+            until WarehouseEntry.Next() = 0;
+        exit(TotalCaseQtyBase);
+    end;
+
+    local procedure GetRemaingQtyForAvailableCase(var WarehouseActivityLine: Record "Warehouse Activity Line"): Decimal
+    var
+        WarehouseEntry: Record "Warehouse Entry";
+        TotalRemainingQtyForCase: Decimal;
+    begin
+        TotalRemainingQtyForCase := 0;
+        WarehouseEntry.Reset();
+        WarehouseEntry.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        WarehouseEntry.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        WarehouseEntry.SetRange("Location Code", WarehouseActivityLine."Location Code");
+        WarehouseEntry.SetRange("Variant Code", WarehouseActivityLine."Variant Code");
+        WarehouseEntry.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
+        if WarehouseEntry.FindSet() then
+            repeat
+                TotalRemainingQtyForCase += WarehouseEntry.Quantity;
+            until WarehouseEntry.Next() = 0;
+        exit(TotalRemainingQtyForCase);
     end;
     //<<AFDP 10/17/2025 'T0025-Pick Using Average Weight'
     #endregion Functions
