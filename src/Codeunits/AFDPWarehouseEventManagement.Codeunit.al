@@ -734,6 +734,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         WhseActivLineTake.SetRange("Source No.", WarehouseActivityLine."Source No.");
         WhseActivLineTake.SetRange("Source Line No.", WarehouseActivityLine."Source Line No.");
         WhseActivLineTake.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        WhseActivLineTake.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
         WhseActivLineTake.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
         WhseActivLineTake.SetRange("Action Type", WhseActivLineTake."Action Type"::Take);
         if WhseActivLineTake.FindFirst() then begin
@@ -755,6 +756,7 @@ codeunit 50301 "AFDP Warehouse EventManagement"
         WhseActivLinePlace.SetRange("Source No.", WarehouseActivityLine."Source No.");
         WhseActivLinePlace.SetRange("Source Line No.", WarehouseActivityLine."Source Line No.");
         WhseActivLinePlace.SetRange("Item No.", WarehouseActivityLine."Item No.");
+        WhseActivLinePlace.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
         WhseActivLinePlace.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
         WhseActivLinePlace.SetRange("Action Type", WhseActivLinePlace."Action Type"::Place);
         if WhseActivLinePlace.FindFirst() then begin
