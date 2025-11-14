@@ -727,14 +727,18 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure CheckTakeLineExists(var WarehouseActivityLine: Record "Warehouse Activity Line"): Boolean
     var
         WhseActivLineTake: Record "Warehouse Activity Line";
+        TakeLineNo: Integer;
     begin
+        Clear(TakeLineNo);
         WhseActivLineTake.Reset();
         WhseActivLineTake.SetRange("Source Type", WarehouseActivityLine."Source Type");
         WhseActivLineTake.SetRange("Source Subtype", WarehouseActivityLine."Source Subtype");
         WhseActivLineTake.SetRange("Source No.", WarehouseActivityLine."Source No.");
         WhseActivLineTake.SetRange("Source Line No.", WarehouseActivityLine."Source Line No.");
         WhseActivLineTake.SetRange("Item No.", WarehouseActivityLine."Item No.");
-        WhseActivLineTake.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        TakeLineNo := WarehouseActivityLine."Line No." - 10000;
+        WhseActivLineTake.SetRange("Line No.", TakeLineNo);
+        // WhseActivLineTake.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
         WhseActivLineTake.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
         WhseActivLineTake.SetRange("Action Type", WhseActivLineTake."Action Type"::Take);
         if WhseActivLineTake.FindFirst() then begin
@@ -749,14 +753,18 @@ codeunit 50301 "AFDP Warehouse EventManagement"
     local procedure CheckPlaceLineExists(var WarehouseActivityLine: Record "Warehouse Activity Line"): Boolean
     var
         WhseActivLinePlace: Record "Warehouse Activity Line";
+        PlaceLineNo: Integer;
     begin
+        Clear(PlaceLineNo);
         WhseActivLinePlace.Reset();
         WhseActivLinePlace.SetRange("Source Type", WarehouseActivityLine."Source Type");
         WhseActivLinePlace.SetRange("Source Subtype", WarehouseActivityLine."Source Subtype");
         WhseActivLinePlace.SetRange("Source No.", WarehouseActivityLine."Source No.");
         WhseActivLinePlace.SetRange("Source Line No.", WarehouseActivityLine."Source Line No.");
         WhseActivLinePlace.SetRange("Item No.", WarehouseActivityLine."Item No.");
-        WhseActivLinePlace.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        PlaceLineNo := WarehouseActivityLine."Line No." + 10000;
+        // WhseActivLinePlace.SetRange("Bin Code", WarehouseActivityLine."Bin Code");
+        WhseActivLinePlace.SetRange("Line No.", PlaceLineNo);
         WhseActivLinePlace.SetRange("Lot No.", WarehouseActivityLine."Lot No.");
         WhseActivLinePlace.SetRange("Action Type", WhseActivLinePlace."Action Type"::Place);
         if WhseActivLinePlace.FindFirst() then begin
